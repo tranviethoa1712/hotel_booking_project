@@ -72,7 +72,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-outline-danger form-control" value="Add Room">
+                            <input type="submit" class="btn btn-outline-danger form-control" value="Update Room">
                         </div>
                     </form>
                 </div>

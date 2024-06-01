@@ -18,7 +18,7 @@
                 <div class="collapse navbar-collapse" id="navbarsExample04">
                    <ul class="navbar-nav mr-auto">
                       <li class="nav-item active">
-                         <a class="nav-link" href="index.html">Home</a>
+                         <a class="nav-link" href="{{url('/')}}">Home</a>
                       </li>
                       <li class="nav-item">
                          <a class="nav-link" href="about.html">About</a>
@@ -35,24 +35,23 @@
 
                      @if (Route::has('login'))
                         @auth
-                        <x-app-layout>
+                        <li class="nav-item">
+                           <x-app-layout>
+   
+                           </x-app-layout>
+                        </li>
+                     @else
+                        <li class="nav-item pr-2">
+                           <a class="btn btn-outline-dark" href="{{url('login')}}">Login</a>
+                        </li>
 
-                        </x-app-layout>
-                        @else
-                           <li class="nav-item pr-2">
-                              <a class="btn btn-outline-dark" href="{{url('login')}}">Login</a>
-                           </li>
-
-                           @if (Route::has('register'))
-                           <li class="nav-item">
-                              <a class="btn btn-danger" href="{{url('register')}}">Register</a>
-                           </li>
-                           @endif
-                        @endauth
+                     @if (Route::has('register'))
+                     <li class="nav-item">
+                        <a class="btn btn-danger" href="{{url('register')}}">Register</a>
+                     </li>
                      @endif
-
-
-
+                     @endauth
+                     @endif
                    </ul>
                 </div>
              </nav>

@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <!-- site metas -->
+<base href="{{url('/')}}">
+
 <title>keto</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
