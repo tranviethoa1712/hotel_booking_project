@@ -124,6 +124,6 @@ class AdminController extends Controller
         $room->delete();
         $image_path = public_path('storage') . '/'. $room->image;
         File::delete($image_path);
-        return to_route('admin.view_room')->with('success', "Room \"$name\" was deleted!!");
+        return to_route('admin.view_room')->with('success', "Room \"$name\" was deleted!");
     }
 }
