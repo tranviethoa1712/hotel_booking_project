@@ -113,4 +113,17 @@ class AdminController extends Controller
             return redirect()->back();;
         }
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function delete_room($id)
+    {
+        $room = Room::find($id);
+        $name = $room->room_title;
+        $room->delete();
+        $image_path = public_path('storage') . '/'. $room->image;
+        File::delete($image_path);
+        return to_route('admin.view_room')->with('success', "Room \"$name\" was deleted!");
+    }
 }
