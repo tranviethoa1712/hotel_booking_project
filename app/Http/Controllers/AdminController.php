@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,5 +128,11 @@ class AdminController extends Controller
         $image_path = public_path('storage') . '/'. $room->image;
         File::delete($image_path);
         return to_route('admin.view_room')->with('success', "Room \"$name\" was deleted!!!!");
+    }
+
+    public function bookings()
+    {
+        $bookings = Booking::all();
+        return view('admin.bookings', compact('bookings'));  
     }
 }

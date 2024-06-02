@@ -42,10 +42,93 @@
                    </div>
                 </div>
              </div>
+
+             <div class="col-md-4">
+                <form action="{{url('book_room')}}" method="post">
+                    @csrf
+                    @session('message')
+                    <div class="alert alert-success">
+                        {{ $value }}
+                    </div>
+                    @endsession
+                    @session('messageBooked')
+                    <div class="alert alert-warning">
+                        {{ $value }}
+                    </div>
+                    @endsession
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <legend class="text-center  font-bold">Room Booking</legend>
+                    <div class="form-group">
+                        <label class="">Name</label>
+                        <input class="form-control" type="text" name="name" 
+                        @if(Auth::id()) 
+                        value="{{Auth::user()->name}}">
+                        @endif
+                        <input hidden class="form-control" type="text" name="room_id" value="{{$room->id}}">
+                    </div>
+                    <div class="form-group">
+                        <label class="">Email</label>
+                        <input class="form-control" type="text" name="email"
+                        @if(Auth::id()) 
+                        value="{{Auth::user()->email}}">
+                        @endif
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label class="">Phone</label>
+                        <input class="form-control" type="text" name="phone" 
+                        @if(Auth::id()) 
+                        value="{{Auth::user()->phone}}">
+                        @endif
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label class="">Start Date</label>
+                        <input class="form-control" type="date" name="start_date" id="startDate" value="{{ old('startDate') }}">
+                    </div>
+                    <div class="form-group">
+                        <label class="">End Date</label>
+                        <input class="form-control" type="date" name="end_date" id="endDate" value="{{ old('endDate') }}">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-outline-danger form-control" value="Book Room">
+                    </div>
+                </form>
+             </div>
            </div>
         </div>
      </div>
       <!--  footer -->
       @include('home.footer')
+      <script type="text/javascript">
+         $(function(){
+            var dtToday = new Date();
+         
+            var month = dtToday.getMonth() + 1;
+
+            var day = dtToday.getDate();
+
+            var year = dtToday.getFullYear();
+
+            if(month < 10)
+               month = '0' + month.toString();
+
+            if(day < 10)
+            day = '0' + day.toString();
+
+            var maxDate = year + '-' + month + '-' + day;
+            $('#startDate').attr('min', maxDate);
+            $('#endDate').attr('min', maxDate);
+         });
+
+      </script>
    </body>
 </html>
