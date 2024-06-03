@@ -29,4 +29,17 @@ class BookingController extends Controller
         } 
         return redirect()->back();
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function delete_booking($id)
+    {
+        $booking = Booking::find($id);
+        $name = $booking->name;
+        $arrival_date = $booking->start_date;
+        $leaving_date = $booking->end_date;
+        $booking->delete();
+        return redirect()->back()->with('message', "Booking of \"$name\" at \"$arrival_date\" to \"$leaving_date\" was deleted!");
+    }
 }

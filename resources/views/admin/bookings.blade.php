@@ -30,6 +30,7 @@
                           <th class="text-center" scope="col">Room Title</th>
                           <th class="text-center" scope="col">Room Price</th>
                           <th class="text-center" scope="col">Room image</th>
+                          <th class="text-center" scope="col">Delete</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -44,12 +45,9 @@
                             <td class="text-center">{{$booking->room->room_title}}</td>
                             <td class="text-center">{{$booking->room->price}}</td>
                             <td class="text-center"><img style="width: 200px" src={{url('storage/' . $booking->room->image)}} alt="room image"></td>
-                            {{-- <td class="text-center">{{$booking->booking_type}}</td>
                             <td class="text-center">
-                                <a href="{{url('edit_booking', $booking->id)}}" class="btn btn-success">Edit</a>
-                                &nbsp;
                                 <a onclick="return confirm('Are you sure to delete this booking?')" href="{{url('delete_booking', $booking->id)}}" class="btn btn-danger">Delete</a>
-                            </td> --}}
+                            </td>
                             </tr>
                         @endforeach
                       </tbody>

@@ -31,3 +31,4 @@ route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.booki
 
 route::get('/room_details/{id}', [HomeController::class, 'room_details'])->name('user.room_details');
 route::post('/book_room', [BookingController::class, 'book_room'])->name('user.book_room');
+route::get('/delete_booking/{id}', [BookingController::class, 'delete_booking'])->name('user.delete_booking');
