@@ -18,5 +18,6 @@
                     <li><a href="#">Page</a></li>
                   </ul>
                 </li>
+                <li><a href="{{url('bookings')}}"> <i class="icon-home"></i>Bookings </a></li>
         </ul><span class="heading">Extras</span>
       </nav>
