@@ -47,31 +47,29 @@
                 <form action="{{url('book_room')}}" method="post">
                     @csrf
                     @session('message')
-                    <div class="alert alert-success">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ $value }}
-                    </div>
-                    @endsession
-                    @session('messageBooked')
-                    <div class="alert alert-warning">
-                        {{ $value }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endsession
                     @if ($errors->any())
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </ul>
                         </div>
                     @endif
                     <legend class="text-center  font-bold">Room Booking</legend>
                     <div class="form-group">
                         <label class="">Name</label>
-                        <input class="form-control" type="text" name="name" 
+                        <input class="form-control" type="text" name="name"
                         @if(Auth::id()) 
-                        value="{{Auth::user()->name}}">
+                        value="{{Auth::user()->name}}"
                         @endif
+                        >
                         <input hidden class="form-control" type="text" name="room_id" value="{{$room->id}}">
                     </div>
                     <div class="form-group">

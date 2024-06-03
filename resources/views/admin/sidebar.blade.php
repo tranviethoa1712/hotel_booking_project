@@ -19,5 +19,7 @@
                   </ul>
                 </li>
                 <li><a href="{{url('bookings')}}"> <i class="icon-home"></i>Bookings </a></li>
+                <li><a href="{{url('galleries')}}"> <i class="icon-home"></i>Galleries </a></li>
+                <li><a href="{{url('contacts')}}"> <i class="icon-home"></i>Contacts </a></li>
         </ul><span class="heading">Extras</span>
       </nav>

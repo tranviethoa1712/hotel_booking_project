@@ -37,5 +37,16 @@
       <!-- end contact -->
       <!--  footer -->
       @include('home.footer')
+      <script type="text/javascript">
+         $(window).scroll(function() {
+            sessionStorage.scrolltop = $(this).scrolltop();
+         });
+
+         $(document).ready(function(){
+            if(sessionStorage.scrolltop != "undefined"){
+               $(window).scrolltop(sessionStorage.scrolltop);
+            }
+         });
+      </script>
    </body>
 </html>
