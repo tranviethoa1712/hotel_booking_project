@@ -15,9 +15,9 @@
               <div class="container-fluid">
                 <div>
                     @session('message')
-                    <div class="alert alert-success">
-                        {{ $value }}
-                    </div>
+                        <div class="alert alert-success">
+                            {{ $value }}
+                        </div>
                     @endsession
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -28,7 +28,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{url('store_room')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{url('mail', $data->id)}}" method="post">
                         @csrf
                         <legend class="text-center text-white font-bold">Mail send to {{$data->email}}</legend>
                         <div class="form-group">
