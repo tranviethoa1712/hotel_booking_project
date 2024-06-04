@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MailRequest;
 use App\Http\Requests\StoreGalleryRequest;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use App\Mail\SendCustomerMail;
 use App\Models\Booking;
 use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\Room;
+use App\Notifications\SendEmailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class AdminController extends Controller
 {
@@ -208,5 +213,22 @@ class AdminController extends Controller
         return view('admin.send_mail', compact('data'));
     }
 
+    public function mail(MailRequest $request, $id)
+    {
+        $data = Contact::find($id);
+        $input = $request->validated();
+        $details = [
+        'greeting' => $input['greeting'],
+        'body' => $input['body'],
+        'action_text' => $input['action_text'],
+        'action_url' => $input['action_url'],
+        'end_line' => $input['end_line'],
+        'to_email' => $data->email
+        ];
 
+        if(Mail::to($details['to_email'])->send(new SendCustomerMail($details))) {
+            return redirect()->back()->with('message', "send mail to" . $details['to_email'] . "successfully!");
+        }
+        return redirect()->back();
+    }
 }

@@ -41,6 +41,7 @@ route::get('/delete_gallery/{id}', [AdminController::class, 'delete_gallery'])->
 // Contact
 route::get('/contacts', [AdminController::class, 'contacts'])->name('admin.contacts');
 route::get('/send_mail/{id}', [AdminController::class, 'send_mail'])->name('admin.send_mail');
+route::post('/mail/{id}', [AdminController::class, 'mail'])->name('admin.mail');
 
 // User
 route::get('/room_details/{id}', [HomeController::class, 'room_details'])->name('user.room_details');
