@@ -43,3 +43,8 @@ route::post('/book_room', [BookingController::class, 'book_room'])->name('user.b
 route::get('/delete_booking/{id}', [BookingController::class, 'delete_booking'])->name('user.delete_booking');
 
 route::post('/contact', [HomeController::class, 'contact'])->name('user.contact');
+
+route::get('/our_rooms', [HomeController::class, 'our_rooms'])->name('user.our_rooms');
+route::get('/our_galleries', [HomeController::class, 'our_galleries'])->name('user.our_galleries');
+route::get('/contact_view', [HomeController::class, 'contact_view'])->name('user.contact_view');
+route::post('/roomAvailableForTheDate', [HomeController::class, 'roomAvailableForTheDate'])->name('user.roomAvailableForTheDate');

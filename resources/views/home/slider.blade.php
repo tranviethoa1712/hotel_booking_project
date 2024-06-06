@@ -33,20 +33,35 @@
              <div class="col-md-5">
                 <div class="book_room">
                    <h1>Book a Room Online</h1>
-                   <form class="book_now">
+                  @session('roomsBooked')
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                     {{ $value }}
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  @endsession
+                  @if ($errors->any())
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                           <ul>
+                              @foreach ($errors->all() as $error)
+                                 <li>{{ $error }}</li>
+                              @endforeach
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                           </ul>
+                     </div>
+                  @endif
+                   <form action="{{url('roomAvailableForTheDate')}}" method="post">
+                     @csrf
                       <div class="row">
                          <div class="col-md-12">
-                            <span>Arrival</span>
-                            <img class="date_cua" src="images/date.png">
-                            <input class="online_book" placeholder="dd/mm/yyyy" type="date" name="dd/mm/yyyy">
+                           <label for="startDate">Arrival</label>
+                           <input id="startDate" name="startDate" class="form-control rounded" type="date" required/>
                          </div>
                          <div class="col-md-12">
-                            <span>Departure</span>
-                            <img class="date_cua" src="images/date.png">
-                            <input class="online_book" placeholder="dd/mm/yyyy" type="date" name="dd/mm/yyyy">
+                           <label for="endDate">Leaving</label>
+                           <input id="endDate" name="endDate" class="form-control rounded" type="date" required/>
                          </div>
                          <div class="col-md-12">
-                            <button class="book_btn">Book Now</button>
+                            <button type="submit" class="book_btn">Book Now</button>
                          </div>
                       </div>
                    </form>
