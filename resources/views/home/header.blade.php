@@ -21,16 +21,13 @@
                          <a class="nav-link" href="{{url('/')}}">Home</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link" href="about.html">About</a>
+                         <a class="nav-link text-nowrap" href="{{url('our_rooms')}}">Our room</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link text-nowrap" href="room.html">Our room</a>
+                         <a class="nav-link" href="{{url('our_galleries')}}">Gallery</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link" href="gallery.html">Gallery</a>
-                      </li>
-                      <li class="nav-item">
-                         <a class="nav-link text-nowrap" href="contact.html">Contact Us</a>
+                         <a class="nav-link text-nowrap" href="{{url('contact_view')}}">Contact Us</a>
                       </li>
 
                      @if (Route::has('login'))

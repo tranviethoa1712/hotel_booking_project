@@ -14,30 +14,13 @@
       <header>
          <!-- header inner -->
          @include('home.header')
+         <!-- end header inner -->
       </header>
-      <!-- end header inner -->
       <!-- end header -->
-      <!-- banner -->
-      @include('home.slider')
-      <!-- end banner -->
-      <!-- about -->
-      @include('home.about')
-      <!-- end about -->
-      <!-- our_room -->
-      @include('home.room')
-      <!-- end our_room -->
       <!-- gallery -->
       @include('home.gallery')
       <!-- end gallery -->
-      <!-- blog -->
-      @include('home.blog')
-      <!-- end blog -->
-      <!--  contact -->
-      @include('home.contact')
-      <!-- end contact -->
       <!--  footer -->
       @include('home.footer')
-      <script src="{{url('js/user/scrollTop.js')}}" type="text/javascript"></script>
-      <script src="{{url('js/user/datetime.js')}}" type="text/javascript"></script>
    </body>
 </html>
