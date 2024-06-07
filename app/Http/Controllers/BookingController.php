@@ -11,15 +11,15 @@ class BookingController extends Controller
     public function book_room(BookingRequest $request)
     {
         $data = $request->validated();
-
         // check booked room on the date
         $start_date = $data['start_date'];
         $end_date = $data['end_date'];
-
-        $isBooked = Booking::where('room_id', $data['room_id'])
+        
+        $isBooked = Booking::where('status', '!=', 'reject')
+        ->where('room_id', $data['room_id'])
         ->where('start_date', '<=', $end_date)
         ->where('end_date', '>=', $start_date)->exists();
-
+        
         if($isBooked) {
             return redirect()->back()->with('messageBooked', 'The room is already booked, please try different date');
         } else {
@@ -31,7 +31,7 @@ class BookingController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the booking.
      */
     public function delete_booking($id)
     {

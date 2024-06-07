@@ -2,7 +2,7 @@
     <div class="footer">
         <div class="container">
         <div class="row">
-            <div class=" col-md-4">
+            <div class="col-md-4">
                 <h3>Contact US</h3>
                 <ul class="conta">
                     <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address</li>
@@ -13,12 +13,21 @@
             <div class="col-md-4">
                 <h3>Menu Link</h3>
                 <ul class="link_menu">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="about.html"> about</a></li>
-                    <li><a href="room.html">Our Room</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
+                    <li class=" {{ Request::is('/') ? 'active' : '' }}">
+                        <a href="{{url('/')}}">Home</a>
+                    </li>
+                    <li class=" {{ Request::is('about') ? 'active' : '' }}">
+                        <a href="{{url('about')}}">About</a>
+                    </li>
+                    <li class=" {{ Request::is('our_rooms') ? 'active' : '' }}">
+                        <a href="{{url('our_rooms')}}">Our Rooms</a>
+                    </li>
+                    <li class=" {{ Request::is('our_galleries') ? 'active' : '' }}">
+                        <a href="{{url('our_galleries')}}">Gallery</a>
+                    </li>
+                    <li class=" {{ Request::is('contact_view') ? 'active' : '' }}">
+                        <a href="{{url('contact_view')}}">Contact us</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-4">

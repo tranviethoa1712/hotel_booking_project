@@ -52,6 +52,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endsession
+                    @session('messageBooked')
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ $value }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endsession
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <ul>
@@ -67,9 +73,10 @@
                         <label class="">Name</label>
                         <input class="form-control" type="text" name="name"
                         @if(Auth::id()) 
-                        value="{{Auth::user()->name}}"
-                        @endif
+                        value="{{Auth::user()->name}}">
+                        @else
                         >
+                        @endif
                         <input hidden class="form-control" type="text" name="room_id" value="{{$room->id}}">
                     </div>
                     <div class="form-group">
@@ -77,16 +84,18 @@
                         <input class="form-control" type="text" name="email"
                         @if(Auth::id()) 
                         value="{{Auth::user()->email}}">
-                        @endif
+                        @else
                         >
+                        @endif
                     </div>
                     <div class="form-group">
                         <label class="">Phone</label>
                         <input class="form-control" type="text" name="phone" 
                         @if(Auth::id()) 
                         value="{{Auth::user()->phone}}">
-                        @endif
+                        @else
                         >
+                        @endif
                     </div>
                     <div class="form-group">
                         <label class="">Start Date</label>

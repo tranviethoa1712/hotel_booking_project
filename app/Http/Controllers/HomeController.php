@@ -78,4 +78,9 @@ class HomeController extends Controller
             return redirect('our_rooms')->with('allRoomAvailableForTheDate', $room);
         }
     }
+
+    public function aboutUs() 
+    {
+        return view('home.aboutUs');
+    }
 }

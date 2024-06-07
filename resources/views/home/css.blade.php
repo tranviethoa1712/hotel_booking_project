@@ -7,7 +7,7 @@
 <!-- site metas -->
 <base href="{{url('/')}}">
 
-<title>keto</title>
+<title>Naksu Hotel</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
