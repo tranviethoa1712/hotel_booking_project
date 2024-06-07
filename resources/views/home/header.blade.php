@@ -5,7 +5,7 @@
              <div class="full">
                 <div class="center-desk">
                    <div class="logo">
-                      <a href="{{url('/')}}"><img src="images/logo.png" alt="#" /></a>
+                      <a href="{{url('/')}}"><img class="img-responsive" src="{{url('images/naksu_hotel_logo.png')}}" style="max-height: 90px;" alt="#" /></a>
                    </div>
                 </div>
              </div>
@@ -17,17 +17,20 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarsExample04">
                    <ul class="navbar-nav mr-auto">
-                      <li class="nav-item active">
-                         <a class="nav-link" href="{{url('/')}}">Home</a>
+                      <li class="nav-item">
+                         <a class="nav-link {{ Request::is('/') ? ' active' : '' }}" href="{{url('/')}}">Home</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link text-nowrap" href="{{url('our_rooms')}}">Our room</a>
+                         <a class="nav-link text-nowrap {{ Request::is('about') ? ' active' : '' }}" href="{{url('about')}}">About</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link" href="{{url('our_galleries')}}">Gallery</a>
+                         <a class="nav-link text-nowrap {{ Request::is('our_rooms') ? ' active' : '' }}" href="{{url('our_rooms')}}">Our room</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link text-nowrap" href="{{url('contact_view')}}">Contact Us</a>
+                         <a class="nav-link {{ Request::is('our_galleries') ? ' active' : '' }}" href="{{url('our_galleries')}}">Gallery</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link text-nowrap {{ Request::is('contact_view') ? ' active' : '' }}" href="{{url('contact_view')}}">Contact Us</a>
                       </li>
 
                      @if (Route::has('login'))
@@ -44,7 +47,7 @@
 
                      @if (Route::has('register'))
                      <li class="nav-item">
-                        <a class="btn btn-danger" href="{{url('register')}}">Register</a>
+                        <a class="btn btn-register" href="{{url('register')}}">Register</a>
                      </li>
                      @endif
                      @endauth

@@ -24,6 +24,7 @@ Route::middleware([Admin::class])->group(function () {
     route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
     route::get('/status_approve/{id}', [AdminController::class, 'status_approve'])->name('admin.status_approve');
     route::get('/status_reject/{id}', [AdminController::class, 'status_reject'])->name('admin.status_reject');
+    route::get('/delete_booking/{id}', [BookingController::class, 'delete_booking'])->name('admin.delete_booking');
     
     // Gallery
     route::get('/galleries', [AdminController::class, 'gallery'])->name('admin.gallery');
@@ -37,10 +38,9 @@ Route::middleware([Admin::class])->group(function () {
 });
 
 // User
+route::get('/about', [HomeController::class, 'aboutUs'])->name('user.aboutUs');
 route::get('/room_details/{id}', [HomeController::class, 'room_details'])->name('user.room_details');
 route::post('/book_room', [BookingController::class, 'book_room'])->name('user.book_room');
-
-route::get('/delete_booking/{id}', [BookingController::class, 'delete_booking'])->name('user.delete_booking');
 
 route::post('/contact', [HomeController::class, 'contact'])->name('user.contact');
 

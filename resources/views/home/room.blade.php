@@ -19,7 +19,9 @@
                      <div class="bed_room card-body">
                         <h3 class="card-title">{{$room->room_title}}</h3>
                         <p class="card-text mt-4 mb-3">{!! Str::limit($room->description, 100) !!}</p>
-                        <a href="{{route('user.room_details', $room->id)}}" class="btn btn-danger">View room</a>
+                        <div class="mt-auto">
+                           <a href="{{route('user.room_details', $room->id)}}" class="btn view-room-btn">View room</a> 
+                        </div>
                      </div>
                   </div>
                </div>
@@ -34,7 +36,9 @@
                   <div class="bed_room card-body">
                      <h3 class="card-title">{{$room->room_title}}</h3>
                      <p class="card-text mt-4 mb-3">{!! Str::limit($room->description, 100) !!}</p>
-                     <a href="{{route('user.room_details', $room->id)}}" class="btn btn-danger">View room</a>
+                     <div class="mt-auto">
+                        <a href="{{route('user.room_details', $room->id)}}" class="btn view-room-btn">View room</a> 
+                     </div>
                   </div>
                </div>
             </div>
@@ -49,7 +53,9 @@
                      <div class="bed_room card-body">
                         <h3 class="card-title">{{$room->room_title}}</h3>
                         <p class="card-text mt-4 mb-3">{!! Str::limit($room->description, 100) !!}</p>
-                        <a href="{{route('user.room_details', $room->id)}}" class="btn btn-danger">View room</a>
+                        <div class="mt-auto">
+                           <a href="{{route('user.room_details', $room->id)}}" class="btn view-room-btn">View room</a>
+                        </div>
                      </div>
                   </div>
                </div>

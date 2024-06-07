@@ -1,4 +1,4 @@
-<section class="banner_main">
+<section class="banner_main mt-2">
     <div id="myCarousel" class="carousel slide banner" data-ride="carousel">
        <ol class="carousel-indicators">
           <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -52,16 +52,16 @@
                    <form action="{{url('roomAvailableForTheDate')}}" method="post">
                      @csrf
                       <div class="row">
-                         <div class="col-md-12">
-                           <label for="startDate">Arrival</label>
-                           <input id="startDate" name="startDate" class="form-control rounded" type="date" required/>
+                         <div class="col-md-12 mb-3">
+                           <span class="text-white fs-4">Arrival</span>
+                           <input id="startDate" name="startDate" class="form-control rounded mt-3" type="date" required/>
+                         </div>
+                         <div class="col-md-12 mt-3">
+                           <span class="text-white fs-4">Leaving</span>
+                           <input id="endDate" name="endDate" class="form-control rounded mt-3" type="date" required/>
                          </div>
                          <div class="col-md-12">
-                           <label for="endDate">Leaving</label>
-                           <input id="endDate" name="endDate" class="form-control rounded" type="date" required/>
-                         </div>
-                         <div class="col-md-12">
-                            <button type="submit" class="book_btn">Book Now</button>
+                            <button type="submit" class="book_btn mt-3">Book Now</button>
                          </div>
                       </div>
                    </form>
