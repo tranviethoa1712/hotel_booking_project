@@ -9,8 +9,10 @@ use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 
-class HomeController extends Controller
+class HomeController
 {
     public function room_details($id)
     {

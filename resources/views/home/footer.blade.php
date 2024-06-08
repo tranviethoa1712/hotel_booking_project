@@ -3,38 +3,38 @@
         <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <h3>Contact US</h3>
+                <h3>{{ __('home.contact.title') }}</h3>
                 <ul class="conta">
-                    <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address</li>
+                    <li><i class="fa fa-map-marker" aria-hidden="true"></i>{{__('home.footer.address')}}</li>
                     <li><i class="fa fa-mobile" aria-hidden="true"></i> +01 1234569540</li>
                     <li> <i class="fa fa-envelope" aria-hidden="true"></i><a href="#"> demo@gmail.com</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <h3>Menu Link</h3>
+                <h3>{{__('home.footer.title_menu_link')}}</h3>
                 <ul class="link_menu">
                     <li class=" {{ Request::is('/') ? 'active' : '' }}">
-                        <a href="{{url('/')}}">Home</a>
+                        <a href="{{url('/')}}">{{__('home.header.home')}}</a>
                     </li>
                     <li class=" {{ Request::is('about') ? 'active' : '' }}">
-                        <a href="{{url('about')}}">About</a>
+                        <a href="{{url('about')}}">{{__('home.headder.about')}}</a>
                     </li>
                     <li class=" {{ Request::is('our_rooms') ? 'active' : '' }}">
-                        <a href="{{url('our_rooms')}}">Our Rooms</a>
+                        <a href="{{url('our_rooms')}}">{{__('home.header.our_room')}}</a>
                     </li>
                     <li class=" {{ Request::is('our_galleries') ? 'active' : '' }}">
-                        <a href="{{url('our_galleries')}}">Gallery</a>
+                        <a href="{{url('our_galleries')}}">{{__('home.header.gallery')}}</a>
                     </li>
                     <li class=" {{ Request::is('contact_view') ? 'active' : '' }}">
-                        <a href="{{url('contact_view')}}">Contact us</a>
+                        <a href="{{url('contact_view')}}">{{__('home.header.contact')}}</a>
                     </li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <h3>News letter</h3>
+                <h3>{{__('home.footer.news_letter.title')}}</h3>
                 <form class="bottom_form">
-                    <input class="enter" placeholder="Enter your email" type="text" name="Enter your email">
-                    <button class="sub_btn">subscribe</button>
+                    <input class="enter" placeholder="{{__('home.footer.news_letter.placeholder')}}" type="text" name="Enter your email">
+                    <button class="sub_btn">{{__('home.footer.news_letter.submit')}}</button>
                 </form>
                 <ul class="social_icon">
                     <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>

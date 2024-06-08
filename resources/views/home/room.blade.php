@@ -3,8 +3,8 @@
        <div class="row">
           <div class="col-md-12">
              <div class="titlepage">
-                <h2>Our Room</h2>
-                <p>Lorem Ipsum available, but the majority have suffered </p>
+                <h2>{{__('home.room.title')}}</h2>
+                <p>{{__('home.room.description')}}</p>
              </div>
           </div>
        </div>
