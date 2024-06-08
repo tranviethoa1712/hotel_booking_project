@@ -3,7 +3,7 @@
        <div class="row">
           <div class="col-md-12">
              <div class="titlepage">
-                <h2>Contact Us</h2>
+                <h2>{{__('home.contact.title')}}</h2>
              </div>
           </div>
        </div>
@@ -29,19 +29,19 @@
                @endif
                 <div class="row">
                    <div class="col-md-12 ">
-                      <input class="contactus" placeholder="Name" type="text" name="name"> 
+                      <input class="contactus" placeholder="{{__('home.contact.placeholder.name')}}" type="text" name="name"> 
                    </div>
                    <div class="col-md-12">
-                      <input class="contactus" placeholder="Email" type="text" name="email"> 
+                      <input class="contactus" placeholder="{{__('home.contact.placeholder.email')}}" type="text" name="email"> 
                    </div>
                    <div class="col-md-12">
-                      <input class="contactus" placeholder="Phone Number" type="text" name="phone">                          
+                      <input class="contactus" placeholder="{{__('home.contact.placeholder.phone_number')}}" type="text" name="phone">                          
                    </div>
                    <div class="col-md-12">
-                      <textarea class="textarea" placeholder="Message" type="type" name="message">Message</textarea>
+                      <textarea class="textarea" placeholder="{{__('home.contact.placeholder.message')}}" type="type" name="message">{{__('home.contact.placeholder.message')}}</textarea>
                    </div>
                    <div class="col-md-12">
-                      <button type="submit" class="send_btn">Send</button>
+                      <button type="submit" class="send_btn">{{__('home.contact.submit')}}</button>
                    </div>
                 </div>
              </form>

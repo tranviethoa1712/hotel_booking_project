@@ -32,7 +32,7 @@
           <div class="row">
              <div class="col-md-5">
                 <div class="book_room">
-                   <h1>Book a Room Online</h1>
+                   <h1>{{__('home.slider.title')}}</h1>
                   @session('roomsBooked')
                   <div class="alert alert-warning alert-dismissible fade show" role="alert">
                      {{ $value }}
@@ -53,15 +53,15 @@
                      @csrf
                       <div class="row">
                          <div class="col-md-12 mb-3">
-                           <span class="text-white fs-4">Arrival</span>
+                           <span class="text-white fs-4">{{__('home.slider.arrival')}}</span>
                            <input id="startDate" name="startDate" class="form-control rounded mt-3" type="date" required/>
                          </div>
                          <div class="col-md-12 mt-3">
-                           <span class="text-white fs-4">Leaving</span>
+                           <span class="text-white fs-4">{{__('home.slider.departing')}}</span>
                            <input id="endDate" name="endDate" class="form-control rounded mt-3" type="date" required/>
                          </div>
                          <div class="col-md-12">
-                            <button type="submit" class="book_btn mt-3">Book Now</button>
+                            <button type="submit" class="book_btn mt-3">{{__('home.slider.submit')}}</button>
                          </div>
                       </div>
                    </form>
