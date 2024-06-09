@@ -63,7 +63,10 @@ return [
         'phone_lable' => 'Số điện thoại',
         'start_date_lable' => 'Ngày bắt đầu',
         'end_date_lable' => 'Ngày kết thúc',
-        'submit' => 'Đặt ngay'
+        'submit' => 'Đặt ngay',
+        'prepayment' => 'Trả trước',
+        'deposit' => 'Trả cọc',
+        'note' => 'Bạn có thể chọn cọc trước 50% số tiền hoặc thanh toán trước. Tuy nhiên trả trước sẽ được áp mã giảm giá còn cọc thì không.'
     ],
     'slider' => [
         'title' => 'Đặt 1 phòng trực tuyến',

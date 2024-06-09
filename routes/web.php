@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingAdminController;
-use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactAdminController;
 use App\Http\Controllers\GalleryAdminController;
 use App\Http\Controllers\HomeController;

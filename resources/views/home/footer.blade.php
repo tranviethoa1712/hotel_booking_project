@@ -17,7 +17,7 @@
                         <a href="{{url('/')}}">{{__('home.header.home')}}</a>
                     </li>
                     <li class=" {{ Request::is('about') ? 'active' : '' }}">
-                        <a href="{{url('about')}}">{{__('home.headder.about')}}</a>
+                        <a href="{{url('about')}}">{{__('home.header.about')}}</a>
                     </li>
                     <li class=" {{ Request::is('our_rooms') ? 'active' : '' }}">
                         <a href="{{url('our_rooms')}}">{{__('home.header.our_room')}}</a>
