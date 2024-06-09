@@ -60,7 +60,10 @@ return [
         'phone_lable' => 'Phone',
         'start_date_lable' => 'Start Date',
         'end_date_lable' => 'End Date',
-        'submit' => 'Book Now'
+        'submit' => 'Book Now',
+        'prepayment' => 'Prepayment',
+        'deposit' => 'Deposit',
+        'note' => 'You can choose to deposit 50% of the amount or pay in advance. However, prepayment will apply a discount code while deposit will not.'
     ],
     'slider' => [
         'title' => 'Book a room online',
