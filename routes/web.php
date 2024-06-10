@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingAdminController;
 use App\Http\Controllers\ContactAdminController;
+use App\Http\Controllers\CouponAdminController;
 use App\Http\Controllers\GalleryAdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
@@ -40,6 +41,12 @@ Route::middleware([Admin::class])->group(function () {
     route::get('/contacts', [ContactAdminController::class, 'contacts'])->name('admin.contacts');
     route::get('/send_mail/{id}', [ContactAdminController::class, 'send_mail'])->name('admin.send_mail');
     route::post('/mail/{id}', [ContactAdminController::class, 'mail'])->name('admin.mail');
+
+    route::resources([
+        'coupons' => CouponAdminController::class
+    ]);
+    route::get('coupons/delete/{id}', [CouponAdminController::class, 'delete'])->name('coupons.delete');
+
 });
 
 // User
