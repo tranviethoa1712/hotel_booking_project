@@ -81,7 +81,7 @@ class RoomAdminController extends Controller
         if($room->update($data)) {
             return redirect()->back()->with('message', 'Room was updated!');
         } else {
-            return redirect()->back();;
+            return redirect()->back();
         }
     }
 
