@@ -12,11 +12,11 @@
           </div>
           <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10">
              <nav class="navigation navbar navbar-expand-md navbar-dark ">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarsExample04">
-                   <ul class="navbar-nav mr-auto">
+                <div class="" id="navbarsExample04">
+                   <ul class="nav navbar-nav mr-auto">
                       <li class="nav-item">
                          <a class="nav-link text-nowrap {{ Request::is('/') ? ' active' : '' }}" href="{{url('/')}}">{{ __('home.header.home') }}</a>
                       </li>
@@ -31,6 +31,9 @@
                       </li>
                       <li class="nav-item">
                          <a class="nav-link text-nowrap {{ Request::is('contact_view') ? ' active' : '' }}" href="{{url('contact_view')}}">{{ __('home.header.contact') }}</a>
+                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link text-nowrap {{ Request::is('coupon_view') ? ' active' : '' }}" href="{{url('coupon_view')}}">{{ __('home.header.voucher') }}</a>
                       </li>
 
                      @if (Route::has('login'))

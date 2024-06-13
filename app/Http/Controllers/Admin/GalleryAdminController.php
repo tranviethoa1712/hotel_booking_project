@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StoreGalleryRequest;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class GalleryAdminController extends Controller
+class GalleryAdminController extends BaseAdminController
 {
     /**
      * Manage gallery

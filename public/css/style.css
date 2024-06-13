@@ -561,7 +561,8 @@ button {
 }
 
 .our_room .room .bed_room {
-     padding: 33px 30px;
+     padding-inline: 30px;
+     padding-top: 33px;
 }
 
 .our_room .room .bed_room h3 {
@@ -958,6 +959,13 @@ line-height: 35px;
      margin-top: 90px;
 }
 
+.btn-orange {
+     background-color: rgb(69, 127, 202) !important;
+     color: #fff !important;
+}
 
+.btn-orange:hover {
+     background-color: rgb(8, 82, 179) !important;
+}
 
 
