@@ -18,6 +18,7 @@ return [
         'our_room' => 'Tất Cả Phòng',
         'gallery' => 'Bộ sưu tập',
         'contact' => 'Liên hệ',
+        'voucher' => 'Mã giảm giá',
         'login' => 'Đăng nhập',
         'register' => 'Đăng ký'
     ],
@@ -73,6 +74,9 @@ return [
         'arrival' => 'Ngày đến',
         'departing' => 'Ngày trở về',
         'submit' => 'Đặt ngay'
+    ],
+    'coupon' => [
+        'title' => 'Mã giảm giá'
     ],
     'footer' => [
         'address' => '1712 Phố Bún Bò Huế Hà Nội',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
@@ -8,7 +8,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class RoomAdminController extends Controller
+class RoomAdminController extends BaseAdminController
 {
     /**
      * Manage Rooms

@@ -16,12 +16,10 @@
                      <div class="room_img">
                         <figure><img src="{{url('storage/' . $room->image)}}" style="width: 100%;" class="card-img-top" alt="room"/></figure>
                      </div>
-                     <div class="bed_room card-body">
+                     <div class="bed_room card-body d-flex flex-column">
                         <h3 class="card-title">{{$room->room_title}}</h3>
-                        <p class="card-text mt-4 mb-3">{!! Str::limit($room->description, 100) !!}</p>
-                        <div class="mt-auto">
-                           <a href="{{route('user.room_details', $room->id)}}" class="btn view-room-btn">View room</a> 
-                        </div>
+                        <p class="card-text mt-4">{!! Str::limit($room->description, 100) !!}</p>
+                        <a href="{{route('user.room_details', $room->id)}}" class="btn view-room-btn mt-auto align-self-end">View room</a> 
                      </div>
                   </div>
                </div>

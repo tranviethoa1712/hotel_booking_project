@@ -18,6 +18,7 @@ return [
         'our_room' => 'Our Rooms',
         'gallery' => 'Gallery',
         'contact' => 'Contact',
+        'voucher' => 'Voucher',
         'login' => 'Login',
         'register' => 'Register'
     ],
@@ -70,6 +71,9 @@ return [
         'arrival' => 'Arrival',
         'departing' => 'Departing',
         'submit' => 'Book now'
+    ],
+    'coupon' => [
+        'title' => 'Voucher Storage'
     ],
     'footer' => [
         'address' => '1712 Phố Bún Bò Huế Hà Nội',

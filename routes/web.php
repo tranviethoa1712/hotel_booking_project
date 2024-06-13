@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BookingAdminController;
-use App\Http\Controllers\ContactAdminController;
-use App\Http\Controllers\CouponAdminController;
-use App\Http\Controllers\GalleryAdminController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BookingAdminController;
+use App\Http\Controllers\Admin\ContactAdminController;
+use App\Http\Controllers\Admin\CouponAdminController;
+use App\Http\Controllers\Admin\GalleryAdminController;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\RoomAdminController;
+use App\Http\Controllers\Admin\RoomAdminController;
+use App\Http\Controllers\User\CouponController;
+use App\Http\Controllers\User\HomeController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Language;
 
@@ -51,6 +52,9 @@ Route::middleware([Admin::class])->group(function () {
 
 // User
 Route::middleware([Language::class])->group(function () {
+    route::get('/coupon_view', [CouponController::class, 'index'])->name('user.coupon_view');
+    route::get('linkCouponToUser/{id}', [CouponController::class, 'couponToUser'])->name('user.couponToUser');
+
     route::get('/about', [HomeController::class, 'aboutUs'])->name('user.aboutUs');
     
     route::get('/our_rooms', [HomeController::class, 'our_rooms'])->name('user.our_rooms');
