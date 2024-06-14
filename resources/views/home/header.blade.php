@@ -32,9 +32,11 @@
                       <li class="nav-item">
                          <a class="nav-link text-nowrap {{ Request::is('contact_view') ? ' active' : '' }}" href="{{url('contact_view')}}">{{ __('home.header.contact') }}</a>
                       </li>
-                      <li class="nav-item">
-                         <a class="nav-link text-nowrap {{ Request::is('coupon_view') ? ' active' : '' }}" href="{{url('coupon_view')}}">{{ __('home.header.voucher') }}</a>
-                      </li>
+                      @if (Auth::id())
+                        <li class="nav-item">
+                           <a class="nav-link text-nowrap {{ Request::is('coupon_view') ? ' active' : '' }}" href="{{url('coupon_view')}}">{{ __('home.header.voucher') }}</a>
+                        </li>
+                      @endif
 
                      @if (Route::has('login'))
                         @auth
@@ -48,11 +50,11 @@
                            <a class="btn btn-outline-dark" href="{{url('login')}}">{{__('home.header.login')}}</a>
                         </li>
 
-                     @if (Route::has('register'))
-                     <li class="nav-item text-nowrap">
-                        <a class="btn btn-register" href="{{url('register')}}">{{__('home.header.register')}}</a>
-                     </li>
-                     @endif
+                        @if (Route::has('register'))
+                        <li class="nav-item text-nowrap">
+                           <a class="btn btn-register" href="{{url('register')}}">{{__('home.header.register')}}</a>
+                        </li>
+                        @endif
                      @endauth
                      @endif
                      <li class="nav-item ml-2 text-nowrap">

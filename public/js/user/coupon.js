@@ -1,15 +1,4 @@
-// couponElements = document.querySelectorAll('.coupon-toggle');
 
-// for (var i = 0 ; i < couponElements.length; i++) {
-//     couponElements[i].addEventListener("click", function(event) {
-//         console.log('xx');
-//         event.attr('disabled', 'disabled');
-//     });
-// }
-// .addEventListener("click", function(event) {
-//     console.log(event);
-//     event.attr('disabled', 'disabled');
-// });
 $(document).ready(function() {
     $(".coupon-toggle").click(function() {
         $(this).text('Đã lưu (Saved)'); 

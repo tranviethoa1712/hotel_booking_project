@@ -31,6 +31,8 @@
 
 :root {
      --primaryColor: rgb(207, 167, 34);
+     --color_primary_bg_table_point: #003b95;
+     --color_primary_bg_table: #4c76b2;
 }
 
 * {
@@ -959,7 +961,7 @@ line-height: 35px;
      margin-top: 90px;
 }
 
-.btn-orange {
+.btn-blue {
      background-color: rgb(69, 127, 202) !important;
      color: #fff !important;
 }
@@ -968,4 +970,37 @@ line-height: 35px;
      background-color: rgb(8, 82, 179) !important;
 }
 
+.table-header-cell {
+     font-weight: bold;
+     color: white !important;
+     background-color: #4c76b2 !important;
+     border-left: 1px solid #5bbaff;
+}
 
+.table-header-cell-point {
+     font-weight: bold;
+     color: white !important;
+     background-color: var(--color_primary_bg_table_point) !important;
+     border-left: 1px solid #5bbaff;
+}
+
+.green_bg {
+     background-color: #008234 !important;
+     padding: 4px;
+     border-radius: 10px;
+}
+
+.tooltip-visible {
+     height: 3em;
+     width: 10em;
+     background: yellow;
+}
+
+.price {
+     color: rgb(217, 80, 80);
+     text-decoration: line-through;
+}
+
+.text-nowrap-to-normal {
+     white-space: normal;
+ }
