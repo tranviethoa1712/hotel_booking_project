@@ -67,4 +67,5 @@ Route::middleware([Language::class])->group(function () {
     route::post('/roomAvailableForTheDate', [HomeController::class, 'roomAvailableForTheDate'])->name('user.roomAvailableForTheDate');
     
     route::get('/changeLocale/{locale}', [LanguageController::class, 'switchLang'])->name('user.switchLang')->middleware(Language::class);
+    route::get('/changSearchRoom/{start_date}/{end_date}/{room_type}', [HomeController::class, 'changSearchRoom'])->name('user.changSearchRoom')->middleware(Language::class);
 });

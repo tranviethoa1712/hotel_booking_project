@@ -43,6 +43,15 @@
                             <label class="text-white">Price</label>
                             <input class="form-control" type="text" name="price" value="{{ old('price') }}">
                         </div>
+                        <div class="form-group">
+                            <label class="text-white">Price</label>
+                            <input class="form-control" type="text" name="max_guest" value="{{ old('max_guest') }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Number of room</label>
+                            <input class="form-control" type="text" name="number_of_room" value="{{ old('number_of_room') }}">
+                            <input hidden class="form-control" type="text" name="number_room_booked" value="0">
+                        </div>
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label class="text-white">Room Type</label>

@@ -28,7 +28,7 @@
               </div>
            </div>
            <div class="row">
-             <div class="col-md-8">
+             <div class="col-md-12 mb-4">
                 <div id="serv_hover " style="width: 100%; height: 100%;"  class="room">
                    <div class="room_img p-5">
                       <figure><img src="{{url('storage/' . $room->image)}}" style="width: 100%;" class="card-img-top img-fluid" alt="room"/></figure>
@@ -38,91 +38,176 @@
                       <p class="card-text mt-4 mb-3 fs-4">{!! Str::limit($room->description, 100) !!}</p>
                       <h4 class="fs-4">{{__('home.room_details.free_wifi')}} {{ $room->wifi }}</h4>
                       <h4 class="fs-4">{{__('home.room_details.room_type')}} {{ $room->room_type }}</h4>
-                      <p class="fs-3">{{__('home.room_details.price')}} <span style="color: rgb(234, 60, 60)">{{ number_format($room->price) . ' vnd' }}</span></p>
+                      <p class="fs-3">{{__('home.room_details.price')}} <span style="color: rgb(234, 60, 60)">{{ number_format($room->price) . ' VND' }}</span> for 1 night.</p>
+                      <p class="priceChange"></p>
                    </div>
                 </div>
              </div>
-             @if(Auth::user())
-               <div class="col-md-4">
-                  <form action="{{url('book_room')}}" method="post">
-                     @csrf
-                     @session('message')
-                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                           {{ $value }}
-                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             <div class="col-md-12">
+               <h2 class="font-bold text-center fs-2">Availability</h2>
+               <div class="my-4 d-flex">
+                  <div class="form-group">
+                        <label class="">{{__('home.room_details.start_date_lable')}}</label>
+                        <input class="form-control" type="date" name="start_date" id="startDate" value="{{ old('startDate') }}">
+                  </div>
+                  <div class="form-group">
+                        <label class="">{{__('home.room_details.end_date_lable')}}</label>
+                        <input class="form-control" type="date" name="end_date" id="endDate" value="{{ old('endDate') }}">
+                        <input hidden class="form-control" type="text" name="room_type" id="roomType" value="{{$room->room_type}}">
+                        <input hidden class="form-control" type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">
                      </div>
-                     @endsession
-                     @session('messageBooked')
-                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                           {{ $value }}
-                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                     </div>
-                     @endsession
-                     @if ($errors->any())
-                           <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                              <ul>
-                                 @foreach ($errors->all() as $error)
-                                       <li>{{ $error }}</li>
-                                 @endforeach
-                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                              </ul>
+                  <div class="form-group d-flex align-items-end">
+                     <button type="button" class="btn btn-primary" id="change-search">Change search</button>
+                  </div>
+               </div>
+               <div>
+                  <table class="table">
+                     <thead>
+                       <tr>
+                         <th scope="col" class="table-header-cell" ">Room Type</th>
+                         <th scope="col" class="table-header-cell" table-header-cell">Number of guests</th>
+                         <th scope="col" class="table-header-cell-point"><div id="priceForNights">Price for 2 nights</div></th>
+                         <th scope="col" class="table-header-cell" table-header-cell">Your choices</th>
+                         <th scope="col" class="table-header-cell" table-header-cell">Select rooms</th>
+                         <th scope="col" class="table-header-cell" table-header-cell"></th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <tr>
+                         <td style="width: 33%">
+                           <span class="text-capitalize font-bold underline" style="color: cadetblue">{{$room->room_type}}</span>
+                           <div class="mt-3">
+                              <div class="font-weight-light">
+                                 <i class="fa-solid fa-house"></i> 23 m² &nbsp;  <i class="fa-solid fa-temperature-arrow-up"></i> Air conditioning <br/>
+                                 <i class="fa-solid fa-bath"></i> Private bathrooms &nbsp; <i class="fa-solid fa-tv"></i> Flat-screen <br/> 
+                                 <i class="fa-solid fa-volume-xmark"></i> TV Soundproofing &nbsp; <i class="fa-solid fa-wifi"></i> Free WiFi
+                              </div>
+                              <hr class="my-4">
+                              <div>
+                                 <div>
+                                    <i class="fa-solid fa-check"></i> Shower
+                                    &nbsp; <i class="fa-solid fa-check"></i> Safety deposit box 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Free toiletries
+                                 </div>
+                                 <div>
+                                    <i class="fa-solid fa-check"></i> Bidet 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Toilet 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Towels 
+                                 </div>
+                                 <div>
+                                    <i class="fa-solid fa-check"></i> Linen 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Desk 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Slippers 
+                                 </div>
+                                 <div>
+                                    <i class="fa-solid fa-check"></i> Heating 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Hairdryer 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Towels/sheets (extra fee) 
+                                 </div>
+                                 <div>
+                                    <i class="fa-solid fa-check"></i> Electric kettle 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Wake-up service 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Wardrobe or closet 
+                                 </div>
+                                 <div>
+                                    <i class="fa-solid fa-check"></i> Clothes rack 
+                                    &nbsp; <i class="fa-solid fa-check"></i> Toilet paper 
+                                 </div>
                            </div>
-                     @endif
-                     <legend class="text-center  font-bold">{{__('home.room_details.titleBooking')}}</legend>
-                     <div class="form-group">
-                           <label class="">{{__('home.room_details.name_lable')}}</label>
-                           <input class="form-control" type="text" name="name"
-                           @if(Auth::id()) 
-                           value="{{Auth::user()->name}}">
-                           @else
-                           >
-                           @endif
-                           <input hidden class="form-control" type="text" name="room_id" value="{{$room->id}}">
-                     </div>
-                     <div class="form-group">
-                           <label class="">{{__('home.room_details.email_lable')}}</label>
-                           <input class="form-control" type="text" name="email"
-                           @if(Auth::id()) 
-                           value="{{Auth::user()->email}}">
-                           @else
-                           >
-                           @endif
-                     </div>
-                     <div class="form-group">
-                           <label class="">{{__('home.room_details.phone_lable')}}</label>
-                           <input class="form-control" type="text" name="phone" 
-                           @if(Auth::id()) 
-                           value="{{Auth::user()->phone}}">
-                           @else
-                           >
-                           @endif
-                     </div>
-                     <div class="form-group">
-                           <label class="">{{__('home.room_details.start_date_lable')}}</label>
-                           <input class="form-control" type="date" name="start_date" id="startDate" value="{{ old('startDate') }}">
-                     </div>
-                     <div class="form-group">
-                           <label class="">{{__('home.room_details.end_date_lable')}}</label>
-                           <input class="form-control" type="date" name="end_date" id="endDate" value="{{ old('endDate') }}">
-                     </div>
-                     <div class="form-group">
-                           <input type="submit" name="prepayment" class="btn btn-outline-danger form-control" value="{{__('home.room_details.prepayment')}}">
-                     </div>
-                     <div class="form-group">
-                           <input type="submit" name="deposit" class="btn btn-dark form-control" value="{{__('home.room_details.deposit')}}">
-                     </div>
-                     <div class="form-group">
-                           <i>{{__('home.room_details.note')}}</i>
-                     </div>
-                  </form>
+                        </td>
+                         <td>
+                           @for($i = 0; $i < $room->max_guest; $i++)
+                              <i class="fa-solid fa-person"></i>
+                           @endfor
+                        </td>
+                         <td>
+                           <div style="color: rgb(234, 60, 60)" id="priceCurrentShow">{{'VND ' . number_format($room->price * 2)}}</div>
+                           {{-- !-- Button trigger modal --> --}}
+                           <button type="button" class="btn btn-blue text-nowrap" class="mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                              Choose your naksu voucher
+                           </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                 @if($coupons)
+                                    @foreach($coupons as $coupon)
+                                       @foreach($coupon as $item)
+
+                                       <div class="mb-3 d-flex justify-between">
+                                          <div style="width: 70%">
+                                             <p>Code: <span>{{$item->code}}</span></p>
+                                             <p style="style="color: rgb(219, 102, 102)"">{{$item->description}}</p>
+                                          </div>
+                                          <button type="button" class="btn btn-sm btn-blue mt-2 text-nowrap-to-normal" style="width: 25%">Use voucher</button>
+                                       </div>
+                                       @endforeach
+                                    @endforeach
+                                 @endif
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                           </div>
+                           </div>
+                        </div>
+                        </td>
+                        <td class="text-capitalize p-2" style="color: rgb(113, 176, 113)">
+                           <p class="mb-2" style="color: rgb(113, 176, 113)"><span style="color: green">Free cancellation</span> before 18 June 2024</p>   
+                           <p style="color: rgb(113, 176, 113)"><span style="color: green">No prepayment needed</span> – pay at the property</p>   
+                           <p style="color: gray">{{'Only ' . ($room->number_of_room - $room->number_room_booked) . ' rooms left on our site'}}</p>
+                        </td>
+                        <form action="">
+                         <td class="text-capitalize" style="width: 10%">
+                           <select class="form-select" aria-label="Default select example" id="quantityRoom">
+                              <option selected value="0" style="width: 100%">0</option>
+                              @for($i = 1; $i <= ($room->number_of_room - $room->number_room_booked); $i++)
+                                 <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(Price: '. number_format($room->price * $i) . ')'}} </option>
+                              @endfor
+                            </select>
+                         </td>
+                        </form>
+                        <td>
+                           <div id="reserveWithNoRoom" style="display: block;">
+                              <button type="submit" class="btn btn-primary mb-3">I'll reserve</button>
+                              <div class="mb-3">Confirmation is immediate</div>
+                              <i class="fa-solid fa-credit-card"></i> &nbsp; No credit card needed
+                           </div>
+                           <div id="reserveWithRoom" style="display: none;">
+                              <p>1 room for</p>
+                              <div class="uppercase fs-3" id="totalPrice">VND {{$room->price * 2}}</div>
+                              <div style="color: gray">Includes taxes and charges</div>
+                              <div class="mt-4">
+                                 <button type="submit" class="btn btn-primary">I'll reserve</button>
+                                 <div class="mt-2">You'll be taken to the next step</div>
+                                 <div class="mt-2">Confirmation is immediate</div>
+                              </div>
+                              <div class="mt-4 font-bold" >
+                                 <i class="fa-solid fa-credit-card"></i> &nbsp; No credit card needed
+                              </div>
+                              <div>
+                                 <div class="font-bold mb-2">Your package:</div>
+                                 <div>
+                                    <span class="font-bold mb-2">Free cancellation</span> before 18 June 2024
+                                 </div>
+                                 <div>
+                                    <span class="font-bold mb-2">No prepayment needed</span> – pay at the property
+                                 </div>
+                                 <div style="color: rgb(231, 167, 167)">{{'Only ' . ($room->number_of_room - $room->number_room_booked) . ' rooms left on our site'}}</div>
+                              </div>
+                           </div>
+                        </td>
+                       </tr>
+                     </tbody>
+                   </table>
                </div>
-               @else
-               <div class="col-md-4 d-flex align-items-center text-nowrap text-center">
-                  <h2 style="color: rgb(211, 38, 104)">Xin vui lòng đăng nhập để đặt phòng!</h2>
-               </div>
-             @endif
-             {{-- @auth
-             @endauth --}}
+             </div>
            </div>
         </div>
      </div>
@@ -130,5 +215,6 @@
       @include('home.footer')
 
       <script src="{{url('js/user/datetime.js')}}" type="text/javascript"></script>
+      <script src="{{url('js/user/changeSearch.js')}}" type="text/javascript"></script>
    </body>
 </html>

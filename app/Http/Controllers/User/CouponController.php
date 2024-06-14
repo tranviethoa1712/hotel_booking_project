@@ -44,7 +44,6 @@ class CouponController
         foreach ($couponsOfUser as $coupon) {
             $coupons[] = Coupon::get()->where('id', $coupon->pivot->coupon_id);
         }
-        
     }
 
     public function couponToUser($id)
