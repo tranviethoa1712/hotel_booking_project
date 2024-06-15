@@ -12,6 +12,7 @@ use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Language;
+use Illuminate\Auth\Middleware\Authenticate;
 
 Route::get('/', [AdminController::class, 'home'])->middleware(Language::class);
 
@@ -52,14 +53,18 @@ Route::middleware([Admin::class])->group(function () {
 
 // User
 Route::middleware([Language::class])->group(function () {
-    route::get('/coupon_view', [CouponController::class, 'index'])->name('user.coupon_view');
-    route::get('linkCouponToUser/{id}', [CouponController::class, 'couponToUser'])->name('user.couponToUser');
+    Route::middleware([Authenticate::class])->group(function () {
+        route::get('/coupon_view', [CouponController::class, 'index'])->name('user.coupon_view');
+    
+        route::get('linkCouponToUser/{id}', [CouponController::class, 'couponToUser'])->name('user.couponToUser');
+        
+        route::post('/book_room', [BookingAdminController::class, 'book_room'])->name('user.book_room');
+    });
 
     route::get('/about', [HomeController::class, 'aboutUs'])->name('user.aboutUs');
     
     route::get('/our_rooms', [HomeController::class, 'our_rooms'])->name('user.our_rooms');
     route::get('/room_details/{id}', [HomeController::class, 'room_details'])->name('user.room_details');
-    route::post('/book_room', [BookingAdminController::class, 'book_room'])->name('user.book_room');
     
     route::post('/contact', [HomeController::class, 'contact'])->name('user.contact');
     route::get('/our_galleries', [HomeController::class, 'our_galleries'])->name('user.our_galleries');

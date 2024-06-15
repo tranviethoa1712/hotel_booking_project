@@ -53,8 +53,6 @@
                   <div class="form-group">
                         <label class="">{{__('home.room_details.end_date_lable')}}</label>
                         <input class="form-control" type="date" name="end_date" id="endDate" value="{{ old('endDate') }}">
-                        <input hidden class="form-control" type="text" name="room_type" id="roomType" value="{{$room->room_type}}">
-                        <input hidden class="form-control" type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">
                      </div>
                   <div class="form-group d-flex align-items-end">
                      <button type="button" class="btn btn-primary" id="change-search">Change search</button>
@@ -121,7 +119,7 @@
                            @endfor
                         </td>
                          <td>
-                           <div style="color: rgb(234, 60, 60)" id="priceCurrentShow">{{'VND ' . number_format($room->price * 2)}}</div>
+                           <div style="color: rgb(234, 60, 60)" id="priceCurrentShow">{{number_format($room->price * 2 - ($room->price * 2 * 0.1)) . ' VND'}}</div>
                            {{-- !-- Button trigger modal --> --}}
                            <button type="button" class="btn btn-blue text-nowrap" class="mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                               Choose your naksu voucher
@@ -165,10 +163,17 @@
                         </td>
                         <form action="">
                          <td class="text-capitalize" style="width: 10%">
-                           <select class="form-select" aria-label="Default select example" id="quantityRoom">
-                              <option selected value="0" style="width: 100%">0</option>
+                           <input hidden class="form-control" type="text" name="room_type" id="roomType" value="{{$room->room_type}}">
+                           <input hidden class="form-control" type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">   
+                           <input hidden type="text" name="numberOfRoomAvailable" id="numberOfRoomAvailable" value={{$room->number_of_room - $room->number_room_booked}}>
+                           <input hidden type="text" name="NumberOfNights" id="NumberOfNights" value='2'>
+                           <input hidden type="text" name="taxAndCharges" id="taxAndCharges" value={{$room->price * 2 * 0.1}}>
+                           <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) - ($room->price * 2 * 0.1))}}>
+
+                           <select class="form-select" aria-label="Default select example" id="quantityRoom" style="width: 48%">
+                              <option selected value="0">0</option>
                               @for($i = 1; $i <= ($room->number_of_room - $room->number_room_booked); $i++)
-                                 <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(Price: '. number_format($room->price * $i) . ')'}} </option>
+                                 <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(' . number_format(($room->price * 2 * $i) - ($room->price * 2 * $i * 0.1)) . ' VND)'}} </option>
                               @endfor
                             </select>
                          </td>
@@ -181,7 +186,7 @@
                            </div>
                            <div id="reserveWithRoom" style="display: none;">
                               <p>1 room for</p>
-                              <div class="uppercase fs-3" id="totalPrice">VND {{$room->price * 2}}</div>
+                              <div class="uppercase fs-3" id="totalPriceShow">{{number_format(($room->price * 2) - ($room->price * 2 * 0.1)) . ' VND'}}</div>
                               <div style="color: gray">Includes taxes and charges</div>
                               <div class="mt-4">
                                  <button type="submit" class="btn btn-primary">I'll reserve</button>
