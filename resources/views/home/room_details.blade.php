@@ -71,6 +71,7 @@
                        </tr>
                      </thead>
                      <tbody>
+                     <form action="{{url('booking_view')}}">
                        <tr>
                          <td style="width: 33%">
                            <span class="text-capitalize font-bold underline" style="color: cadetblue">{{$room->room_type}}</span>
@@ -161,26 +162,24 @@
                            <p style="color: rgb(113, 176, 113)"><span style="color: green">No prepayment needed</span> – pay at the property</p>   
                            <p style="color: gray">{{'Only ' . ($room->number_of_room - $room->number_room_booked) . ' rooms left on our site'}}</p>
                         </td>
-                        <form action="">
                          <td class="text-capitalize" style="width: 10%">
-                           <input hidden class="form-control" type="text" name="room_type" id="roomType" value="{{$room->room_type}}">
-                           <input hidden class="form-control" type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">   
+                           <input hidden type="text" name="room_type" id="roomType" value="{{$room->room_type}}">
+                           <input hidden type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">   
                            <input hidden type="text" name="numberOfRoomAvailable" id="numberOfRoomAvailable" value={{$room->number_of_room - $room->number_room_booked}}>
                            <input hidden type="text" name="NumberOfNights" id="NumberOfNights" value='2'>
                            <input hidden type="text" name="taxAndCharges" id="taxAndCharges" value={{$room->price * 2 * 0.1}}>
                            <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) - ($room->price * 2 * 0.1))}}>
 
-                           <select class="form-select" aria-label="Default select example" id="quantityRoom" style="width: 48%">
+                           <select class="form-select" aria-label="Default select example" name="quantityRoom" id="quantityRoom" style="width: 48%">
                               <option selected value="0">0</option>
                               @for($i = 1; $i <= ($room->number_of_room - $room->number_room_booked); $i++)
                                  <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(' . number_format(($room->price * 2 * $i) - ($room->price * 2 * $i * 0.1)) . ' VND)'}} </option>
                               @endfor
                             </select>
-                         </td>
-                        </form>
+                         </td>   
                         <td>
                            <div id="reserveWithNoRoom" style="display: block;">
-                              <button type="submit" class="btn btn-primary mb-3">I'll reserve</button>
+                              <button type="button" class="btn btn-primary mb-3">I'll reserve</button>
                               <div class="mb-3">Confirmation is immediate</div>
                               <i class="fa-solid fa-credit-card"></i> &nbsp; No credit card needed
                            </div>
@@ -209,6 +208,7 @@
                            </div>
                         </td>
                        </tr>
+                     </form>
                      </tbody>
                    </table>
                </div>
