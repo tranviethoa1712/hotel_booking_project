@@ -58,6 +58,7 @@ Route::middleware([Language::class])->group(function () {
     
         route::get('linkCouponToUser/{id}', [CouponController::class, 'couponToUser'])->name('user.couponToUser');
         
+        route::get('/booking_view', [HomeController::class, 'booking_view'])->name('booking_view');
         route::post('/book_room', [BookingAdminController::class, 'book_room'])->name('user.book_room');
     });
 
@@ -73,4 +74,5 @@ Route::middleware([Language::class])->group(function () {
     
     route::get('/changeLocale/{locale}', [LanguageController::class, 'switchLang'])->name('user.switchLang')->middleware(Language::class);
     route::get('/changSearchRoom/{start_date}/{end_date}/{room_type}', [HomeController::class, 'changSearchRoom'])->name('user.changSearchRoom')->middleware(Language::class);
+
 });

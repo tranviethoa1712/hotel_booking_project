@@ -482,6 +482,42 @@ button {
      padding-top: 85px;
 }
 
+/*Booking section*/
+.special-request {
+     border: 1px solid #e7e7e7;
+     border-radius: 3%;
+}
+.review-house-rules {
+     border: 1px solid #e7e7e7;
+     border-radius: 3%;
+}
+.arrival-time {
+     border: 1px solid #e7e7e7;
+     border-radius: 3%;
+}
+
+.price-sumary {
+     background-color: #fff;
+     border: 1px solid #e7e7e7;
+     border-radius: 3%;
+}
+
+.price-sumary .bg-total {
+     background-color: #ebf3ff;
+}
+
+.main-booking-content {
+     border: 1px solid #e7e7e7;
+     border-radius: 3%;
+}
+
+.main-booking-content .note-head {
+     background-color: #F5F5F5;
+     border: 1px solid #e7e7e7;
+}
+
+/*end Booking section*/
+
 .about .titlepage {
      text-align: left;
      padding-bottom: 0;
@@ -699,6 +735,65 @@ button {
 
 
 /** contact section **/
+
+.booking {
+     background: #fff;
+     margin-top: 90px;
+}
+
+.step {
+     width: 10%;
+     font-weight: bold;
+}
+
+.line-step {
+     width: 30%;
+     height: 2px;
+     background-color: #000;
+}
+
+.icon-step {
+     padding: 2px;
+     background-color: #006ce4 !important;
+     border-radius: 10px;
+     color: #fff !important;
+     height: 24px;
+     width: 24px;
+     text-align: center;
+}
+
+.icon-gray {
+     border-radius: 50%;
+     width: 25px;
+     height: 27px;
+     padding: 2px;
+     background: #fff;
+     border: 2px solid #666;
+     color: #666;
+     text-align: center;
+}
+
+.content-booking .about {
+     width: 100%;
+     border: 1px solid #e7e7e7;
+     border-radius: 10px;
+}
+
+.content-booking .booking-details {
+     width: 100%;
+     border: 1px solid #e7e7e7;
+     border-radius: 10px;
+}
+
+.content-booking .booking-details .check-in-check-out{
+     width: 98%;
+     display: flex;
+}
+
+.content-booking .booking-details .check-in-check-out .check-in{
+     width: 50%;
+     border-right: 1px solid #e7e7e7;
+}
 
 .contact {
      background: #fff;

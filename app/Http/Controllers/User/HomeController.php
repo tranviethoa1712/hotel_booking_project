@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Requests\AvailableRoomForTheDayRequest;
+use App\Http\Requests\BookingNeedsOfCustomer;
 use App\Http\Requests\SendContactRequest;
 use App\Models\Booking;
 use App\Models\Contact;
@@ -134,5 +135,11 @@ class HomeController
     public function aboutUs() 
     {
         return view('home.aboutUs');
+    }
+
+    public function booking_view(BookingNeedsOfCustomer $request) 
+    {
+        $data = $request->validated();
+        return view('home.booking_view');
     }
 }
