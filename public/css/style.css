@@ -516,6 +516,10 @@ button {
      border: 1px solid #e7e7e7;
 }
 
+.table-available-room {
+     border: 1px solid lightblue;
+}
+
 /*end Booking section*/
 
 .about .titlepage {
