@@ -3,11 +3,9 @@ $(document).ready(function() {
     $("#change-search").click(function() {
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
-        var priceCurrent = $(':hidden#priceCurrent').val();
         var room_type = $(':hidden#roomType').val();
-        changePriceForDates(startDate, endDate, priceCurrent);
 
-        var url_val = 'changSearchRoom/' + startDate + '/' + endDate + '/' + room_type;
+        var url_val = 'changeSearchRoom/' + startDate + '/' + endDate + '/' + room_type;
         $.ajax({
             type: "GET",
             url: url_val,
@@ -17,26 +15,33 @@ $(document).ready(function() {
             flag: 'flag'
             }),
             success: function(response) {
-                // console.log(response)
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+                console.log(response)
+                $.each(response, function (key, val) {
+                    let numberOfRoomAvailable = val.number_of_room - val.number_room_booked;
+                    changePriceForDates(startDate, endDate, val.price, numberOfRoomAvailable, val.id)
+                });
             }
         });
     })
-
-    $("#quantityRoom").change(function() {
+    $("select").change(function () {
+        quantityElement = $(this);
         // collect data
-        var quantity = document.getElementById('quantityRoom').value;
-        var NumberOfNights = document.getElementById('NumberOfNights').value;
-        var priceCurrent = document.getElementById('priceCurrent').value;
-
-        elementTotalPriceHidden = document.getElementById('totalPrice');
-        elementTotalPriceShow = document.getElementById('totalPriceShow');
-
+        var quantity = quantityElement.val();
+        var parentOfElement = quantityElement.parent();
+        var priceCurrent = parentOfElement.find('.priceCurrentElement').text();
+        var NumberOfNights = $('#NumberOfNights').val();
+        
+        $(':hidden#quantityRoomInput').val(quantity);
+        elementTotalPriceHidden = $('#totalPrice');
+        elementTotalPriceShow = $('#totalPriceShow');
+        
         // calc price
         var calcPrice = (priceCurrent * quantity * NumberOfNights) - (priceCurrent * quantity * NumberOfNights * 0.1);
-
         // change view
-        elementTotalPriceHidden.value = calcPrice;
-        elementTotalPriceShow.innerHTML = calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+        elementTotalPriceHidden.val(calcPrice);
+        elementTotalPriceShow.text(calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
 
         if(quantity !== '0') {
             $("#reserveWithNoRoom").css("display","none");
@@ -46,9 +51,20 @@ $(document).ready(function() {
             $("#reserveWithRoom").css("display","none")
         }
     })
+})
 
-    function changePriceForDates(startDate, endDate, priceCurrent)
+    function changePriceForDates(startDate, endDate, priceCurrent, numberOfRoomAvailable, id)
     {
+
+        console.log($('.room-id-' + id))
+        console.log(startDate)
+        console.log(endDate)
+        console.log(priceCurrent)
+        console.log(numberOfRoomAvailable)
+        var roomIdElement = $('.room-id-' + id);
+        var roomIdElementParent = roomIdElement.parent();
+        var priceCurrentShow = roomIdElementParent.find('.priceCurrentShow');
+        console.log(priceCurrentShow)
         // collect and transfer data
         var startDate = startDate.split('-').join('');
         var endDate = endDate.split('-').join('');
@@ -63,39 +79,38 @@ $(document).ready(function() {
         var newPrice = priceCurrent * calcNights - taxAndCharges;
 
         // change view
-        document.getElementById('taxAndCharges').value = taxAndCharges;
-        document.getElementById('NumberOfNights').value = calcNights;
-        document.getElementById('totalPrice').value = newPrice;
-        document.getElementById('priceForNights').innerHTML = textCalcNight;
-        document.getElementById('totalPriceShow').innerHTML = newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});      
-        document.getElementById('priceCurrentShow').innerHTML = newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+        $('#taxAndCharges').val(taxAndCharges)
+        $('#NumberOfNights').val(calcNights);
+        $('#priceForNights').text(textCalcNight);
+        priceCurrentShow.text(newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
 
         // change option room
-        var NumberOfNights = document.getElementById('NumberOfNights').value;
-        var numberOfRoomAvailable = parseInt(document.getElementById('numberOfRoomAvailable').value) + 1;
+        // var NumberOfNights = $('#NumberOfNights').val();
 
-        var outletOptions = document.querySelector("#quantityRoom");
+        // numberOfRoomAvailable = parseInt(numberOfRoomAvailable) + 1;
 
-        // Remove existing options
-        Array.from(outletOptions).forEach((option) => {
-          outletOptions.removeChild(option)
-        })
+        // var outletOptions = $("#quantityElement-" + id);
+
+        // // Remove existing options
+        // Array.from(outletOptions).forEach((option) => {
+        //   outletOptions.removeChild(option)
+        // })
         
-        // generate option array
-        var newOutletOptions = [];
-        for(let j = 0; j < numberOfRoomAvailable ; j++) {
-            let calcP = (priceCurrent * j * NumberOfNights) - (priceCurrent * j * NumberOfNights * 0.1);
-            calcP = calcP.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
-            let array = [j, j + '   (' + calcP + ')'];
-            newOutletOptions.push(array);
-        }
+        // // generate option array
+        // var newOutletOptions = [];
+        // for(let j = 0; j < numberOfRoomAvailable ; j++) {
+        //     let calcP = (priceCurrent * j * NumberOfNights) - (priceCurrent * j * NumberOfNights * 0.1);
+        //     calcP = calcP.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+        //     let array = [j, j + '   (' + calcP + ')'];
+        //     newOutletOptions.push(array);
+        // }
 
-        // Add new options
-        newOutletOptions.map((optionData) => {
-            var opt = document.createElement('option')
-            opt.appendChild(document.createTextNode(optionData[1]));
-            opt.value = optionData[0];
-            outletOptions.appendChild(opt);
-        })
+        // // Add new options
+        // newOutletOptions.map((optionData) => {
+        //     var opt = document.createElement('option')
+        //     opt.appendChild(document.createTextNode(optionData[1]));
+        //     opt.value = optionData[0];
+        //     outletOptions.appendChild(opt);
+        // })
     }
-})
+

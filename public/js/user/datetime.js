@@ -17,3 +17,8 @@ $(function(){
    $('#startDate').attr('min', maxDate);
    $('#endDate').attr('min', maxDate);
 });
+
+var oneDay = 24 * 60 * 60 * 1000;
+
+document.getElementById('startDate').valueAsDate = new Date(new Date().getTime());
+document.getElementById('endDate').valueAsDate = new Date(new Date().getTime() + oneDay * 2);

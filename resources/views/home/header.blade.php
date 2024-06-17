@@ -45,17 +45,17 @@
    
                            </x-app-layout>
                         </li>
-                     @else
+                        @else
                         <li class="nav-item pr-2 text-nowrap">
                            <a class="btn btn-outline-dark" href="{{url('login')}}">{{__('home.header.login')}}</a>
                         </li>
-
+                        
                         @if (Route::has('register'))
                         <li class="nav-item text-nowrap">
                            <a class="btn btn-register" href="{{url('register')}}">{{__('home.header.register')}}</a>
                         </li>
+                        @endauth
                         @endif
-                     @endauth
                      @endif
                      <li class="nav-item ml-2 text-nowrap">
                         <div class="dropdown">
