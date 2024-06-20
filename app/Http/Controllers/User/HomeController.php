@@ -143,36 +143,40 @@ class HomeController
 
     public function changeSearchRoom($start_date, $end_date, $room_type)
     {
-        // check Rooms booked
-        $isBooked = Booking::where('status', '!=', 'reject')
-                        ->where('start_date', '<=', $end_date)
-                        ->where('end_date', '>=', $start_date)
-                        ->exists();
-       
-        // if any room booked in that time => filter and return available room
-        if($isBooked === true) {
-            $bookedRoom = Booking::get()->where('status', '!=' , 'reject')
-            ->where('start_date', '<=', $end_date)
-            ->where('end_date', '>=', $start_date);
-            $arrayIdBookedRoom = [];
-            foreach($bookedRoom as $booking) {
-                $arrayIdBookedRoom[] = $booking->room_id;
-            }
-            $roomAvailableForTheDate = Room::get()->where('room_type', $room_type)->whereNotIn('id', $arrayIdBookedRoom);
-
-            if(!$roomAvailableForTheDate) {
-                return 'All of this ' . $room_type . 'room type is not available from ' . $start_date . ' to ' . $end_date;
-            }
-            $user = User::find(Auth::id());
+        $user = User::find(Auth::id());
+        if($user) {
             $couponsOfUser = $user->coupons;
             $coupons = [];
             foreach ($couponsOfUser as $coupon) {
                 $coupons[] = Coupon::get()->where('id', $coupon->pivot->coupon_id);
             }
-            return [json_encode($roomAvailableForTheDate), json_encode($coupons)];
-        } else {
-            $roomAvailableForTheDate = Room::get()->where('room_type', $room_type);
-            return json_encode($roomAvailableForTheDate);
+
+            // check Rooms booked
+            $isBooked = Booking::where('status', '!=', 'reject')
+            ->where('start_date', '<=', $end_date)
+            ->where('end_date', '>=', $start_date)
+            ->exists();
+
+            // if any room booked in that time => filter and return available room
+            if($isBooked === true) {
+                $bookedRoom = Booking::get()->where('status', '!=' , 'reject')
+                ->where('start_date', '<=', $end_date)
+                ->where('end_date', '>=', $start_date);
+                $arrayIdBookedRoom = [];
+                foreach($bookedRoom as $booking) {
+                    $arrayIdBookedRoom[] = $booking->room_id;
+                }
+                $roomAvailableForTheDate = Room::get()->where('room_type', $room_type)->whereNotIn('id', $arrayIdBookedRoom);
+
+                if(!$roomAvailableForTheDate) {
+                    return json_encode('All of this ' . $room_type . 'room type is not available from ' . $start_date . ' to ' . $end_date);
+                }
+
+                return [json_encode($roomAvailableForTheDate), json_encode($coupons)];
+            } else {
+                $roomAvailableForTheDate = Room::get()->where('room_type', $room_type);
+                return [json_encode($roomAvailableForTheDate), json_encode($coupons)];
+            }
         }
     }
 
