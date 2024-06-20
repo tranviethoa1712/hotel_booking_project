@@ -156,8 +156,8 @@
                                </td>
                                 <td class="text-capitalize" style="width: 10%">  
                                  <div class="d-none priceCurrentElement">{{$room->price}}</div>  
-                                 <div class="d-none numberOfRoomAvailableElement">{{$room->price}}</div>  
-                                  <select class="form-select" aria-label="Default select example" name="quantityRoomElement" class="quantityElement" id="quantityElement-{{$room->id}}" style="width: 48%">
+                                 <div class="d-none numberOfRoomAvailableElement">{{$room->number_of_room - $room->number_room_booked}}</div>  
+                                  <select class="form-select quantityElement" aria-label="Default select example" name="quantityRoomElement" id="quantityElement-{{$room->id}}" style="width: 48%">
                                      <option selected value="0">0</option>
                                      @for($i = 1; $i <= ($room->number_of_room - $room->number_room_booked); $i++)
                                         <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(' . number_format(($room->price * 2 * $i) - ($room->price * 2 * $i * 0.1)) . ' VND)'}} </option>

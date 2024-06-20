@@ -19,10 +19,18 @@ $(document).ready(function() {
                 var endDate = $('#endDate').val();
                 //remove all tr tag in tbody
                 $('#tableBody').find('tr').remove();
+                if(response.length > 1) {
                     $.each(JSON.parse(response[0]), function (key, val) {
-                    let numberOfRoomAvailable = val.number_of_room - val.number_room_booked;
+                    let numberOfRoomAvailable = (val.number_of_room - val.number_room_booked) + 1;
                     changePriceForDates(startDate, endDate, val.price, numberOfRoomAvailable, val.id, val, JSON.parse(response[1]));
-                });
+                    });
+                } else {
+                    var fullRoomDiv = $('<div/>');
+                    fullRoomDiv.attr('class', 'fs-3 text-center').text(response);
+                    let viewTr = $('<tr/>');
+                    viewTr.append(fullRoomDiv.get(0).outerHTML);
+                    $('#tableBody').append(viewTr.get(0).outerHTML);
+                }
             }
         });
     })
@@ -59,7 +67,6 @@ $(document).ready(function() {
 
         var roomIdElement = $('.room-id-' + id);
         var roomIdElementParent = roomIdElement.parent();
-        var priceCurrentShow = roomIdElementParent.find('.priceCurrentShow');
 
         // collect and transfer data
         var startDate = startDate.split('-').join('');
@@ -73,37 +80,15 @@ $(document).ready(function() {
         var textCalcNight = 'Price for ' + calcNights + ' nights';
         var taxAndCharges = priceCurrent * calcNights * 0.1;
         var newPrice = priceCurrent * calcNights - taxAndCharges;
+        $('#taxAndCharges').val(taxAndCharges)
+        $('#NumberOfNights').val(calcNights);
+        $('#priceForNights').text(textCalcNight);
 
         //re-render table
-        renderFromSearchedData(room, textCalcNight, taxAndCharges, newPrice, coupons);
-
-        // // change option room
-        // var NumberOfNights = $('#NumberOfNights').val();
-
-        // numberOfRoomAvailable = parseInt(numberOfRoomAvailable) + 1;
-
-        // var outletOptions = $("#quantityElement-" + id);
-
-        // // Remove existing options
-        // outletOptions.find('option').remove()
-
-        
-        // // generate option array
-        // var newOutletOptions = [];
-        // for(let j = 0; j < numberOfRoomAvailable ; j++) {
-        //     let calcP = (priceCurrent * j * NumberOfNights) - (priceCurrent * j * NumberOfNights * 0.1);
-        //     calcP = calcP.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
-        //     let array = [j, j + '   (' + calcP + ')'];
-        //     newOutletOptions.push(array);
-        // }
-
-        // // Add new options
-        // newOutletOptions.map((optionData) => {
-        //     outletOptions.append($("<option></option>").attr("value", optionData(0)).text(optionData[1]));
-        // })
+        renderFromSearchedData(room, priceCurrent, newPrice, numberOfRoomAvailable, coupons);
     }
 
-    function renderFromSearchedData(room, textCalcNight, taxAndCharges, newPrice, coupons) 
+    function renderFromSearchedData(room, priceCurrent, newPrice, numberOfRoomAvailable, coupons) 
     {    
         var customTr = $("<tr/>");
         if(room) {
@@ -179,6 +164,7 @@ $(document).ready(function() {
             customDiv2_1.attr('class', 'd-none room-id-' + room.id).text(' ');
             let customDiv2_2 = $('<div/>');
             customDiv2_2.attr('class', 'priceCurrentShow' + room.id).css('color', 'rgb(234, 60, 60)').text(newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+
             let customButtonModalVoucher = $('<button/>');
             customButtonModalVoucher.attr('type', 'button').attr('class', 'btn btn-blue text-nowrap mt-2').attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal').text('Naksu voucher');
             // voucher modal
@@ -204,66 +190,117 @@ $(document).ready(function() {
             if(coupons){
                 $.each(coupons, function (i, currProgram) {
                     $.each(currProgram, function (key, val) {
+                        
+                        var innerContentBodyModalVoucherDiv = $('<div/>');
+                        innerContentBodyModalVoucherDiv.attr('class', 'mb-3 d-flex justify-between');
+                        var innerCodeContentBodyModalVoucherDiv = $('<div/>');
+                        innerCodeContentBodyModalVoucherDiv.css('width', '70%');
+                        var innerButtonUseVoucherModal  = $('<button/>');
+                        innerButtonUseVoucherModal.attr('type', 'button').attr('class', 'btn btn-sm btn-blue mt-2 text-nowrap-to-normal').css('width', '25%').text('Use Voucher');
+                        var innerDescriptionContentBodyModalVoucherDiv = $('<p/>');
                         $.each(val, function (column, value) {
-                            let innerContentBodyModalVoucherDiv = $('<div/>');
-                            innerContentBodyModalVoucherDiv.attr('class', 'mb-3 d-flex justify-between');
-                            console.log(3);
-                            let innerCodeContentBodyModalVoucherDiv = $('<div/>');
-                            innerCodeContentBodyModalVoucherDiv.css('width', '70%');
                             if(column == 'code') {
                                 innerCodeContentBodyModalVoucherDiv.text(value);
                             }
-                            let innerDescriptionContentBodyModalVoucherDiv = $('<p/>');
                             if(column == 'description') {
                                 innerDescriptionContentBodyModalVoucherDiv.css('color', 'rgb(219, 102, 102)').text(value);
                             }
-                            let innerButtonUseVoucherModal  = $('<button/>');
-                            innerButtonUseVoucherModal.attr('type', 'button').attr('class', 'btn btn-sm btn-blue mt-2 text-nowrap-to-normal').css('width', '25%').text('Use Voucher');
-                        
-                            // append
-                            innerCodeContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv, innerDescriptionContentBodyModalVoucherDiv, innerButtonUseVoucherModal);
-                            innerContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv);
-                            arrayContentModalBody.push(innerContentBodyModalVoucherDiv);
                         });
+                        // append
+                        innerCodeContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv, innerDescriptionContentBodyModalVoucherDiv);
+                        innerContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv, innerButtonUseVoucherModal);
+                        arrayContentModalBody.push(innerContentBodyModalVoucherDiv);
                     });
                 });
                 for(let j = 0; j < arrayContentModalBody.length; j++) {
                     customBodyModalVoucherDiv.append(arrayContentModalBody[j])
                 }
+                // modal footer
+                let voucherModalFooter = $('<div/>');
+                voucherModalFooter.attr('class', 'modal-footer');
+                let voucherModalButtonFooter = $("<button/>");
+                voucherModalButtonFooter.attr('type', 'button').attr('class', 'btn btn-secondary').attr('data-bs-dismiss', 'modal').text('Close');
+                voucherModalFooter.append(voucherModalButtonFooter);
+                // end modal footer 
+
+                // append 
+                customContentgModalVoucherDiv.append(customHeaderModalVoucherDiv, customBodyModalVoucherDiv, voucherModalFooter);
+                customDialogModalVoucherDiv.append(customContentgModalVoucherDiv);
+                customModalVoucherDiv.append(customDialogModalVoucherDiv);    
+                customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML, customButtonModalVoucher.get(0).outerHTML, customModalVoucherDiv);
             } else {
                 let loginToUseVoucherDiv = $('<div/>');
                 loginToUseVoucherDiv.attr('class', 'font-bold fs-3 text-center').text('Hãy đăng nhập để sử dụng voucher');
-            }
-            // modal footer
-            let voucherModalFooter = $('<div/>');
-            voucherModalFooter.attr('class', 'modal-footer');
-            voucherModalButtonFooter = $("<button/>");
-            voucherModalButtonFooter.attr('type', 'button').attr('class', 'btn btn-secondary').attr('data-bs-dismiss', 'modal').text('Close');
-            voucherModalFooter.append(voucherModalButtonFooter);
-            // end modal footer 
-            customContentgModalVoucherDiv.append(customHeaderModalVoucherDiv, customBodyModalVoucherDiv, voucherModalFooter);
-            customDialogModalVoucherDiv.append(customContentgModalVoucherDiv);
-            customModalVoucherDiv.append(customDialogModalVoucherDiv);
-            
-            customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML, customButtonModalVoucher.get(0).outerHTML, customModalVoucherDiv);
-            customTr.append(customTdPriceForNights);
-            $('#tableBody').append(customTr);
 
+                customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML, loginToUseVoucherDiv.get(0).outerHTML);
+            }
+        
+            customTr.append(customTdPriceForNights);
             // end voucher modal
 
-            
-            
-            // $('#taxAndCharges').val(taxAndCharges)
-            // $('#NumberOfNights').val(calcNights);
-            // $('#priceForNights').text(textCalcNight);
+            // end price for nights
 
-    
+            // Choices
+            let customTdChoices = $("<td/>");
+            customTdChoices.attr('class', 'text-capitalize p-2').css('color', 'rgb(113, 176, 113)');
+            let choiceOne = $("<p/>");
+            choiceOne.attr('class', 'mb-2').css('color', 'rgb(113, 176, 113)').text('Free cancellation ');
+            spanChoiceOne = $('<span/>');
+            spanChoiceOne.attr('color', 'green').text('before 18 June 2024');
+            choiceOne.append(spanChoiceOne);
+            let choiceTwo = $("<p/>");
+            choiceTwo.attr('class', 'mb-2').css('color', 'rgb(113, 176, 113)').text('No prepayment needed');
+            spanChoiceTwo = $('<span/>');
+            spanChoiceTwo.attr('color', 'green').text('– pay at the property');
+            choiceTwo.append(spanChoiceTwo);
+            let choiceThree = $("<p/>");
+            let calcAvailableRoom = room.number_of_room - room.number_room_booked;
+            choiceThree.attr('color', 'gray').text('Only ' + calcAvailableRoom + ' rooms left on our site');
 
+            // append
+            customTdChoices.append(choiceOne.get(0).outerHTML, choiceTwo.get(0).outerHTML, choiceThree.get(0).outerHTML);
 
-            // let customTdChoice = $("<td/>");
-            // let customTdSelectRooms = $("<td/>");
-            // customTd.append($("<option></option>").attr("value", optionData(0)).text(optionData[1]));
+            customTr.append(customTdChoices);
+            // end Choices
+
+            // Select Rooms
+            // set data hidden
+            let customTdSelectRooms = $("<td/>");
+            customTdSelectRooms.attr('class','text-capitalize').css('width', '10%');
+            let priceCurrentElement = $('<div/>');
+            priceCurrentElement.attr('class', 'd-none priceCurrentElement').text(room.price);
+            let numberOfRoomAvailableElement = $('<div/>');
+            numberOfRoomAvailableElement.attr('class', 'd-none priceCurrentElement').text(calcAvailableRoom);
+
+            // change option room
+            var NumberOfNights = $('#NumberOfNights').val();
+
+            // var outletOptions = $("#quantityElement-");
+            var outletOptions = $("<select/>");
+            outletOptions.attr('class', 'form-select').attr('class', 'form-select quantityElement').attr('aria-label', 'Default select example').attr('name', 'quantityRoomElement').attr('id', 'quantityElement-' + room.id).css('width', '48%');
+            // generate option array
+            var newOutletOptions = [];
+            for(let j = 0; j < numberOfRoomAvailable; j++) {
+                let calcP = (priceCurrent * j * NumberOfNights) - (priceCurrent * j * NumberOfNights * 0.1);
+                calcP = calcP.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                let array = [j, j + '   (' + calcP + ')'];
+                newOutletOptions.push(array);
+            }
+            console.log(newOutletOptions);
+            // Add new options
+            newOutletOptions.map((optionData) => {
+                console.log('option0: ', optionData[0]);
+                console.log('option1: ', optionData[1]);
+                let option = $('<option/>');
+                option.attr("value", optionData[0]).text(optionData[1]);
+                outletOptions.append(option);
+            })
+            customTdSelectRooms.append(priceCurrentElement.get(0).outerHTML, numberOfRoomAvailableElement.get(0).outerHTML, outletOptions.get(0).outerHTML);
+            console.log(customTdSelectRooms.get(0).outerHTML);
+            customTr.append(customTdSelectRooms);
+            // // end select rooms
+            $('#tableBody').append(customTr);
+            console.log('success')
         }
-        
     }
 
