@@ -163,7 +163,13 @@ class HomeController
             if(!$roomAvailableForTheDate) {
                 return 'All of this ' . $room_type . 'room type is not available from ' . $start_date . ' to ' . $end_date;
             }
-            return json_encode($roomAvailableForTheDate);
+            $user = User::find(Auth::id());
+            $couponsOfUser = $user->coupons;
+            $coupons = [];
+            foreach ($couponsOfUser as $coupon) {
+                $coupons[] = Coupon::get()->where('id', $coupon->pivot->coupon_id);
+            }
+            return [json_encode($roomAvailableForTheDate), json_encode($coupons)];
         } else {
             $roomAvailableForTheDate = Room::get()->where('room_type', $room_type);
             return json_encode($roomAvailableForTheDate);

@@ -70,7 +70,7 @@
                             <th scope="col" class="table-header-cell" table-header-cell">Select rooms</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                            @if(!empty($rooms))
                               @foreach($rooms as $room)
                               <tr>
@@ -84,35 +84,23 @@
                                      </div>
                                      <hr class="my-4">
                                      <div>
-                                        <div>
                                            <i class="fa-solid fa-check"></i> Shower
                                            &nbsp; <i class="fa-solid fa-check"></i> Safety deposit box 
                                            &nbsp; <i class="fa-solid fa-check"></i> Free toiletries
-                                        </div>
-                                        <div>
                                            <i class="fa-solid fa-check"></i> Bidet 
                                            &nbsp; <i class="fa-solid fa-check"></i> Toilet 
                                            &nbsp; <i class="fa-solid fa-check"></i> Towels 
-                                        </div>
-                                        <div>
                                            <i class="fa-solid fa-check"></i> Linen 
                                            &nbsp; <i class="fa-solid fa-check"></i> Desk 
                                            &nbsp; <i class="fa-solid fa-check"></i> Slippers 
-                                        </div>
-                                        <div>
                                            <i class="fa-solid fa-check"></i> Heating 
                                            &nbsp; <i class="fa-solid fa-check"></i> Hairdryer 
                                            &nbsp; <i class="fa-solid fa-check"></i> Towels/sheets (extra fee) 
-                                        </div>
-                                        <div>
                                            <i class="fa-solid fa-check"></i> Electric kettle 
                                            &nbsp; <i class="fa-solid fa-check"></i> Wake-up service 
                                            &nbsp; <i class="fa-solid fa-check"></i> Wardrobe or closet 
-                                        </div>
-                                        <div>
                                            <i class="fa-solid fa-check"></i> Clothes rack 
                                            &nbsp; <i class="fa-solid fa-check"></i> Toilet paper 
-                                        </div>
                                   </div>
                                </td>
                                 <td>
@@ -125,40 +113,39 @@
                                   <div style="color: rgb(234, 60, 60)" class="priceCurrentShow">{{number_format($room->price * 2 - ($room->price * 2 * 0.1)) . ' VND'}}</div>
                                   {{-- !-- Button trigger modal --> --}}
                                   <button type="button" class="btn btn-blue text-nowrap mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                     Choose your naksu voucher
+                                    Naksu voucher
                                   </button>
                                
                                <!-- Modal -->
                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog">
-                                  <div class="modal-content">
-                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                     </div>
-                                     <div class="modal-body">
-                                        @if(!empty($coupons))
-                                           @foreach($coupons as $coupon)
-                                              @foreach($coupon as $item)
-       
-                                              <div class="mb-3 d-flex justify-between">
-                                                 <div style="width: 70%">
-                                                    <p>Code: <span>{{$item->code}}</span></p>
-                                                    <p style="style="color: rgb(219, 102, 102)"">{{$item->description}}</p>
-                                                 </div>
-                                                 <button type="button" class="btn btn-sm btn-blue mt-2 text-nowrap-to-normal" style="width: 25%">Use voucher</button>
-                                              </div>
-                                              @endforeach
-                                           @endforeach
-                                           
-                                           @else 
-                                           <div class="font-bold fs-3 text-center">Hãy đăng nhập để sử dụng voucher</div>
-                                        @endif
-                                     </div>
-                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                     </div>
-                                  </div>
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          @if(!empty($coupons))
+                                             @foreach($coupons as $coupon)
+                                                @foreach($coupon as $item)
+                                                <div class="mb-3 d-flex justify-between">
+                                                   <div style="width: 70%">
+                                                      <p>Code: <span>{{$item->code}}</span></p>
+                                                      <p style="color: rgb(219, 102, 102)">{{$item->description}}</p>
+                                                   </div>
+                                                   <button type="button" class="btn btn-sm btn-blue mt-2 text-nowrap-to-normal" style="width: 25%">Use voucher</button>
+                                                </div>
+                                                @endforeach
+                                             @endforeach
+                                             
+                                             @else 
+                                             <div class="font-bold fs-3 text-center">Hãy đăng nhập để sử dụng voucher</div>
+                                          @endif
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                       </div>
+                                    </div>
                                   </div>
                                </div>
                                </td>

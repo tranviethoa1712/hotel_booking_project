@@ -17,10 +17,11 @@ $(document).ready(function() {
             success: function(response) {
                 var startDate = $('#startDate').val();
                 var endDate = $('#endDate').val();
-                console.log(response)
-                $.each(response, function (key, val) {
+                //remove all tr tag in tbody
+                $('#tableBody').find('tr').remove();
+                    $.each(JSON.parse(response[0]), function (key, val) {
                     let numberOfRoomAvailable = val.number_of_room - val.number_room_booked;
-                    changePriceForDates(startDate, endDate, val.price, numberOfRoomAvailable, val.id)
+                    changePriceForDates(startDate, endDate, val.price, numberOfRoomAvailable, val.id, val, JSON.parse(response[1]));
                 });
             }
         });
@@ -53,18 +54,13 @@ $(document).ready(function() {
     })
 })
 
-    function changePriceForDates(startDate, endDate, priceCurrent, numberOfRoomAvailable, id)
+    function changePriceForDates(startDate, endDate, priceCurrent, numberOfRoomAvailable, id, room, coupons)
     {
 
-        console.log($('.room-id-' + id))
-        console.log(startDate)
-        console.log(endDate)
-        console.log(priceCurrent)
-        console.log(numberOfRoomAvailable)
         var roomIdElement = $('.room-id-' + id);
         var roomIdElementParent = roomIdElement.parent();
         var priceCurrentShow = roomIdElementParent.find('.priceCurrentShow');
-        console.log(priceCurrentShow)
+
         // collect and transfer data
         var startDate = startDate.split('-').join('');
         var endDate = endDate.split('-').join('');
@@ -78,13 +74,10 @@ $(document).ready(function() {
         var taxAndCharges = priceCurrent * calcNights * 0.1;
         var newPrice = priceCurrent * calcNights - taxAndCharges;
 
-        // change view
-        $('#taxAndCharges').val(taxAndCharges)
-        $('#NumberOfNights').val(calcNights);
-        $('#priceForNights').text(textCalcNight);
-        priceCurrentShow.text(newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+        //re-render table
+        renderFromSearchedData(room, textCalcNight, taxAndCharges, newPrice, coupons);
 
-        // change option room
+        // // change option room
         // var NumberOfNights = $('#NumberOfNights').val();
 
         // numberOfRoomAvailable = parseInt(numberOfRoomAvailable) + 1;
@@ -92,9 +85,8 @@ $(document).ready(function() {
         // var outletOptions = $("#quantityElement-" + id);
 
         // // Remove existing options
-        // Array.from(outletOptions).forEach((option) => {
-        //   outletOptions.removeChild(option)
-        // })
+        // outletOptions.find('option').remove()
+
         
         // // generate option array
         // var newOutletOptions = [];
@@ -107,10 +99,171 @@ $(document).ready(function() {
 
         // // Add new options
         // newOutletOptions.map((optionData) => {
-        //     var opt = document.createElement('option')
-        //     opt.appendChild(document.createTextNode(optionData[1]));
-        //     opt.value = optionData[0];
-        //     outletOptions.appendChild(opt);
+        //     outletOptions.append($("<option></option>").attr("value", optionData(0)).text(optionData[1]));
         // })
+    }
+
+    function renderFromSearchedData(room, textCalcNight, taxAndCharges, newPrice, coupons) 
+    {    
+        var customTr = $("<tr/>");
+        if(room) {
+            // room type
+            let customTdRoomtype = $("<td/>");
+            customTdRoomtype.css('width', '33%');
+
+            let spanHeadRoomType = $("<span/>");
+            spanHeadRoomType.attr("class", 'text-capitalize font-bold underline fs-3').css('color', 'cadetblue').text(room.room_type);
+            
+            let customDiv1 = $("<div/>");
+            customDiv1.attr('class', 'mt-3');
+
+            let customDiv1_1 = $("<div/>");
+            customDiv1_1.attr('class', 'font-weight-light');
+            let customeI_fa_house = $('<i/>');
+            customeI_fa_house.attr('class', 'fa-solid fa-house');
+            let customeI_temperature_arrow_up = $('<i/>');
+            customeI_temperature_arrow_up.attr('class', 'fa-solid fa-temperature-arrow-up');
+            let customeI_fa_bath = $('<i/>');
+            customeI_fa_bath.attr('class', 'fa-solid fa-bath');
+            let customeI_fa_tv = $('<i/>');
+            customeI_fa_tv.attr('class', 'fa-solid fa-tv');
+            let customeI_fa_volumne_xmark = $('<i/>');
+            customeI_fa_volumne_xmark.attr('class', 'fa-solid fa-volume-xmark');
+            let customeI_fa_wifi = $('<i/>');
+            customeI_fa_wifi.attr('class', 'fa-solid fa-wifi');
+            let appendDiv1_1 = customeI_fa_house.get(0).outerHTML + ' 23 m²  ' + 
+            customeI_temperature_arrow_up.get(0).outerHTML + ' Air conditioning <br/>' + 
+            customeI_fa_bath.get(0).outerHTML + ' Private bathrooms  ' + customeI_fa_tv.get(0).outerHTML + ' Flat-screen <br/>' +
+            customeI_fa_volumne_xmark.get(0).outerHTML + ' TV Soundproofing  ' + customeI_fa_wifi.get(0).outerHTML + ' Free WiFi';
+            customDiv1_1.append(appendDiv1_1);
+            
+            let hr = $("<hr/>");
+            hr.attr('class', 'my-4');
+
+            let customDiv1_2 = $("<div/>");
+            let customeI_fa_check = $('<i/>');
+            customeI_fa_check.attr('class', 'fa-solid fa-check');
+            let outerHTML_customeI_fa_check = customeI_fa_check.get(0).outerHTML;
+            let appendDiv1_2 = outerHTML_customeI_fa_check + ' Shower ' + outerHTML_customeI_fa_check + ' Safety deposit box ' +
+            outerHTML_customeI_fa_check + ' Free toiletries ' + outerHTML_customeI_fa_check + ' Bidet ' +
+            outerHTML_customeI_fa_check + ' Toilet ' + outerHTML_customeI_fa_check + ' Towels ' +
+            outerHTML_customeI_fa_check + ' Linen ' + outerHTML_customeI_fa_check + ' Desk ' +
+            outerHTML_customeI_fa_check + ' Slippers ' + outerHTML_customeI_fa_check + ' Heating ' +
+            outerHTML_customeI_fa_check + ' Hairdryer ' + outerHTML_customeI_fa_check + ' Towels/sheets (extra fee) ' +
+            outerHTML_customeI_fa_check + ' Electric kettle ' + outerHTML_customeI_fa_check + ' Wake-up service ' +
+            outerHTML_customeI_fa_check + ' Wardrobe or closet ' + outerHTML_customeI_fa_check + ' Clothes rack ' +
+            outerHTML_customeI_fa_check + ' Toilet paper '
+            customDiv1_2.append(appendDiv1_2);
+
+            customDiv1.append(customDiv1_1);
+            customDiv1.append(hr);
+            customDiv1.append(customDiv1_2);
+            customTdRoomtype.append(spanHeadRoomType);
+            customTdRoomtype.append(customDiv1);
+            customTr.append(customTdRoomtype.get(0).outerHTML);   
+            //end room type
+
+            // max guest
+            let customTdNumberOfGuests = $("<td/>");
+            let customeI_fa_person = $('<i/>');
+            customeI_fa_person.attr('class', 'fa-solid fa-person');
+            for(let m = 0; m < room.max_guest; m++) {
+                customTdNumberOfGuests.append(customeI_fa_person.get(0).outerHTML + ' ');
+            }
+            customTr.append(customTdNumberOfGuests.get(0).outerHTML);
+            //end max guest
+    
+            // price for nights
+            let customTdPriceForNights = $("<td/>");
+            let customDiv2_1 = $('<div/>');
+            customDiv2_1.attr('class', 'd-none room-id-' + room.id).text(' ');
+            let customDiv2_2 = $('<div/>');
+            customDiv2_2.attr('class', 'priceCurrentShow' + room.id).css('color', 'rgb(234, 60, 60)').text(newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+            let customButtonModalVoucher = $('<button/>');
+            customButtonModalVoucher.attr('type', 'button').attr('class', 'btn btn-blue text-nowrap mt-2').attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal').text('Naksu voucher');
+            // voucher modal
+            let customModalVoucherDiv = $('<div/>');
+            customModalVoucherDiv.attr('class', 'modal fade').attr('id', 'exampleModal').attr('tabindex', '-1').attr('aria-labelledby', 'exampleModalLabel').attr('aria-hidden', 'true');
+            let customDialogModalVoucherDiv = $('<div/>');
+            customDialogModalVoucherDiv.attr('class', 'modal-dialog');
+            let customContentgModalVoucherDiv = $('<div/>');
+            customContentgModalVoucherDiv.attr('class', 'modal-content');
+            let customHeaderModalVoucherDiv = $('<div/>');
+            // header modal
+            customHeaderModalVoucherDiv.attr('class', 'modal-header');
+            let innerTitleHeaderModalVoucherDiv = $('<h5/>');
+            innerTitleHeaderModalVoucherDiv.attr('class', 'modal-title').attr('id', 'exampleModalLabel').text('Modal title');
+            let innerButtonCloseHeaderModalVoucherDiv = $('<button/>');
+            innerButtonCloseHeaderModalVoucherDiv.attr('type', 'button').attr('data-bs-dismiss', 'modal').attr('class', 'btn-close').attr('aria-label', 'Close')
+            customHeaderModalVoucherDiv.append(innerTitleHeaderModalVoucherDiv.get(0).outerHTML, innerButtonCloseHeaderModalVoucherDiv.get(0).outerHTML);
+
+            //body modal
+            let customBodyModalVoucherDiv = $('<div/>');
+            customBodyModalVoucherDiv.attr('class', 'modal-body');
+            let arrayContentModalBody = [];
+            if(coupons){
+                $.each(coupons, function (i, currProgram) {
+                    $.each(currProgram, function (key, val) {
+                        $.each(val, function (column, value) {
+                            let innerContentBodyModalVoucherDiv = $('<div/>');
+                            innerContentBodyModalVoucherDiv.attr('class', 'mb-3 d-flex justify-between');
+                            console.log(3);
+                            let innerCodeContentBodyModalVoucherDiv = $('<div/>');
+                            innerCodeContentBodyModalVoucherDiv.css('width', '70%');
+                            if(column == 'code') {
+                                innerCodeContentBodyModalVoucherDiv.text(value);
+                            }
+                            let innerDescriptionContentBodyModalVoucherDiv = $('<p/>');
+                            if(column == 'description') {
+                                innerDescriptionContentBodyModalVoucherDiv.css('color', 'rgb(219, 102, 102)').text(value);
+                            }
+                            let innerButtonUseVoucherModal  = $('<button/>');
+                            innerButtonUseVoucherModal.attr('type', 'button').attr('class', 'btn btn-sm btn-blue mt-2 text-nowrap-to-normal').css('width', '25%').text('Use Voucher');
+                        
+                            // append
+                            innerCodeContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv, innerDescriptionContentBodyModalVoucherDiv, innerButtonUseVoucherModal);
+                            innerContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv);
+                            arrayContentModalBody.push(innerContentBodyModalVoucherDiv);
+                        });
+                    });
+                });
+                for(let j = 0; j < arrayContentModalBody.length; j++) {
+                    customBodyModalVoucherDiv.append(arrayContentModalBody[j])
+                }
+            } else {
+                let loginToUseVoucherDiv = $('<div/>');
+                loginToUseVoucherDiv.attr('class', 'font-bold fs-3 text-center').text('Hãy đăng nhập để sử dụng voucher');
+            }
+            // modal footer
+            let voucherModalFooter = $('<div/>');
+            voucherModalFooter.attr('class', 'modal-footer');
+            voucherModalButtonFooter = $("<button/>");
+            voucherModalButtonFooter.attr('type', 'button').attr('class', 'btn btn-secondary').attr('data-bs-dismiss', 'modal').text('Close');
+            voucherModalFooter.append(voucherModalButtonFooter);
+            // end modal footer 
+            customContentgModalVoucherDiv.append(customHeaderModalVoucherDiv, customBodyModalVoucherDiv, voucherModalFooter);
+            customDialogModalVoucherDiv.append(customContentgModalVoucherDiv);
+            customModalVoucherDiv.append(customDialogModalVoucherDiv);
+            
+            customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML, customButtonModalVoucher.get(0).outerHTML, customModalVoucherDiv);
+            customTr.append(customTdPriceForNights);
+            $('#tableBody').append(customTr);
+
+            // end voucher modal
+
+            
+            
+            // $('#taxAndCharges').val(taxAndCharges)
+            // $('#NumberOfNights').val(calcNights);
+            // $('#priceForNights').text(textCalcNight);
+
+    
+
+
+            // let customTdChoice = $("<td/>");
+            // let customTdSelectRooms = $("<td/>");
+            // customTd.append($("<option></option>").attr("value", optionData(0)).text(optionData[1]));
+        }
+        
     }
 
