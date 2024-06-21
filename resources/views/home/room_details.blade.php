@@ -132,8 +132,11 @@
                                                    <div style="width: 70%">
                                                       <p>Code: <span>{{$item->code}}</span></p>
                                                       <p style="color: rgb(219, 102, 102)">{{$item->description}}</p>
+                                                      <div class="d-none value-type">{{$item->value}}</div>
+                                                      <div class="d-none amount">{{$item->amount}}</div>
+                                                      <div class="d-none vouhcer-id">{{$item->id}}</div>
                                                    </div>
-                                                   <button type="button" class="btn btn-sm btn-blue mt-2 text-nowrap-to-normal" style="width: 25%">Use voucher</button>
+                                                   <button type="button" class="btn btn-sm btn-blue mt-2 text-nowrap-to-normal btn-use-voucher" style="width: 25%">Use voucher</button>
                                                 </div>
                                                 @endforeach
                                              @endforeach
@@ -183,7 +186,9 @@
                                  <input hidden type="text" name="NumberOfNights" id="NumberOfNights" value='2'>
                                  <input hidden type="text" name="taxAndCharges" id="taxAndCharges" value={{$room->price * 2 * 0.1}}>
                                  <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) - ($room->price * 2 * 0.1))}}>
-                                 <input hidden type="text" name="quantityRoomInput" id="quantityRoomInput" value="0">   
+                                 <input hidden type="text" name="quantityRoomInput" id="quantityRoomInput" value="0"> 
+                                 <input hidden type="text" name="voucherIdUsed" id="voucherIdUsed" value="not use voucher"> 
+                                 
                               <div class="w-full" style="background-color: #4C76B2; height: 40px;">&nbsp;</div>
                                  <div id="reserveWithNoRoom" style="display: block; background-color: white;" class="p-3">
                                     <button type="button" class="btn btn-primary mb-3">I'll reserve</button>

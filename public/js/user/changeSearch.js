@@ -34,6 +34,36 @@ $(document).ready(function() {
             }
         });
     })
+
+    // use voucher
+    $(".btn-use-voucher").click(function() {
+        // collect data
+        var parentThis = $(this).parent();
+        var valueType = parentThis.find('.value-type');
+        var amountCoupon = parentThis.find('.amount');
+        var vouhcerId = parentThis.find('.vouhcer-id');
+        var totalPrice = $('.totalPriceHidden').text(); // will change here
+        var updateTotalPrice = '';
+
+        // update data
+        if(valueType.text() == 'percentage') {
+            amountCoupon = (amountCoupon.text() / 100) * totalPrice;
+            updateTotalPrice = totalPrice - amountCoupon;
+
+             // update
+            $(':hidden#totalPrice').val(parseInt(updateTotalPrice));
+            $(':hidden#voucherIdUsed').val(vouhcerId.text());
+            $('#totalPriceShow').text(updateTotalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+        } else if(valueType.text() == 'numeric') {
+            updateTotalPrice = totalPrice - amountCoupon.text();
+
+             // update
+            $(':hidden#totalPrice').val(parseInt(updateTotalPrice));
+            $(':hidden#voucherIdUsed').val(vouhcerId.text());            
+            $('#totalPriceShow').text(updateTotalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+        }
+    });
+    
     $("select").change(function () {
         quantityElement = $(this);
         // collect data
