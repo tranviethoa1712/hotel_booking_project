@@ -110,47 +110,7 @@
                                </td>
                                 <td>
                                  <div class="d-none room-id-{{$room->id}}">&nbsp;</div>
-                                  <div style="color: rgb(234, 60, 60)" class="priceCurrentShow">{{number_format($room->price * 2 - ($room->price * 2 * 0.1)) . ' VND'}}</div>
-                                  {{-- !-- Button trigger modal --> --}}
-                                  <button type="button" class="btn btn-blue text-nowrap mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    Naksu voucher
-                                  </button>
-                               
-                               <!-- Modal -->
-                               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                  <div class="modal-dialog">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                       </div>
-                                       <div class="modal-body">
-                                          @if(!empty($coupons))
-                                             @foreach($coupons as $coupon)
-                                                @foreach($coupon as $item)
-                                                <div class="mb-3 d-flex justify-between">
-                                                   <div style="width: 70%">
-                                                      <p>Code: <span>{{$item->code}}</span></p>
-                                                      <p style="color: rgb(219, 102, 102)">{{$item->description}}</p>
-                                                      <div class="d-none value-type">{{$item->value}}</div>
-                                                      <div class="d-none amount">{{$item->amount}}</div>
-                                                      <div class="d-none vouhcer-id">{{$item->id}}</div>
-                                                   </div>
-                                                   <button type="button" class="btn btn-sm btn-blue mt-2 text-nowrap-to-normal btn-use-voucher" style="width: 25%">Use voucher</button>
-                                                </div>
-                                                @endforeach
-                                             @endforeach
-                                             
-                                             @else 
-                                             <div class="font-bold fs-3 text-center">Hãy đăng nhập để sử dụng voucher</div>
-                                          @endif
-                                       </div>
-                                       <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                       </div>
-                                    </div>
-                                  </div>
-                               </div>
+                                  <div style="color: rgb(234, 60, 60)" class="priceCurrentShow">{{number_format(($room->price * 2) + ($room->price * 2 * 0.1)) . ' VND'}}</div>
                                </td>
                                <td class="text-capitalize p-2" style="color: rgb(113, 176, 113)">
                                   <p class="mb-2" style="color: rgb(113, 176, 113)"><span style="color: green">Free cancellation</span> before 18 June 2024</p>   
@@ -160,10 +120,10 @@
                                 <td class="text-capitalize" style="width: 10%">  
                                  <div class="d-none priceCurrentElement">{{$room->price}}</div>  
                                  <div class="d-none numberOfRoomAvailableElement">{{$room->number_of_room - $room->number_room_booked}}</div>  
-                                  <select class="form-select quantityElement" aria-label="Default select example" name="quantityRoomElement" id="quantityElement-{{$room->id}}" style="width: 48%">
+                                  <select class="form-select quantityElement" aria-label="Default select example" name="quantityRoomElement-{{$room->id}}" id="quantityElement-{{$room->id}}" style="width: 48%">
                                      <option selected value="0">0</option>
                                      @for($i = 1; $i <= ($room->number_of_room - $room->number_room_booked); $i++)
-                                        <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(' . number_format(($room->price * 2 * $i) - ($room->price * 2 * $i * 0.1)) . ' VND)'}} </option>
+                                        <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(' . number_format(($room->price * 2 * $i) + ($room->price * 2 * $i * 0.1)) . ' VND)'}} </option>
                                      @endfor
                                    </select>
                                 </td>   
@@ -185,10 +145,10 @@
                                  <input hidden type="text" name="numberOfRoomAvailable" id="numberOfRoomAvailable" value={{$room->number_of_room - $room->number_room_booked}}>
                                  <input hidden type="text" name="NumberOfNights" id="NumberOfNights" value='2'>
                                  <input hidden type="text" name="taxAndCharges" id="taxAndCharges" value={{$room->price * 2 * 0.1}}>
-                                 <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) - ($room->price * 2 * 0.1))}}>
+                                 <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) + ($room->price * 2 * 0.1))}}>
+                                 <div class="d-none totalPriceHidden">{{(($room->price * 2) + ($room->price * 2 * 0.1))}}</div>
                                  <input hidden type="text" name="quantityRoomInput" id="quantityRoomInput" value="0"> 
                                  <input hidden type="text" name="voucherIdUsed" id="voucherIdUsed" value="not use voucher"> 
-                                 
                               <div class="w-full" style="background-color: #4C76B2; height: 40px;">&nbsp;</div>
                                  <div id="reserveWithNoRoom" style="display: block; background-color: white;" class="p-3">
                                     <button type="button" class="btn btn-primary mb-3">I'll reserve</button>
@@ -198,6 +158,48 @@
                                  <div id="reserveWithRoom" style="display: none; background-color: white;" class="p-3">
                                     <p>1 room for</p>
                                     <div class="uppercase fs-3" id="totalPriceShow">{{number_format(($room->price * 2) - ($room->price * 2 * 0.1)) . ' VND'}}</div>
+                                    <div class="my-3">
+                                       {{-- !-- Button trigger modal --> --}}
+                                       <button type="button" class="btn btn-blue text-nowrap mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                          Naksu voucher
+                                       </button>
+                               
+                                       <!-- Modal -->
+                                       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                             <div class="modal-content">
+                                                <div class="modal-header">
+                                                   <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body modal-body-voucher">
+                                                   @if(!empty($coupons))
+                                                      @foreach($coupons as $coupon)
+                                                         @foreach($coupon as $item)
+                                                         <div class="mb-3 d-flex justify-between inner-body-voucher">
+                                                            <div style="width: 70%">
+                                                               <p>Code: <span>{{$item->code}}</span></p>
+                                                               <p style="color: rgb(219, 102, 102)">{{$item->description}}</p>
+                                                               <div class="d-none value-type">{{$item->value}}</div>
+                                                               <div class="d-none amount">{{$item->amount}}</div>
+                                                               <div class="d-none vouhcer-id">{{$item->id}}</div>
+                                                            </div>
+                                                            <button type="button" class="btn btn-sm btn-blue mt-2 text-nowrap-to-normal btn-use-voucher" style="width: 25%">Use voucher</button>
+                                                         </div>
+                                                         @endforeach
+                                                      @endforeach
+                                                      
+                                                      @else 
+                                                      <div class="font-bold fs-3 text-center">Hãy đăng nhập để sử dụng voucher</div>
+                                                   @endif
+                                                </div>
+                                                <div class="modal-footer">
+                                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
                                     <div style="color: gray">Includes taxes and charges</div>
                                     <div class="mt-4">
                                        <button type="submit" class="btn btn-primary">I'll reserve</button>
