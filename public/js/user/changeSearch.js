@@ -42,29 +42,33 @@ $(document).ready(function() {
         var valueType = parentThis.find('.value-type');
         var amountCoupon = parentThis.find('.amount');
         var vouhcerId = parentThis.find('.vouhcer-id');
-        var totalPrice = $('.totalPriceHidden').text(); // will change here
+        var totalPriceDiv = $('.totalPriceHidden').text(); 
         var updateTotalPrice = '';
-
+        
+        // find same class element and enable
+        // $('.modal-body-voucher').find(".btn-use-voucher").not($(this)).attr('disabled', false);
+        $('.btn-use-voucher').prop("disabled", false).not($(this));
         // update data
         if(valueType.text() == 'percentage') {
-            amountCoupon = (amountCoupon.text() / 100) * totalPrice;
-            updateTotalPrice = totalPrice - amountCoupon;
+            amountCoupon = (amountCoupon.text() / 100) * totalPriceDiv;
+            updateTotalPrice = totalPriceDiv - amountCoupon;
 
              // update
             $(':hidden#totalPrice').val(parseInt(updateTotalPrice));
             $(':hidden#voucherIdUsed').val(vouhcerId.text());
             $('#totalPriceShow').text(updateTotalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
         } else if(valueType.text() == 'numeric') {
-            updateTotalPrice = totalPrice - amountCoupon.text();
+            updateTotalPrice = totalPriceDiv - amountCoupon.text();
 
              // update
             $(':hidden#totalPrice').val(parseInt(updateTotalPrice));
             $(':hidden#voucherIdUsed').val(vouhcerId.text());            
             $('#totalPriceShow').text(updateTotalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
         }
+        $(this).attr('disabled', 'disabled');
     });
     
-    $("select").change(function () {
+    $(".quantityElement").change(function () {
         quantityElement = $(this);
         // collect data
         var quantity = quantityElement.val();
@@ -73,15 +77,17 @@ $(document).ready(function() {
         var NumberOfNights = $('#NumberOfNights').val();
         
         $(':hidden#quantityRoomInput').val(quantity);
-        elementTotalPriceHidden = $('#totalPrice');
-        elementTotalPriceShow = $('#totalPriceShow');
-        
-        // calc price
-        var calcPrice = (priceCurrent * quantity * NumberOfNights) - (priceCurrent * quantity * NumberOfNights * 0.1);
+        var elementTotalPriceHidden = $('#totalPrice');
+        var elementTotalPriceHiddenDiv = $('.totalPriceHidden');
+        var elementTotalPriceShow = $('#totalPriceShow');
+
+        // calc price 
+        var calcPrice = (priceCurrent * quantity * NumberOfNights) + (priceCurrent * quantity * NumberOfNights * 0.1);
         // change view
         elementTotalPriceHidden.val(calcPrice);
+        elementTotalPriceHiddenDiv.text(calcPrice);
         elementTotalPriceShow.text(calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
-
+        // show total_price when room selected
         if(quantity !== '0') {
             $("#reserveWithNoRoom").css("display","none");
             $("#reserveWithRoom").css("display","block")
@@ -94,9 +100,13 @@ $(document).ready(function() {
 
     function changePriceForDates(startDate, endDate, priceCurrent, numberOfRoomAvailable, id, room, coupons)
     {
+        // enable all voucher (refresh)
+        $('.btn-use-voucher').prop("disabled", false);
 
-        var roomIdElement = $('.room-id-' + id);
-        var roomIdElementParent = roomIdElement.parent();
+        // hidden total price column
+        $("#reserveWithNoRoom").css("display","block");
+        $("#reserveWithRoom").css("display","none");
+        $('#totalPrice').val('');
 
         // collect and transfer data
         var startDate = startDate.split('-').join('');
@@ -109,7 +119,7 @@ $(document).ready(function() {
         // calc and text data
         var textCalcNight = 'Price for ' + calcNights + ' nights';
         var taxAndCharges = priceCurrent * calcNights * 0.1;
-        var newPrice = priceCurrent * calcNights - taxAndCharges;
+        var newPrice = priceCurrent * calcNights + taxAndCharges;
         $('#taxAndCharges').val(taxAndCharges)
         $('#NumberOfNights').val(calcNights);
         $('#priceForNights').text(textCalcNight);
@@ -194,82 +204,10 @@ $(document).ready(function() {
             customDiv2_1.attr('class', 'd-none room-id-' + room.id).text(' ');
             let customDiv2_2 = $('<div/>');
             customDiv2_2.attr('class', 'priceCurrentShow' + room.id).css('color', 'rgb(234, 60, 60)').text(newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
-
-            let customButtonModalVoucher = $('<button/>');
-            customButtonModalVoucher.attr('type', 'button').attr('class', 'btn btn-blue text-nowrap mt-2').attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal').text('Naksu voucher');
-            // voucher modal
-            let customModalVoucherDiv = $('<div/>');
-            customModalVoucherDiv.attr('class', 'modal fade').attr('id', 'exampleModal').attr('tabindex', '-1').attr('aria-labelledby', 'exampleModalLabel').attr('aria-hidden', 'true');
-            let customDialogModalVoucherDiv = $('<div/>');
-            customDialogModalVoucherDiv.attr('class', 'modal-dialog');
-            let customContentgModalVoucherDiv = $('<div/>');
-            customContentgModalVoucherDiv.attr('class', 'modal-content');
-            let customHeaderModalVoucherDiv = $('<div/>');
-            // header modal
-            customHeaderModalVoucherDiv.attr('class', 'modal-header');
-            let innerTitleHeaderModalVoucherDiv = $('<h5/>');
-            innerTitleHeaderModalVoucherDiv.attr('class', 'modal-title').attr('id', 'exampleModalLabel').text('Modal title');
-            let innerButtonCloseHeaderModalVoucherDiv = $('<button/>');
-            innerButtonCloseHeaderModalVoucherDiv.attr('type', 'button').attr('data-bs-dismiss', 'modal').attr('class', 'btn-close').attr('aria-label', 'Close')
-            customHeaderModalVoucherDiv.append(innerTitleHeaderModalVoucherDiv.get(0).outerHTML, innerButtonCloseHeaderModalVoucherDiv.get(0).outerHTML);
-
-            //body modal
-            let customBodyModalVoucherDiv = $('<div/>');
-            customBodyModalVoucherDiv.attr('class', 'modal-body');
-            let arrayContentModalBody = [];
-            if(coupons){
-                $.each(coupons, function (i, currProgram) {
-                    $.each(currProgram, function (key, val) {
-                        
-                        var innerContentBodyModalVoucherDiv = $('<div/>');
-                        innerContentBodyModalVoucherDiv.attr('class', 'mb-3 d-flex justify-between');
-                        var innerCodeContentBodyModalVoucherDiv = $('<div/>');
-                        innerCodeContentBodyModalVoucherDiv.css('width', '70%');
-                        var innerButtonUseVoucherModal  = $('<button/>');
-                        innerButtonUseVoucherModal.attr('type', 'button').attr('class', 'btn btn-sm btn-blue mt-2 text-nowrap-to-normal').css('width', '25%').text('Use Voucher');
-                        var innerDescriptionContentBodyModalVoucherDiv = $('<p/>');
-                        $.each(val, function (column, value) {
-                            if(column == 'code') {
-                                innerCodeContentBodyModalVoucherDiv.text(value);
-                            }
-                            if(column == 'description') {
-                                innerDescriptionContentBodyModalVoucherDiv.css('color', 'rgb(219, 102, 102)').text(value);
-                            }
-                        });
-                        // append
-                        innerCodeContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv, innerDescriptionContentBodyModalVoucherDiv);
-                        innerContentBodyModalVoucherDiv.append(innerCodeContentBodyModalVoucherDiv, innerButtonUseVoucherModal);
-                        arrayContentModalBody.push(innerContentBodyModalVoucherDiv);
-                    });
-                });
-                for(let j = 0; j < arrayContentModalBody.length; j++) {
-                    customBodyModalVoucherDiv.append(arrayContentModalBody[j])
-                }
-                // modal footer
-                let voucherModalFooter = $('<div/>');
-                voucherModalFooter.attr('class', 'modal-footer');
-                let voucherModalButtonFooter = $("<button/>");
-                voucherModalButtonFooter.attr('type', 'button').attr('class', 'btn btn-secondary').attr('data-bs-dismiss', 'modal').text('Close');
-                voucherModalFooter.append(voucherModalButtonFooter);
-                // end modal footer 
-
-                // append 
-                customContentgModalVoucherDiv.append(customHeaderModalVoucherDiv, customBodyModalVoucherDiv, voucherModalFooter);
-                customDialogModalVoucherDiv.append(customContentgModalVoucherDiv);
-                customModalVoucherDiv.append(customDialogModalVoucherDiv);    
-                customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML, customButtonModalVoucher.get(0).outerHTML, customModalVoucherDiv);
-            } else {
-                let loginToUseVoucherDiv = $('<div/>');
-                loginToUseVoucherDiv.attr('class', 'font-bold fs-3 text-center').text('Hãy đăng nhập để sử dụng voucher');
-
-                customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML, loginToUseVoucherDiv.get(0).outerHTML);
-            }
-        
+   
+            customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML);        
             customTr.append(customTdPriceForNights);
-            // end voucher modal
-
             // end price for nights
-
             // Choices
             let customTdChoices = $("<td/>");
             customTdChoices.attr('class', 'text-capitalize p-2').css('color', 'rgb(113, 176, 113)');
@@ -300,37 +238,66 @@ $(document).ready(function() {
             let priceCurrentElement = $('<div/>');
             priceCurrentElement.attr('class', 'd-none priceCurrentElement').text(room.price);
             let numberOfRoomAvailableElement = $('<div/>');
-            numberOfRoomAvailableElement.attr('class', 'd-none priceCurrentElement').text(calcAvailableRoom);
+            numberOfRoomAvailableElement.attr('class', 'd-none numberOfRoomAvailableElement').text(calcAvailableRoom);
 
             // change option room
             var NumberOfNights = $('#NumberOfNights').val();
 
             // var outletOptions = $("#quantityElement-");
             var outletOptions = $("<select/>");
-            outletOptions.attr('class', 'form-select').attr('class', 'form-select quantityElement').attr('aria-label', 'Default select example').attr('name', 'quantityRoomElement').attr('id', 'quantityElement-' + room.id).css('width', '48%');
+            outletOptions.attr('class', 'form-select quantityElement').attr('aria-label', 'Default select example').attr('name', 'quantityRoomElement-' + room.id).attr('id', 'quantityElement-' + room.id).css('width', '48%');
             // generate option array
             var newOutletOptions = [];
             for(let j = 0; j < numberOfRoomAvailable; j++) {
-                let calcP = (priceCurrent * j * NumberOfNights) - (priceCurrent * j * NumberOfNights * 0.1);
+                let calcP = (priceCurrent * j * NumberOfNights) + (priceCurrent * j * NumberOfNights * 0.1);
                 calcP = calcP.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
                 let array = [j, j + '   (' + calcP + ')'];
                 newOutletOptions.push(array);
             }
-            console.log(newOutletOptions);
             // Add new options
             newOutletOptions.map((optionData) => {
-                console.log('option0: ', optionData[0]);
-                console.log('option1: ', optionData[1]);
                 let option = $('<option/>');
                 option.attr("value", optionData[0]).text(optionData[1]);
                 outletOptions.append(option);
             })
+
             customTdSelectRooms.append(priceCurrentElement.get(0).outerHTML, numberOfRoomAvailableElement.get(0).outerHTML, outletOptions.get(0).outerHTML);
-            console.log(customTdSelectRooms.get(0).outerHTML);
+            var outletOptionsEle = customTdSelectRooms.find('.quantityElement');
+            
+            outletOptionsEle.change(function() {
+                changeQuantityRoom($(this));
+            })
             customTr.append(customTdSelectRooms);
             // // end select rooms
             $('#tableBody').append(customTr);
-            console.log('success')
         }
-    }
 
+    }   
+    
+    function changeQuantityRoom(quantityElement) {
+         // collect data
+         var quantity = quantityElement.val();
+         var parentOfElement = quantityElement.parent();
+         var priceCurrent = parentOfElement.find('.priceCurrentElement').text();
+         var NumberOfNights = $('#NumberOfNights').val();
+         
+         $(':hidden#quantityRoomInput').val(quantity);
+         var elementTotalPriceHidden = $('#totalPrice');
+         var elementTotalPriceHiddenDiv = $('.totalPriceHidden');
+         var elementTotalPriceShow = $('#totalPriceShow');
+ 
+         // calc price 
+         var calcPrice = (priceCurrent * quantity * NumberOfNights) + (priceCurrent * quantity * NumberOfNights * 0.1);
+         // change view
+         elementTotalPriceHidden.val(calcPrice);
+         elementTotalPriceHiddenDiv.text(calcPrice);
+         elementTotalPriceShow.text(calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+         // show total_price when room selected
+         if(quantity !== '0') {
+             $("#reserveWithNoRoom").css("display","none");
+             $("#reserveWithRoom").css("display","block")
+         } else {
+             $("#reserveWithNoRoom").css("display","block");
+             $("#reserveWithRoom").css("display","none")
+         }
+    }
