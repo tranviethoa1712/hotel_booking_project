@@ -17,6 +17,8 @@ $(document).ready(function() {
             success: function(response) {
                 var startDate = $('#startDate').val();
                 var endDate = $('#endDate').val();
+                $('#startDateHidden').val(startDate);
+                $('#endDateHidden').val(startDate);
                 //remove all tr tag in tbody
                 $('#tableBody').find('tr').remove();
                 if(response.length > 1) {
@@ -79,14 +81,19 @@ $(document).ready(function() {
         $(':hidden#quantityRoomInput').val(quantity);
         var elementTotalPriceHidden = $('#totalPrice');
         var elementTotalPriceHiddenDiv = $('.totalPriceHidden');
+        var elementtotalPriceNoVoucher = $('#totalPriceNoVoucher');
         var elementTotalPriceShow = $('#totalPriceShow');
 
         // calc price 
         var calcPrice = (priceCurrent * quantity * NumberOfNights) + (priceCurrent * quantity * NumberOfNights * 0.1);
         // change view
         elementTotalPriceHidden.val(calcPrice);
+
         elementTotalPriceHiddenDiv.text(calcPrice);
+        elementtotalPriceNoVoucher.text(calcPrice);
         elementTotalPriceShow.text(calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+        $('#reserveWithRoom').find('.titleQuantity').text(quantity + ' room for');
+
         // show total_price when room selected
         if(quantity !== '0') {
             $("#reserveWithNoRoom").css("display","none");
@@ -275,29 +282,32 @@ $(document).ready(function() {
     }   
     
     function changeQuantityRoom(quantityElement) {
-         // collect data
-         var quantity = quantityElement.val();
-         var parentOfElement = quantityElement.parent();
-         var priceCurrent = parentOfElement.find('.priceCurrentElement').text();
-         var NumberOfNights = $('#NumberOfNights').val();
-         
-         $(':hidden#quantityRoomInput').val(quantity);
-         var elementTotalPriceHidden = $('#totalPrice');
-         var elementTotalPriceHiddenDiv = $('.totalPriceHidden');
-         var elementTotalPriceShow = $('#totalPriceShow');
- 
-         // calc price 
-         var calcPrice = (priceCurrent * quantity * NumberOfNights) + (priceCurrent * quantity * NumberOfNights * 0.1);
-         // change view
-         elementTotalPriceHidden.val(calcPrice);
-         elementTotalPriceHiddenDiv.text(calcPrice);
-         elementTotalPriceShow.text(calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
-         // show total_price when room selected
-         if(quantity !== '0') {
-             $("#reserveWithNoRoom").css("display","none");
-             $("#reserveWithRoom").css("display","block")
-         } else {
-             $("#reserveWithNoRoom").css("display","block");
-             $("#reserveWithRoom").css("display","none")
-         }
+        // collect data
+        var quantity = quantityElement.val();
+        var parentOfElement = quantityElement.parent();
+        var priceCurrent = parentOfElement.find('.priceCurrentElement').text();
+        var NumberOfNights = $('#NumberOfNights').val();
+        
+        $(':hidden#quantityRoomInput').val(quantity);
+        var elementTotalPriceHidden = $('#totalPrice');
+        var elementtotalPriceNoVoucher = $('#totalPriceNoVoucher');
+        var elementTotalPriceHiddenDiv = $('.totalPriceHidden');
+        var elementTotalPriceShow = $('#totalPriceShow');
+
+        // calc price 
+        var calcPrice = (priceCurrent * quantity * NumberOfNights) + (priceCurrent * quantity * NumberOfNights * 0.1);
+        // change view
+        elementTotalPriceHidden.val(calcPrice);
+        elementtotalPriceNoVoucher.val(calcPrice);
+        elementTotalPriceHiddenDiv.text(calcPrice);
+        elementTotalPriceShow.text(calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+        $('#reserveWithRoom').find('.titleQuantity').text(quantity + ' room for');
+        // show total_price when room selected
+        if(quantity !== '0') {
+            $("#reserveWithNoRoom").css("display","none");
+            $("#reserveWithRoom").css("display","block")
+        } else {
+            $("#reserveWithNoRoom").css("display","block");
+            $("#reserveWithRoom").css("display","none")
+        }
     }
