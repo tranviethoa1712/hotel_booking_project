@@ -139,16 +139,19 @@
                    <div class="col-md-2 p-0">
                      @if (Auth::user())
                             <div>
+                               <input hidden type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">   
                               <form action="{{url('booking_view')}}">
-                                 <input hidden type="text" name="room_type" id="roomType" value="{{$room->room_type}}">
-                                 <input hidden type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">   
                                  <input hidden type="text" name="numberOfRoomAvailable" id="numberOfRoomAvailable" value={{$room->number_of_room - $room->number_room_booked}}>
                                  <input hidden type="text" name="NumberOfNights" id="NumberOfNights" value='2'>
                                  <input hidden type="text" name="taxAndCharges" id="taxAndCharges" value={{$room->price * 2 * 0.1}}>
                                  <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) + ($room->price * 2 * 0.1))}}>
+                                 <input hidden type="text" name="totalPriceNoVoucher" id="totalPriceNoVoucher" value={{(($room->price * 2) + ($room->price * 2 * 0.1))}}>
                                  <div class="d-none totalPriceHidden">{{(($room->price * 2) + ($room->price * 2 * 0.1))}}</div>
                                  <input hidden type="text" name="quantityRoomInput" id="quantityRoomInput" value="0"> 
                                  <input hidden type="text" name="voucherIdUsed" id="voucherIdUsed" value="not use voucher"> 
+                                 <input hidden type="text" name="roomIdUsed" id="roomIdUsed" value="{{$room->id}}">
+                                 <input hidden type="date" name="startDateHidden" id="startDateHidden"> 
+                                 <input hidden type="date" name="endDateHidden" id="endDateHidden"> 
                               <div class="w-full" style="background-color: #4C76B2; height: 40px;">&nbsp;</div>
                                  <div id="reserveWithNoRoom" style="display: block; background-color: white;" class="p-3">
                                     <button type="button" class="btn btn-primary mb-3">I'll reserve</button>
@@ -156,7 +159,7 @@
                                     <i class="fa-solid fa-credit-card"></i> &nbsp; No credit card needed
                                  </div>
                                  <div id="reserveWithRoom" style="display: none; background-color: white;" class="p-3">
-                                    <p>1 room for</p>
+                                    <p class="titleQuantity">1 room for</p>
                                     <div class="uppercase fs-3" id="totalPriceShow">{{number_format(($room->price * 2) - ($room->price * 2 * 0.1)) . ' VND'}}</div>
                                     <div class="my-3">
                                        {{-- !-- Button trigger modal --> --}}
@@ -217,7 +220,6 @@
                                        <div>
                                           <span class="font-bold mb-2">No prepayment needed</span> – pay at the property
                                        </div>
-                                       <div style="color: rgb(231, 167, 167)">{{'Only ' . ($room->number_of_room - $room->number_room_booked) . ' rooms left on our site'}}</div>
                                     </div>
                                  </div>
                             </div>

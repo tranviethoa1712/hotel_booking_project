@@ -72,7 +72,7 @@
                                 <div>
                                     <div>Check-in</div>
                                     <div class="font-bold fs-4 mt-2">
-                                        Mon 15 Jul 2024
+                                        {{$data_get['startDateHidden']}}
                                     </div>
                                     <div class="mt-2">
                                         <span style="color: gray;">
@@ -85,7 +85,7 @@
                                 <div>
                                     <div>Check-out</div>
                                     <div class="font-bold fs-4 mt-2">
-                                        Mon 17 Jul 2024
+                                        {{$data_get['endDateHidden']}}
                                     </div>
                                     <div class="mt-2">
                                         <span style="color: gray;">
@@ -103,7 +103,7 @@
                     <div class="py-2">
                         <div>You selected</div>
                         <div class="font-bold mt-2">
-                            1 room for 2 adults
+                            {{$data_get['quantityRoomInput']}} rooms for 2 adults
                         </div>
                         <div class="mt-3">
                             1 x Standard Studio
@@ -119,11 +119,11 @@
                     <div>
                         <div class="d-flex justify-between">
                             <div>Original price</div>
-                            <div>1.778.000 VND</div>
+                            <div>{{number_format($data_get['totalPriceNoVoucher'])}} VND</div>
                         </div>
                         <div class="d-flex justify-between">
                             <div>Limited-time Deal</div>
-                            <div>- 622.300 VND</div>
+                            <div>- {{number_format($data_get['totalPriceNoVoucher'] - $data_get['totalPrice'])}} VND</div>
                         </div>
                     </div>
                     <div class="mt-2">
@@ -137,8 +137,8 @@
                         </div>
                         <div class="amount text-end" style="width: 70%">
                             <div>
-                                <span class="mt-2" style="color: red;">1.778.000 VND</span>
-                                <div class="fs-3 font-bold mt-2">1.155.700 VND</div>
+                                <span class="mt-2" style="color: red; text-decoration: line-through;">{{number_format($data_get['totalPriceNoVoucher'])}} VND</span>
+                                <div class="fs-3 font-bold mt-2">{{number_format($data_get['totalPrice'])}} VND</div>
                                 <div style="color: gray">Includes taxes and charges</div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                     <i class="fa-solid fa-money-check-dollar" style="color: #0ca175;"></i>
                                 </div>
                                 <div>
-                                    Includes 105,064 VND in taxes and charges
+                                    Includes {{number_format($data_get['taxAndCharges'])}} VND in taxes and charges
                                 </div>
                             </div>
                             <div class="d-flex justify-between">
@@ -161,7 +161,7 @@
                                     10 % VAT
                                 </div>
                                 <div>
-                                    105,064 VND
+                                    {{number_format($data_get['taxAndCharges'])}} VND
                                 </div>
                             </div>
                         </div>
@@ -179,12 +179,8 @@
                     <div class="head-info border-bottom">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="firstName" class="form-label font-bold">First name <span style="color: red">*</span></label>
-                                <input type="text" class="form-control rounded w-full" name="first_name" id="firstName" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="lastName" class="form-label font-bold">Last Name <span style="color: red">*</span></label>
-                                <input type="text" class="form-control rounded w-full" name="last_name" id="lastName" required>
+                                <label for="fullname" class="form-label font-bold">Full name <span style="color: red">*</span></label>
+                                <input type="text" class="form-control rounded w-full" name="fullname" id="firstName" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="emailAddress" class="form-label font-bold">Email address <span style="color: red">*</span></label>

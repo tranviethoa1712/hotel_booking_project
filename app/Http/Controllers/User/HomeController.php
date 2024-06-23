@@ -32,6 +32,7 @@ class HomeController
         ->where('end_date', '>=', $start_date)
         ->exists();
         $roomAvailableForTheDate = [];
+        $numberOfRoomBooked = '';
         
         // if any room booked in that time => filter and return available room
         if($isBooked === true) {
@@ -43,6 +44,16 @@ class HomeController
                 $arrayIdBookedRoom[] = $booking->room_id;
             }
             $roomAvailableForTheDate = Room::get()->where('room_type', $room_type)->whereNotIn('id', $arrayIdBookedRoom);
+            foreach($roomAvailableForTheDate as $room) {
+                $bookedRoomForId = Booking::get()->where('room_id', $room->id)
+                ->where('start_date', '<=', $end_date)
+                ->where('end_date', '>=', $start_date)
+                ->where('status', '!=' , 'reject');
+                foreach($bookedRoomForId as $booking) {
+                    $room->number_room_booked += $booking->room_quantity;
+                }
+            }
+
         } else {
             $roomAvailableForTheDate = Room::get()->where('room_type', $room_type);
         }
@@ -61,22 +72,30 @@ class HomeController
                         'rooms' => $roomAvailableForTheDate,
                         'room' => $room,
                         'coupons' => $coupons,
+                        'start_date' => $start_date,
+                        'end_date' => $end_date
                     ]);
                 } else {
                     return view('home.room_details', [
                         'rooms' => $roomAvailableForTheDate,
                         'room' => $room,
+                        'start_date' => $start_date,
+                        'end_date' => $end_date
                     ]);
                 }
             }
             return view('home.room_details', [
                 'rooms' => $roomAvailableForTheDate,
                 'room' => $room,
+                'start_date' => $start_date,
+                'end_date' => $end_date
             ]);
         }
         return view('home.room_details', [
             'fullRooms' => 'Please choose another date!',
             'room' => $room,
+            'start_date' => $start_date,
+            'end_date' => $end_date
         ]);
     }
 
@@ -187,7 +206,15 @@ class HomeController
 
     public function booking_view(BookingNeedsOfCustomer $request) 
     {
-        $data = $request->validated();
-        return view('home.booking_view', compact('data'));
+        $data_get = $request->validated();
+        $data_get['startDateHidden'] = date('D d M Y', strtotime($data_get['startDateHidden']));
+        $data_get['endDateHidden'] = date('D d M Y', strtotime($data_get['endDateHidden']));
+        $room = Room::find($data_get['roomIdUsed']);
+
+        return view('home.booking_view', [
+            'data_get' => $data_get,
+            'room_type' => $room->room_type,
+            'max_guest' => $room->max_guest
+        ]);
     }
 }

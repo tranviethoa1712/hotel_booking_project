@@ -22,12 +22,21 @@ class BookingRequest extends FormRequest
     public function rules(): array
     {   
         return [
-            "room_id" => ['required', 'max:255'],
-            "name" => ['required', 'max:255'],
-            'email' => ['required'],
-            'phone' => ['string', 'max:13'],
-            "start_date" => ['required', 'date'],
-            'end_date' => ['required', 'date'],
+            "room_id" => ['required'],
+            'coupon_id' => ['required'],
+            "fullname" => ['required', 'max:255'],
+            'email' => ['string', 'max:255'],
+            "address" => ['required'],
+            'city' => ['nullable', 'max:100'],
+            "zip_code" => ['nullable', 'max:255'],
+            'country' => ['string', 'max:255'],
+            "phone_number" => ['required', 'max:13'],
+            'special_request' => ['nullable'],
+            "arrival_time" => ['nullable', 'max:100'],
+            'start_date' => ['required', 'date'],
+            "end_date" => ['required', 'date'],
+            'total_price' => ['string', 'max:100'],
+            "room_quantity" => ['required', 'max:50'],
         ];
     }
 }

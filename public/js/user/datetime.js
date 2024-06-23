@@ -22,3 +22,5 @@ var oneDay = 24 * 60 * 60 * 1000;
 
 document.getElementById('startDate').valueAsDate = new Date(new Date().getTime());
 document.getElementById('endDate').valueAsDate = new Date(new Date().getTime() + oneDay * 2);
+document.getElementById('startDateHidden').valueAsDate = new Date(new Date().getTime());
+document.getElementById('endDateHidden').valueAsDate = new Date(new Date().getTime() + oneDay * 2);

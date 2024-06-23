@@ -13,7 +13,7 @@ class BookingNeedsOfCustomer extends FormRequest
     {
         return true;
     }
-
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,13 +22,16 @@ class BookingNeedsOfCustomer extends FormRequest
     public function rules(): array
     {
         return [
-            "room_type" => ['required'],
-            "priceCurrent" => ['required'],
             "numberOfRoomAvailable" => ['required'],
             "NumberOfNights" => ['required'],
             "taxAndCharges" => ['required'],
             "totalPrice" => ['required'],
-            "quantityRoom" => ['required'],
+            "totalPriceNoVoucher" => ['required'],
+            "quantityRoomInput" => ['required'],
+            "voucherIdUsed" => ['required'],
+            "roomIdUsed" => ['required'],
+            "startDateHidden" => ['required', 'date'],
+            "endDateHidden" => ['required', 'date'],
         ];
     }
 }
