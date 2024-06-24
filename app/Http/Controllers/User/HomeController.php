@@ -32,7 +32,6 @@ class HomeController
         ->where('end_date', '>=', $start_date)
         ->exists();
         $roomAvailableForTheDate = [];
-        $numberOfRoomBooked = '';
         
         // if any room booked in that time => filter and return available room
         if($isBooked === true) {
@@ -207,6 +206,8 @@ class HomeController
     public function booking_view(BookingNeedsOfCustomer $request) 
     {
         $data_get = $request->validated();
+        $data_get['startDate'] = $data_get['startDateHidden'];
+        $data_get['endDate'] = $data_get['endDateHidden'];
         $data_get['startDateHidden'] = date('D d M Y', strtotime($data_get['startDateHidden']));
         $data_get['endDateHidden'] = date('D d M Y', strtotime($data_get['endDateHidden']));
         $room = Room::find($data_get['roomIdUsed']);

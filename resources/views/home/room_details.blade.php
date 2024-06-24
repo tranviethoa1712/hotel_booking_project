@@ -60,6 +60,18 @@
                </div>
                <div class="row">
                   <div class="col-md-10 p-0">
+                     @session('message')
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                           {{ $value }}
+                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                     </div>
+                     @endsession
+                     @session('messageBooked')
+                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                           {{ $value }}
+                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                     </div>
+                     @endsession
                      <table class="table table-available-room">
                         <thead>
                           <tr>
@@ -141,7 +153,8 @@
                             <div>
                                <input hidden type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">   
                               <form action="{{url('booking_view')}}">
-                                 <input hidden type="text" name="numberOfRoomAvailable" id="numberOfRoomAvailable" value={{$room->number_of_room - $room->number_room_booked}}>
+                                 @csrf
+                                 @method('get')
                                  <input hidden type="text" name="NumberOfNights" id="NumberOfNights" value='2'>
                                  <input hidden type="text" name="taxAndCharges" id="taxAndCharges" value={{$room->price * 2 * 0.1}}>
                                  <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) + ($room->price * 2 * 0.1))}}>

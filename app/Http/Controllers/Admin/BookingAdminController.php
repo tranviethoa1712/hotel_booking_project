@@ -4,10 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BookingRequest;
 use App\Models\Booking;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class BookingAdminController
 {
+    protected $userService;
+
+    public function __construct()
+    {
+        $this->userService = new UserService;
+    }
     /**
      * Manage bookings
      */
@@ -20,23 +27,18 @@ class BookingAdminController
     public function book_room(BookingRequest $request)
     {
         $data = $request->validated();
-        // check booked room on the date
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
-        
-        $isBooked = Booking::where('status', '!=', 'reject')
-        ->where('room_id', $data['room_id'])
-        ->where('start_date', '<=', $end_date)
-        ->where('end_date', '>=', $start_date)->exists();
-        
-        if($isBooked) {
-            return redirect()->back()->with('messageBooked', 'The room is already booked, please try different date');
+        $data['vnpay'] = true;
+        return $this->userService->vnpayProcessing($data);
+    }
+
+    public function resultView(Request $request)
+    {
+        $result = $this->userService->checkVnpayReturn($request);
+        if ($result['messageCode'] == "00") {
+            echo "successfully";
         } else {
-            if(Booking::create($data)){
-                return redirect()->back()->with('message', 'Booking success!');
-            }
-        } 
-        return redirect()->back();
+            echo "failed";
+        }
     }
 
     /**

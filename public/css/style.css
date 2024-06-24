@@ -30,9 +30,9 @@
 /*--------------------------------------------------------------------- skeleton ---------------------------------------------------------------------*/
 
 :root {
-     --primaryColor: rgb(207, 167, 34);
+     --primaryColor: #678dd0;
      --color_primary_bg_table_point: #003b95;
-     --color_primary_bg_table: #4c76b2;
+     --color_primary_bg_table: #678dd0
 }
 
 * {

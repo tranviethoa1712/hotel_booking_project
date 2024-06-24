@@ -10,16 +10,37 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'start_date',
-        'end_date',
-        'room_id',
+        "transaction_id",
+        "room_id", 
+        "coupon_id",
+        "fullname",
+        "email",
+        "address", 
+        "city",
+        "zip_code",
+        "country",
+        "phone_number",
+        "special_request", 
+        "arrival_time",
+        "status",
+        "start_date",
+        "end_date",
+        "total_price",
+        "room_quantity"
     ];
 
     public function room()
     {
-        return $this->hasOne(Room::class, 'id', 'room_id');
+        return $this->hasOne(Room::class, "id", "room_id");
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, "id", "transaction_id");
+    }
+
+    public function coupon()
+    {
+        return $this->hasOne(Coupon::class, "id", "coupon_id");
     }
 }
