@@ -90,7 +90,7 @@ $(document).ready(function() {
         elementTotalPriceHidden.val(calcPrice);
 
         elementTotalPriceHiddenDiv.text(calcPrice);
-        elementtotalPriceNoVoucher.text(calcPrice);
+        elementtotalPriceNoVoucher.val(calcPrice);
         elementTotalPriceShow.text(calcPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
         $('#reserveWithRoom').find('.titleQuantity').text(quantity + ' room for');
 

@@ -60,6 +60,7 @@ Route::middleware([Language::class])->group(function () {
         
         route::get('/booking_view', [HomeController::class, 'booking_view'])->name('booking_view');
         route::post('/book_room', [BookingAdminController::class, 'book_room'])->name('user.book_room');
+        route::get('/resultView', [BookingAdminController::class, 'resultView'])->name('user.result_view');
     });
 
     route::get('/about', [HomeController::class, 'aboutUs'])->name('user.aboutUs');

@@ -103,15 +103,11 @@
                     <div class="py-2">
                         <div>You selected</div>
                         <div class="font-bold mt-2">
-                            {{$data_get['quantityRoomInput']}} rooms for 2 adults
+                            {{$data_get['quantityRoomInput']}} rooms for {{$room_type}} adults
                         </div>
                         <div class="mt-3">
-                            1 x Standard Studio
+                            {{$data_get['quantityRoomInput'] . ' x ' . $room_type}}
                         </div>
-                        <div class="mt-3">
-                            <a href="#">Change your selection</a>
-                        </div>
-
                     </div>
                 </div>
                 <div class="price-sumary p-3 mt-3">
@@ -121,10 +117,12 @@
                             <div>Original price</div>
                             <div>{{number_format($data_get['totalPriceNoVoucher'])}} VND</div>
                         </div>
+                        @if(intval($data_get['totalPriceNoVoucher']) >  intval($data_get['totalPrice']))
                         <div class="d-flex justify-between">
                             <div>Limited-time Deal</div>
                             <div>- {{number_format($data_get['totalPriceNoVoucher'] - $data_get['totalPrice'])}} VND</div>
                         </div>
+                        @endif
                     </div>
                     <div class="mt-2">
                         <div style="color: gray;">
@@ -169,12 +167,36 @@
                 </div>
             </div>
             <div class="col-md-8">
+                <form action="{{url('book_room')}}" method="post">
+                    @csrf
+                    <input hidden type="text" name="room_id" id="voucherIdUsed" value="{{$data_get['roomIdUsed']}}"> 
+                    <input hidden type="text" name="coupon_id" id="voucherIdUsed" value="{{$data_get['voucherIdUsed']}}"> 
+                    <input hidden type="text" name="total_price" id="totalPrice" value="{{$data_get['totalPrice']}}">
+                    <input hidden type="text" name="room_quantity" id="quantityRoomInput" value="{{$data_get['quantityRoomInput']}}"> 
+                    <input hidden type="text" name="start_date" id="start_date" value="{{$data_get['startDate']}}"> 
+                    <input hidden type="text" name="end_date" id="end_date" value="{{$data_get['endDate']}}"> 
                 <div class="main-booking-content p-3">
                     <div class="fs-3 font-bold">
                         Enter your details
                     </div>
                     <div class="note-head p-3 my-3 rounded">
-                        <i class="fa-light fa-circle-info" style="color: #1f2123;"></i> &nbsp; Almost done! Just fill in the <span style="color: red">*</span> required info
+                        <i class="fa-regular fa-comment"></i> &nbsp; Almost done! Just fill in the <span style="color: red">*</span> required info
+                        @session('message')
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ $value }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endsession
+                        @if ($errors->any())
+                           <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                              <ul>
+                                 @foreach ($errors->all() as $error)
+                                       <li>{{ $error }}</li>
+                                 @endforeach
+                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </ul>
+                           </div>
+                        @endif
                     </div>
                     <div class="head-info border-bottom">
                         <div class="row">
@@ -184,7 +206,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="emailAddress" class="form-label font-bold">Email address <span style="color: red">*</span></label>
-                                <input type="text" class="form-control rounded w-full" name="email_address" id="emailAddress" required>
+                                <input type="text" class="form-control rounded w-full" name="email" id="emailAddress" required>
                                 <div id="emailHelp" class="form-text">Confirmation email goes to this address.</div>
                             </div>
                         </div>
@@ -201,11 +223,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="zipPostCode" class="form-label font-bold">Zip/Post Code</label>
-                            <input type="text" class="form-control rounded w-50" name="zip_post_code" id="zipPostCode">
+                            <input type="text" class="form-control rounded w-50" name="zip_code" id="zipPostCode">
                         </div>
                         <div class="mb-3">
-                            <label for="region" class="form-label font-bold">Country/region <span style="color: red">*</span></label>
-                            <select class="form-select form-select-md" style="width: 30%" name="region" id="region" aria-label=".form-select-md example">
+                            <label for="country" class="form-label font-bold">Country/region <span style="color: red">*</span></label>
+                            <select class="form-select form-select-md" style="width: 30%" name="country" id="country" aria-label=".form-select-md example">
                                 <option value="AF">Afghanistan</option>
                                 <option value="AX">Åland Islands</option>
                                 <option value="AL">Albania</option>
@@ -459,7 +481,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="phoneNumber" class="form-label font-bold">Phone number <span style="color: red">*</span></label>
-                            <input type="text" name="phone_number" style="width: 30%" class="form-control rounded w-30" id="phone_number" placeholder="84+" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="13"  title="Ten digits code" required/>    
+                            <input type="text" name="phone_number" style="width: 30%" class="form-control rounded w-30" id="phone_number" placeholder="84+" maxlength="13"  title="Ten digits code" required/>    
                         </div>
                     </div>
                 </div>
@@ -475,7 +497,7 @@
                         <div>
                             <div class="mb-3">
                                 <label for="specialRequests" class="form-label"></label>
-                                <textarea class="form-control w-full" name="special_requests" id="specialRequests"></textarea>
+                                <textarea class="form-control w-full" name="special_request" id="specialRequests"></textarea>
                             </div>
                             
                         </div>
@@ -486,13 +508,13 @@
                         Your arrival time
                     </div>
                     <div class="mb-2">
-                        <i class="fa-light fa-circle-check" style="color: #07a661;"></i> &nbsp; Your room will be ready for check-in between 14:00 and 15:00
+                        <i class="fa-solid fa-check-to-slot" style="color: #678dd0;"></i> &nbsp; Your room will be ready for check-in between 14:00 and 15:00
                     </div>
                     <div>
                         <div class="font-bold mb-2">
                             <span class="font-bold">Add your estimated arrival time</span> (optional)
                         </div>
-                        <select class="form-select form-select-md" name="estimated_arrival">
+                        <select class="form-select form-select-md" name="arrival_time">
                             <option selected disabled>Please select</option>
                             <option value="-1">I don't know</option>
                             <option value="0">00:00 – 01:00 </option>
@@ -536,18 +558,13 @@
                         <div>&#128900; &nbsp; No smoking</div>
                         <div>&#128900; &nbsp; No parties/events</div>
                         <div>&#128900; &nbsp; Quiet hours are between 22:00 and 06:00</div>
-                        <div>&#128900; &nbsp; Pets are not allowed</div>
-                        
-                        
-                        
-                    </div>
-                    <div class="font-bold">
-                        By continuing to the next step, you are agreeing to these house rules.
+                        <div>&#128900; &nbsp; Pets are not allowed</div>    
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary p-2 ml-auto" type="submit" >Next: Final details &nbsp; <i class="fa-thin fa-right-long" style="color: #f0f4f2;"></i></button>
+                    <button class="btn btn-primary p-2 ml-auto" style="background-color: #678dd0 !important;" type="submit" >Pay &nbsp; <i class="fa-solid fa-credit-card" style="color: #fff;"></i></button>
                 </div>
+            </form>
             </div>
        </div>
     </div>  

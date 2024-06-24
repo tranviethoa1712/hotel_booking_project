@@ -22,7 +22,6 @@ class BookingNeedsOfCustomer extends FormRequest
     public function rules(): array
     {
         return [
-            "numberOfRoomAvailable" => ['required'],
             "NumberOfNights" => ['required'],
             "taxAndCharges" => ['required'],
             "totalPrice" => ['required'],
