@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserService extends BaseService
 {
@@ -41,6 +42,14 @@ class UserService extends BaseService
         $vnpLocale = 'vn';
         $vnpBankCode = $this->VNPAY_BANK_CODE;
         $vnpIpAddr = $_SERVER['REMOTE_ADDR'];
+        $vnpBillFirstName = '';
+        $vnpBillLastName = '';
+
+        if (isset($fullname) && trim($fullname) != '') {
+            $name = explode(' ', $fullname);
+            $vnpBillFirstName = array_shift($name);
+            $vnpBillLastName = array_pop($name);
+        }
 
         $inputData = array(
             "vnp_Version" => "2.1.0",
@@ -55,10 +64,11 @@ class UserService extends BaseService
             "vnp_OrderType" => $vnpOrderType,
             "vnp_ReturnUrl" => $vnpReturnurl,
             "vnp_TxnRef" => $vnpTxnRef,
-            "fullname" => $fullname,
-            "email" => $email,
-            "address" => $address,
-            "phone_number" => $phoneNumber,
+            "vnp_Bill_FirstName" => $vnpBillFirstName,
+            "vnp_Bill_LastName" => $vnpBillLastName,
+            "vnp_Bill_Email" => $email,
+            "vnp_Bill_Address" => $address,
+            "vnp_Bill_Mobile" => $phoneNumber,
         );
         
         if (isset($vnpBankCode) && $vnpBankCode != "") {
@@ -85,53 +95,62 @@ class UserService extends BaseService
             $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnpHashSecret);//  
             $vnpUrl .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
+        
         $returnData = array('code' => '00'
             , 'message' => 'success'
             , 'data' => $vnpUrl);
             if ($requestData['vnpay']) {
                 $this->submitBooking($requestData, $vnpTxnRef);
-                dd($vnpUrl);
-                // die('controller');
-                return Response::make( '', 302 )->header( 'Location', $vnpUrl );
+                header('location: ' . $vnpUrl);
+                die();
             } else {
                 echo json_encode($returnData);
             }
     }
 
-    public function submitTransaction($user_id, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpCreateDate)
+    public function submitBooking($data, $vnpTxnRef)
+    {
+        // check booked room on the date
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        $data['status'] = 'waiting';
+        $data['booking_code'] = $vnpTxnRef;
+        
+        $isBooked = Booking::where('status', '!=', 'reject')
+        ->where('room_id', $data['room_id'])
+        ->where('start_date', '<=', $end_date)
+        ->where('end_date', '>=', $start_date)->exists();
+    
+        if($isBooked) {
+            return redirect('user.our_rooms', $data['room_id'])->with('messageBooked', 'The room is already booked, please try different date');
+        } else {
+            if(Booking::create($data)){
+                //
+            } else {
+                return redirect()->back()->with('message', 'Booking failed!');
+            }
+        } 
+        return redirect()->back();
+    }
+
+    public function submitTransaction($user_id, $bookingCode, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpPayDate)
     {
         $data = [];
         $data['user_id'] = $user_id;
+        $data['booking_code'] = $bookingCode;
         $data['bank_code'] = $vnpBankCode;
         $data['bank_tran_no'] = $vnpBankTranNo;
         $data['transaction_no'] = $vnpTranNo;
         $data['content'] = $vnpOrderInfo;
-        $data['amount'] = $vnpAmount;
-        $data['pay_date'] = $vnpCreateDate;
-        $data['created_at'] = $vnpCreateDate;
-
-        Transaction::create($data);
+        $data['amount'] = (string)$vnpAmount;
+        $data['pay_date'] = $vnpPayDate;
+        DB::table('transactions')->insert($data);
     }
 
-    public function getBooking($bookingCode)
-    {
-        $booking = Booking::get()->where('booking_code', $bookingCode);
-        return $booking;
-    }
-
-    public function updateBookingStatus($bookingCode, $status)
-    {
-        $booking = Booking::get()->where('booking_code', $bookingCode);
- 
-        if($status == 1) {
-            $booking->status = 'approve';
-        } else {
-            $booking->status = 'reject';
-        }
-        
-        $booking->save();
-    }
-
+        /**
+     * vnpay return to result page. Result page do this
+     */
     public function checkVnpayReturn($requestData)
     {
         $inputData = array();
@@ -142,7 +161,7 @@ class UserService extends BaseService
                 $inputData[$key] = $value;
             }
         }
-
+        
         $vnpSecureHash = $inputData['vnp_SecureHash'];
         unset($inputData['vnp_SecureHash']);
         ksort($inputData);
@@ -158,17 +177,17 @@ class UserService extends BaseService
         }
 
         $secureHash = hash_hmac('sha512', $hashData, $this->VNPAY_HASH_SECRET);
+        
         $vnpTranNo = $inputData['vnp_TransactionNo']; // Mã giao dịch tại VNPAY
         $vnpBankCode = $inputData['vnp_BankCode']; // Ngân hàng thanh toán
         $vnpBankTranNo = $inputData['vnp_BankTranNo']; // Ngân hàng thanh toán
         $vnpAmount = $inputData['vnp_Amount']/100; // Số tiền thanh toán VNPAY phản hồi
-        $vnpCreateDate = $inputData['vnp_PayDate']; // Số tiền thanh toán VNPAY phản hồi
+        $vnpPayDate = $inputData['vnp_PayDate']; // Số tiền thanh toán VNPAY phản hồi
         $vnpOrderInfo = $inputData['vnp_OrderInfo']; // Số tiền thanh toán VNPAY phản hồi
-
+        
         $status = 0; // Là trạng thái thanh toán của giao dịch chưa có IPN lưu tại hệ thống của merchant chiều khởi tạo URL thanh toán.
         $bookingCode = $inputData['vnp_TxnRef'];
         
-        try {
             //Check Orderid    
             //Kiểm tra checksum của dữ liệu
             if ($secureHash == $vnpSecureHash) {
@@ -180,25 +199,24 @@ class UserService extends BaseService
 
                 // die(var_dump($val));                      
                 if ($booking != NULL) {
-                    foreach($booking as $key => $val) {
-                        // if($val["total_price"] == $vnpAmount) //Kiểm tra số tiền thanh toán của giao dịch: giả sử số tiền kiểm tra là đúng. ($order["Amount"] == $vnpAmount)
-                        if($val["total_price"] == $vnpAmount) //Kiểm tra số tiền thanh toán của giao dịch: giả sử số tiền kiểm tra là đúng. ($order["Amount"] == $vnpAmount)
+                    foreach($booking as $column) {
+                        if($column["total_price"] == $vnpAmount) //Kiểm tra số tiền thanh toán của giao dịch: giả sử số tiền kiểm tra là đúng. ($booking["total_price"] == $vnpAmount)
                         {
-                            if ($val["status"] != NULL && $val["status"] == 0) {
+                            if ($column["status"] != NULL && $column["status"] == 'waiting') {
                                 if ($inputData['vnp_ResponseCode'] == '00' || $inputData['vnp_TransactionStatus'] == '00') {
-                                    // die($inputData['vnp_TransactionStatus']);
                                     $status = 1; // Trạng thái thanh toán thành công
+                                    // Insert dữ liệu lên db
+                                    $this->submitTransaction($this->user_id->id, $bookingCode, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpPayDate);
                                 } else {
-                                    // die('loi khac');
+                                    die('loi khac');
                                     $status = 2; // Trạng thái thanh toán thất bại -> lỗi
+                                    $returnData['messageCode'] = '404';
+                                    $returnData['message'] = 'Thanh toán thất bại!';
                                 }
                                 // Cập nhật kết quả thanh toán, tình trạng đơn hàng vào DB
-                                $this->updateBookingStatus($bookingCode, $status); // Update status booking
+                                $this->updateBookingStatus($column["id"], $status); // Update status booking
                                 // insert order và online_payment nếu thành công
-                                if($status == 1) {
-                                    $this->submitTransaction($this->user_id, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpCreateDate);
-                                }
-                                //
+      
                                 //Trả kết quả về cho VNPAY: Website/APP TMĐT ghi nhận yêu cầu thành công                
                                 $returnData['messageCode'] = '00';
                                 $returnData['message'] = 'Xác nhận thành công!';
@@ -220,38 +238,26 @@ class UserService extends BaseService
                 $returnData['messageCode'] = '97';
                 $returnData['message'] = 'Invalid signature';
             }
-        } catch (\Exception $e) {
-            $returnData['messageCode'] = '99';
-            $returnData['message'] = 'Unknow error';
-        }
         //Trả lại VNPAY theo định dạng JSON
-        echo json_encode($returnData);
         return $returnData;
     }
 
-    public function submitBooking($data, $vnpTxnRef)
+    public function getBooking($bookingCode)
     {
-        // check booked room on the date
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
+        $booking = Booking::get()->where('booking_code', $bookingCode);
+        return $booking;
+    }
 
-        $data['status'] = 'waiting';
-        $data['booking_code'] = $vnpTxnRef;
-        
-        $isBooked = Booking::where('status', '!=', 'reject')
-        ->where('room_id', $data['room_id'])
-        ->where('start_date', '<=', $end_date)
-        ->where('end_date', '>=', $start_date)->exists();
-        
-        if($isBooked) {
-            return redirect('user.our_rooms', $data['room_id'])->with('messageBooked', 'The room is already booked, please try different date');
+    public function updateBookingStatus($booking_id, $status)
+    {
+        $booking = Booking::find($booking_id);
+ 
+        if($status == 1) {
+            $booking->status = 'approve';
         } else {
-            if(Booking::create($data)){
-                //
-            } else {
-                return redirect()->back()->with('message', 'Booking failed!');
-            }
-        } 
-        return redirect()->back();
+            $booking->status = 'reject';
+        }
+        
+        $booking->save();
     }
 }

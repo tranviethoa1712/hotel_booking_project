@@ -14,6 +14,7 @@ class Booking extends Model
         "room_id", 
         "coupon_id",
         "fullname",
+        "booking_code",
         "email",
         "address", 
         "city",

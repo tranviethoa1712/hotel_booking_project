@@ -167,8 +167,9 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <form action="{{url('book_room')}}" method="post">
+                <form action="{{url('book_room')}}">
                     @csrf
+                    @method('get')
                     <input hidden type="text" name="room_id" id="voucherIdUsed" value="{{$data_get['roomIdUsed']}}"> 
                     <input hidden type="text" name="coupon_id" id="voucherIdUsed" value="{{$data_get['voucherIdUsed']}}"> 
                     <input hidden type="text" name="total_price" id="totalPrice" value="{{$data_get['totalPrice']}}">

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -72,5 +73,13 @@ class User extends Authenticatable
     public function coupons(): BelongsToMany
     {
         return $this->belongsToMany(Coupon::class, 'user_coupons', 'user_id', 'coupon_id');
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function transactions(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class, 'transactions', 'user_id');
     }
 }
