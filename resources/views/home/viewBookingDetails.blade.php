@@ -23,7 +23,7 @@
             <div class="text-center mt-5">
                 <h3 class="fs-2 font-bolder">Booking Details</h3>
             </div>
-            <div class="row mt-5 gap-5 shadow rounded p-3" style="border: 1px solid rgb(241, 165, 178);">
+            <div class="row mt-5 gap-5 shadow rounded p-3" style="border: 1px solid rgb(80 133 185);">
                 <div class="col-md-6 fs-5">
                     <div>
                         <img src="{{url('storage/' . $room->image)}}" alt="">

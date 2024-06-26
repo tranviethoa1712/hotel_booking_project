@@ -14,7 +14,10 @@ class CouponController
     public function index()
     {
         $user = User::find(Auth::id());
-        $coupons = Coupon::all();
+        $coupons = DB::table('coupons')
+        ->where('expired_at', '>', date('Y-m-d H:i:s'))
+        ->whereRaw('uses <= max_uses')
+        ->get();
         // collect coupon_id that user using
         $couponsOfUser = $user->coupons;
         $couponIdArray = [];
@@ -38,7 +41,7 @@ class CouponController
         $user = User::find(Auth::id());
 
         // collect coupon_id that user using
-        $couponsOfUser = $user->coupons;
+        $couponsOfUser = $user->coupons->where();
         
         $coupons = [];
         foreach ($couponsOfUser as $coupon) {

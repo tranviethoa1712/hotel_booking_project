@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class HomeController
 {
@@ -61,11 +62,24 @@ class HomeController
         $user = User::find(Auth::id());
         if($roomAvailableForTheDate) {
             if($user) {
-                $couponsOfUser = $user->coupons;
+                $couponsOfUser = $user->coupons
+                ->where('expired_at', '>', date('Y-m-d H:i:s'))
+                ;
                 $coupons = [];
+                // dd($couponsOfUser);
                 foreach ($couponsOfUser as $coupon) {
-                    $coupons[] = Coupon::get()->where('id', $coupon->pivot->coupon_id);
+                    $checkStatus = DB::table('user_coupons')
+                    ->where('coupon_id', $coupon->pivot->coupon_id)
+                    ->where('user_id', Auth::id())
+                    ->get();
+                
+                    if($checkStatus[0]->status == 'unused') {
+                        $coupons[] = DB::table('coupons')
+                        ->where('id', $coupon->pivot->coupon_id)
+                        ->get();
+                    } 
                 }
+
                 if($coupons) {    
                     return view('home.room_details', [
                         'rooms' => $roomAvailableForTheDate,

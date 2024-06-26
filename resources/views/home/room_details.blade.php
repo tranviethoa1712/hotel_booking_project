@@ -206,7 +206,7 @@
                                                       @endforeach
                                                       
                                                       @else 
-                                                      <div class="font-bold fs-3 text-center">Hãy đăng nhập để sử dụng voucher</div>
+                                                      <div class="font-bold fs-3 text-center">Naksu voucher is empty!</div>
                                                    @endif
                                                 </div>
                                                 <div class="modal-footer">
@@ -238,6 +238,7 @@
                             </div>
                             @else
                             <td>
+                              <div class="w-full" style="background-color: #4C76B2; height: 40px;">&nbsp;</div>
                                <div class="d-flex justify-center text-nowrap mb-3">
                                   <a class="btn btn-dark" href="{{url('login')}}">{{__('home.header.login')}}</a>
                                </div>
@@ -245,7 +246,7 @@
                                   You must be logged in to make a reservation
                                </div>
                             </td>
-                            @endif
+                        @endif
                             </form>
                    </div>
                   </div>
