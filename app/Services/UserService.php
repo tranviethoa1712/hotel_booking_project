@@ -116,6 +116,7 @@ class UserService extends BaseService
 
         $data['status'] = 'waiting';
         $data['booking_code'] = $vnpTxnRef;
+        $data['user_id'] = $this->user_id->id;
         
         $isBooked = Booking::where('status', '!=', 'reject')
         ->where('room_id', $data['room_id'])
@@ -134,10 +135,9 @@ class UserService extends BaseService
         return redirect()->back();
     }
 
-    public function submitTransaction($user_id, $bookingCode, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpPayDate)
+    public function submitTransaction($bookingCode, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpPayDate)
     {
         $data = [];
-        $data['user_id'] = $user_id;
         $data['booking_code'] = $bookingCode;
         $data['bank_code'] = $vnpBankCode;
         $data['bank_tran_no'] = $vnpBankTranNo;
@@ -206,7 +206,7 @@ class UserService extends BaseService
                                 if ($inputData['vnp_ResponseCode'] == '00' || $inputData['vnp_TransactionStatus'] == '00') {
                                     $status = 1; // Trạng thái thanh toán thành công
                                     // Insert dữ liệu lên db
-                                    $this->submitTransaction($this->user_id->id, $bookingCode, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpPayDate);
+                                    $this->submitTransaction($bookingCode, $vnpBankCode, $vnpBankTranNo, $vnpTranNo, $vnpOrderInfo, $vnpAmount, $vnpPayDate);
                                 } else {
                                     die('loi khac');
                                     $status = 2; // Trạng thái thanh toán thất bại -> lỗi

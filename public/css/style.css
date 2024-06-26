@@ -1006,7 +1006,7 @@ ul.social_icon li a:hover {
      margin-top: 60px;
      padding-bottom: 20px;
      background-color: #fff;
-     border: #43be60 solid 3px;
+     border: #fff solid 3px;
      border-right: inherit;
      border-left: inherit;
 }
@@ -1103,3 +1103,30 @@ line-height: 35px;
 .text-nowrap-to-normal {
      white-space: normal;
  }
+
+.text-primary {
+     color: var(--primaryColor) !important;
+}
+
+.text-view-booking {
+     color: palevioletred !important;
+}
+
+.btn-view-booking {
+     color: palevioletred !important;
+     background-color: aliceblue !important;
+}
+
+.btn-view-booking:hover {
+     background-color: rgb(233, 152, 179) !important;
+     color: aliceblue !important;
+}
+
+.btn-view-details {
+     color: aliceblue !important;
+     background-color: rgb(25, 161, 206) !important;
+}
+
+.btn-view-details:hover {
+     background-color: rgb(20, 100, 127) !important;
+}

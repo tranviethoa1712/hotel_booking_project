@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BookingRequest;
 use App\Models\Booking;
+use App\Models\Room;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingAdminController
 {
@@ -35,10 +37,41 @@ class BookingAdminController
     {
         $result = $this->userService->checkVnpayReturn($request);
         if ($result['messageCode'] == "00") {
-            echo "successfully";
+
+            $booking = Booking::select('id')->where('booking_code', '5465')->get();
+            $booking_id = '';
+            foreach($booking as $id)
+            {
+                $booking_id = $id->id;
+            }
+            return view('home.resultBookingView', compact('booking_id'));
         } else {
             echo "failed";
         }
+    }
+
+    public function my_booking() 
+    {
+        $user = Auth::user();
+        $bookingUser = $user->bookings;
+
+        return view('home.my_bookings', [
+            'bookings' => $bookingUser,
+        ]);
+    }
+
+    /**
+     * Booking Details
+     */
+    public function viewBookingDetails($booking_id)
+    {
+        $booking = Booking::find($booking_id);
+        $room = Room::find($booking->room_id);
+
+        return view('home.viewBookingDetails', [
+            'booking' => $booking,
+            'room' => $room
+        ]);
     }
 
     /**
