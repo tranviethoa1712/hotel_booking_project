@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Booking;
+use App\Models\Coupon;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Response;
@@ -127,7 +128,14 @@ class UserService extends BaseService
             return redirect('user.our_rooms', $data['room_id'])->with('messageBooked', 'The room is already booked, please try different date');
         } else {
             if(Booking::create($data)){
-                //
+                //update status voucher used in user_coupons table
+                $coupon = Coupon::find($data['coupon_id']);
+                $coupon->uses = $coupon->uses + 1;
+                $coupon->save();
+                DB::update(
+                    'update user_coupons set status = ? where user_id = ? and coupon_id = ?',
+                    ['used', Auth::id(), $data['coupon_id']]
+                );
             } else {
                 return redirect()->back()->with('message', 'Booking failed!');
             }

@@ -21,10 +21,10 @@
       <div class="container">
         <div class="p-3">
             <div class="text-center mt-5">
-                <h3 class="fs-2  class="my-3 text-nowrap"er">My Bookings</h3>
+                <h3 class="fs-2 my-3 text-center">My Bookings</h3>
             </div>
             @foreach ($bookings as $booking)
-                <div class="row mt-5 gap-5 shadow rounded p-3" style="border: 1px solid rgb(241, 165, 178);">
+                <div class="row mt-5 gap-5 shadow rounded p-3" style="border: 1px solid rgb(80 133 185);">
                     <div class="col-md-3 fs-5">
                         <div>
                             <img src="{{url('storage/' . $booking->room->image)}}" alt="">
@@ -58,7 +58,7 @@
                             <span class="font-bold">Quantity: </span> {{$booking->room_quantity}}
                         </div>
                         <div class="my-3 text-nowrap">
-                            <span class="font-bold">Total Price: </span> {{$booking->total_price}}
+                            <span class="font-bold">Total Price: </span> <span style="color: red">{{number_format($booking->total_price) . ' VND'}}</span>
                         </div>
                     </div>
                     <div class="col-md-2 fs-5 d-flex justify-center align-self-baseline">

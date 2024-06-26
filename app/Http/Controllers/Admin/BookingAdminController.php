@@ -53,7 +53,7 @@ class BookingAdminController
     public function my_booking() 
     {
         $user = Auth::user();
-        $bookingUser = $user->bookings;
+        $bookingUser = $user->bookings->where('end_date', '>', date('Y-m-d H:i:s'));
 
         return view('home.my_bookings', [
             'bookings' => $bookingUser,
