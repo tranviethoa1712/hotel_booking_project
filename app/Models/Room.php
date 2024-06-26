@@ -28,4 +28,9 @@ class Room extends Model
     {
         return $this->belongsToMany(Coupon::class, 'room_coupons', 'room_id', 'coupon_id');
     }
+
+    public function booking() :HasMany
+    {
+        return $this->hasMany(Room::class);
+    }
 }

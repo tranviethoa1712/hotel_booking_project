@@ -41,6 +41,9 @@
                      @if (Route::has('login'))
                         @auth
                         <li class="nav-item text-nowrap">
+                           <a class="nav-link text-nowrap {{ Request::is('my_booking') ? ' active' : '' }}" href="{{url('my_booking')}}">My Booking</a>
+                        </li>
+                        <li class="nav-item text-nowrap">
                            <x-app-layout>
    
                            </x-app-layout>

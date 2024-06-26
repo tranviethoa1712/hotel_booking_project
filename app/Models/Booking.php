@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Booking extends Model
 {
@@ -12,8 +14,10 @@ class Booking extends Model
     protected $fillable = [
         "transaction_id",
         "room_id", 
+        "user_id", 
         "coupon_id",
         "fullname",
+        "booking_code",
         "email",
         "address", 
         "city",
@@ -29,18 +33,13 @@ class Booking extends Model
         "room_quantity"
     ];
 
-    public function room()
-    {
-        return $this->hasOne(Room::class, "id", "room_id");
-    }
-
-    public function transaction()
-    {
-        return $this->hasOne(Transaction::class, "id", "transaction_id");
-    }
-
     public function coupon()
     {
         return $this->hasOne(Coupon::class, "id", "coupon_id");
+    }
+
+    public function room() :HasOne
+    {
+        return $this->hasOne(Room::class, 'id', 'room_id');
     }
 }
