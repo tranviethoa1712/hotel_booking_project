@@ -26,9 +26,9 @@
             <div class="row mt-5 gap-5 shadow rounded p-3" style="border: 1px solid rgb(80 133 185);">
                 <div class="col-md-6 fs-5">
                     <div>
-                        <img src="{{url('storage/' . $room->image)}}" alt="">
+                        <img src="{{url('storage/' . $booking->room->image)}}" alt="">
                     </div>
-                    <div class="detail my-3 text-capitalize"><span class="font-bold fs-5">Room Type: </span>{{$room->room_type}}</div>
+                    <div class="detail my-3 text-capitalize"><span class="font-bold fs-5">Room Type: </span>{{$booking->room->room_type}}</div>
                     <div class="detail my-3"><span class="font-bold fs-5">Total Price: </span><span style="color: red">{{number_format($booking->total_price)}} VND</span></div>
                     <div class="detail my-3"><span class="font-bold fs-5">Booked rooms: </span>{{$booking->room_quantity}}</div>
 

@@ -40,8 +40,8 @@
                             <td class="text-center">{{$room->description}}</td>
                             <td class="text-center">{{$room->price}}</td>
                             <td class="text-center">{{$room->wifi}}</td>
-                            <td class="text-center">{{$room->room_type}}</td>
-                            <td class="text-center">
+                            <td class="text-center text-nowrap">{{$room->room_type}}</td>
+                            <td class="text-center text-nowrap">
                                 <a href="{{url('edit_room', $room->id)}}" class="btn btn-success">Edit</a>
                                 &nbsp;
                                 <a onclick="return confirm('Are you sure to delete this room?')" href="{{url('delete_room', $room->id)}}" class="btn btn-danger">Delete</a>

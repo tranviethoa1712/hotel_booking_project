@@ -11,66 +11,24 @@ use Illuminate\Support\Facades\Auth;
 
 class BookingAdminController
 {
-    protected $userService;
-
-    public function __construct()
-    {
-        $this->userService = new UserService;
-    }
     /**
      * Manage bookings
      */
     public function bookings()
     {
         $bookings = Booking::all();
-        return view('admin.bookings', compact('bookings'));  
-    }
-
-    public function book_room(BookingRequest $request)
-    {
-        $data = $request->validated();
-        $data['vnpay'] = true;
-        return $this->userService->vnpayProcessing($data);
-    }
-
-    public function resultView(Request $request)
-    {
-        $result = $this->userService->checkVnpayReturn($request);
-        if ($result['messageCode'] == "00") {
-
-            $booking = Booking::select('id')->where('booking_code', '5465')->get();
-            $booking_id = '';
-            foreach($booking as $id)
-            {
-                $booking_id = $id->id;
-            }
-            return view('home.resultBookingView', compact('booking_id'));
-        } else {
-            echo "failed";
-        }
-    }
-
-    public function my_booking() 
-    {
-        $user = Auth::user();
-        $bookingUser = $user->bookings->where('end_date', '>', date('Y-m-d H:i:s'));
-
-        return view('home.my_bookings', [
-            'bookings' => $bookingUser,
-        ]);
+        return view('admin.booking.bookings', compact('bookings'));  
     }
 
     /**
      * Booking Details
      */
-    public function viewBookingDetails($booking_id)
+    public function view_booking_details($booking_id)
     {
         $booking = Booking::find($booking_id);
-        $room = Room::find($booking->room_id);
 
-        return view('home.viewBookingDetails', [
-            'booking' => $booking,
-            'room' => $room
+        return view('admin.booking.view_booking_details', [
+            'booking' => $booking
         ]);
     }
 

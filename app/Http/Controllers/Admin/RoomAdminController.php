@@ -16,25 +16,22 @@ class RoomAdminController extends BaseAdminController
 
     public function create()
     {
-        return view('admin.create_room');
+        return view('admin.room.create_room');
     }
     
-    public function store_room(StoreRoomRequest $request) 
+    public function store(StoreRoomRequest $request) 
     {
         $data = $request->validated();
-
         $image = $data['image'] ?? null;
+
         $generatedImageName = '';
         if($image) {
             $generatedImageName = 'admin/' . time() . '-' 
             . $image->getClientOriginalName();
-
             //move to a folder
-            $image->move(('storage/admin'), $generatedImageName);
-        }
-        
+            $image->move('storage/admin/',  $generatedImageName);
+        }       
         $data['image'] = $generatedImageName;
- 
         if(Room::create($data)) {
             return redirect()->back()->with('message', 'Room was created!');
         } else {
@@ -45,15 +42,21 @@ class RoomAdminController extends BaseAdminController
     public function getAll()
     {
         $rooms = Room::all();
-        return view('admin.view_room', compact('rooms'));
+        return view('admin.room.view_room', compact('rooms'));
     }
 
+    /**
+     * edit room view
+     */
     public function update($id)
     {
         $room = Room::find($id);
-        return view('admin.edit_room', compact('room'));
+        return view('admin.room.edit_room', compact('room'));
     }
 
+    /**
+     * update room
+     */
     public function update_room(UpdateRoomRequest $request, $id)
     {
         $data = $request->validated();
@@ -85,6 +88,9 @@ class RoomAdminController extends BaseAdminController
         }
     }
 
+    /**
+     * delete room
+     */
     public function delete($id)
     {
         $room = Room::find($id);
@@ -92,6 +98,6 @@ class RoomAdminController extends BaseAdminController
         $image_path = public_path('storage') . '/'. $room->image;
         $room->delete();
         File::delete($image_path);
-        return to_route('admin.view_room')->with('success', "Room \"$name\" was deleted!");
+        return to_route('admin.room.view_room')->with('success', "Room \"$name\" was deleted!");
     }
 }
