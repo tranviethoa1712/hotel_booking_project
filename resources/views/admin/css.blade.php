@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="all,follow">
 <!-- Bootstrap CSS-->
-<link rel="stylesheet" href="admin/vendor/bootstrap/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <!-- Font Awesome CSS-->
 <link rel="stylesheet" href="admin/vendor/font-awesome/css/font-awesome.min.css">
 <!-- Custom Font Icons CSS-->

@@ -16,6 +16,8 @@ class Room extends Model
         'room_title',
         'image',
         'description',
+        'max_guest',
+        'number_of_room',
         'price',
         'wifi',
         'room_type'

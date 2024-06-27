@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CouponAdminController;
 use App\Http\Controllers\Admin\GalleryAdminController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Admin\RoomAdminController;
+use App\Http\Controllers\User\BookingUserController;
 use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Middleware\Admin;
@@ -33,6 +34,7 @@ Route::middleware([Admin::class])->group(function () {
     route::get('/status_approve/{id}', [BookingAdminController::class, 'status_approve'])->name('admin.status_approve');
     route::get('/status_reject/{id}', [BookingAdminController::class, 'status_reject'])->name('admin.status_reject');
     route::get('/delete_booking/{id}', [BookingAdminController::class, 'delete_booking'])->name('admin.delete_booking');
+    route::get('/view_booking_details/{id}', [BookingAdminController::class, 'view_booking_details'])->name('admin.view_booking_details');
     
     // Gallery
     route::get('/galleries', [GalleryAdminController::class, 'create'])->name('admin.gallery');
@@ -43,6 +45,9 @@ Route::middleware([Admin::class])->group(function () {
     route::get('/contacts', [ContactAdminController::class, 'contacts'])->name('admin.contacts');
     route::get('/send_mail/{id}', [ContactAdminController::class, 'send_mail'])->name('admin.send_mail');
     route::post('/mail/{id}', [ContactAdminController::class, 'mail'])->name('admin.mail');
+
+    // Transactions
+    route::get('/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
 
     route::resources([
         'coupons' => CouponAdminController::class
@@ -58,11 +63,11 @@ Route::middleware([Language::class])->group(function () {
     
         route::get('linkCouponToUser/{id}', [CouponController::class, 'couponToUser'])->name('user.couponToUser');
         
-        route::get('/booking_view', [HomeController::class, 'booking_view'])->name('booking_view');
-        route::get('/book_room', [BookingAdminController::class, 'book_room'])->name('user.book_room');
-        route::get('/resultView', [BookingAdminController::class, 'resultView'])->name('user.result_view');
-        route::get('/viewBookingDetails/{id}', [BookingAdminController::class, 'viewBookingDetails'])->name('user.viewBookingDetails');
-        route::get('/my_booking', [BookingAdminController::class, 'my_booking'])->name('user.my_booking');
+        route::get('/booking_view', [HomeController::class, 'bookinBookingUserControllerg_view'])->name('booking_view');
+        route::get('/book_room', [BookingUserController::class, 'book_room'])->name('user.book_room');
+        route::get('/resultView', [BookingUserController::class, 'resultView'])->name('user.result_view');
+        route::get('/viewBookingDetails/{id}', [BookingUserController::class, 'viewBookingDetails'])->name('user.viewBookingDetails');
+        route::get('/my_booking', [BookingUserController::class, 'my_booking'])->name('user.my_booking');
     });
 
     route::get('/about', [HomeController::class, 'aboutUs'])->name('user.aboutUs');

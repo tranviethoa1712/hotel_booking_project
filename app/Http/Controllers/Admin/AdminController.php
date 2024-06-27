@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\StoreGalleryRequest;
 use App\Models\Gallery;
 use App\Models\Room;
-
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
@@ -70,5 +70,16 @@ class AdminController extends BaseAdminController
     public function delete($item) 
     {
         //
+    }
+
+    public function transactions()
+    {
+        $transactions = Transaction::all();
+        foreach($transactions as $transaction) {
+            $convertPaydateTime = strtotime($transaction->pay_date);
+            $transaction->pay_date = date('Y-m-d',$convertPaydateTime);
+        }
+
+        return view('admin.transactions', compact('transactions'));
     }
 }

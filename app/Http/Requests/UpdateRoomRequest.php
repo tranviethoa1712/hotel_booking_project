@@ -25,6 +25,8 @@ class UpdateRoomRequest extends FormRequest
         return [
             "room_title" => ['required', 'max:255'],
             'description' => ['string'],
+            'max_guest' => ['string'],
+            'number_of_room' => ['string'],
             'price' => ['string', 'max:200'],
             "image" => ['image','mimes:jpeg,png,jpg,gif,svg', 'nullable'],
             'room_type' => ['required', Rule::in(['regular', 'premium', 'deluxe'])],

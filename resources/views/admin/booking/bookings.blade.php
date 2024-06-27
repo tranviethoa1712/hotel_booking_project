@@ -28,25 +28,24 @@
                         <tr>
                           <th class="text-center" scope="col">ID</th>
                           <th class="text-center" scope="col">Customer Name</th>
-                          <th class="text-center" scope="col">Email</th>
                           <th class="text-center" scope="col">Phone</th>
                           <th class="text-center" scope="col">Status</th>
-                          <th class="text-center" scope="col">Arrival Date</th>
-                          <th class="text-center" scope="col">Leaving Date</th>
+                          <th class="text-center" scope="col">Arrival</th>
+                          <th class="text-center" scope="col">Departing</th>
                           <th class="text-center" scope="col">Room Title</th>
                           <th class="text-center" scope="col">Room Price</th>
                           <th class="text-center" scope="col">Room image</th>
                           <th class="text-center" scope="col">Delete</th>
                           <th class="text-center" scope="col">Update Status</th>
+                          <th class="text-center" scope="col">View</th>
                         </tr>
                       </thead>
                       <tbody>
                         @foreach ($bookings as $booking)
                             <tr>
                             <th class="text-center" scope="row">{{$booking->id}}</th>
-                            <td class="text-center">{{$booking->name}}</td>
-                            <td class="text-center">{{$booking->email}}</td>
-                            <td class="text-center">{{$booking->phone}}</td>
+                            <td class="text-center">{{$booking->fullname}}</td>
+                            <td class="text-center">{{$booking->phone_number}}</td>
                             <td class="text-center">
                               @if($booking->status == "approve")
                               <span class="text-green">Approved</span>
@@ -70,6 +69,9 @@
                               <a class="btn btn-success" href="{{url('status_approve', $booking->id)}}">Approve</a>
                               &nbsp;
                               <a class="btn btn-warning" href="{{url('status_reject', $booking->id)}}">Reject</a>
+                            </td>
+                            <td class="text-center">
+                              <a class="btn btn-primary" href="{{route('admin.view_booking_details', $booking->id)}}">View</a>
                             </td>
                             </tr>
                         @endforeach

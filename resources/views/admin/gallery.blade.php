@@ -23,14 +23,14 @@
                         {{ $value }}
                     </div>
                 @endsession
-                <form action="{{url('store_gallery')}}" method="post" enctype="multipart/form-data">
+                <form action="{{url('store_gallery')}}" method="post" enctype="multipart/form-data" class="mb-4">
                     @csrf
                     <legend class="text-center text-white font-bold">Gallery Create</legend>
                     <div class="form-group">
                         <label class="text-white">Image</label>
                         <input class="form-control" type="file" name="image" value="{{ old('image') }}">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <input type="submit" class="btn btn-outline-danger form-control" value="Add gellery">
                     </div>
                 </form>
