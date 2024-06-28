@@ -87,7 +87,7 @@
                               @foreach($rooms as $room)
                               <tr>
                                 <td style="width: 33%">
-                                  <span class="text-capitalize font-bold underline fs-3" style="color: cadetblue">{{$room->room_type}}</span>
+                                  <span class="text-capitalize font-bold underline fs-3" style="color: cadetblue">{{$room->room_title}}</span>
                                   <div class="mt-3">
                                      <div class="font-weight-light">
                                         <i class="fa-solid fa-house"></i> 23 m² &nbsp;  <i class="fa-solid fa-temperature-arrow-up"></i> Air conditioning <br/>
@@ -127,14 +127,14 @@
                                <td class="text-capitalize p-2" style="color: rgb(113, 176, 113)">
                                   <p class="mb-2" style="color: rgb(113, 176, 113)"><span style="color: green">Free cancellation</span> before 18 June 2024</p>   
                                   <p style="color: rgb(113, 176, 113)"><span style="color: green">No prepayment needed</span> – pay at the property</p>   
-                                  <p style="color: gray">{{'Only ' . ($room->number_of_room - $room->number_room_booked) . ' rooms left on our site'}}</p>
+                                  <p style="color: gray">{{'Only ' . ($room->number_room_booked ? $room->number_of_room - $room->number_room_booked : $room->number_of_room) . ' rooms left on our site'}}</p>
                                </td>
                                 <td class="text-capitalize" style="width: 10%">  
                                  <div class="d-none priceCurrentElement">{{$room->price}}</div>  
-                                 <div class="d-none numberOfRoomAvailableElement">{{$room->number_of_room - $room->number_room_booked}}</div>  
-                                  <select class="form-select quantityElement" aria-label="Default select example" name="quantityRoomElement-{{$room->id}}" id="quantityElement-{{$room->id}}" style="width: 48%">
-                                     <option selected value="0">0</option>
-                                     @for($i = 1; $i <= ($room->number_of_room - $room->number_room_booked); $i++)
+                                 <div class="d-none numberOfRoomAvailableElement">{{$room->number_room_booked ? $room->number_of_room - $room->number_room_booked : $room->number_of_room}}</div>  
+                                  <select class="form-select quantityElement" aria-label="Default select example" name="quantityRoomElement-{{$room->id}}" id="quantityElement-{{$room->id}}" style="width: 59%">
+                                     <option selected value="0" disabled>0</option>
+                                     @for($i = 1; $i <= ($room->number_room_booked ? $room->number_of_room - $room->number_room_booked : $room->number_of_room); $i++)
                                         <option value={{$i}}>{{$i}} &nbsp; &nbsp; {{'(' . number_format(($room->price * 2 * $i) + ($room->price * 2 * $i * 0.1)) . ' VND)'}} </option>
                                      @endfor
                                    </select>
@@ -148,7 +148,7 @@
                         </tbody>
                       </table>
                   </div>
-                   <div class="col-md-2 p-0">
+                   <div class="col-md-2 p-0" style="border-right: 1px solid rgb(113, 176, 113)">
                      @if (Auth::user())
                             <div>
                                <input hidden type="text" name="priceCurrent" id="priceCurrent" value="{{$room->price}}">   
@@ -160,16 +160,18 @@
                                  <input hidden type="text" name="totalPrice" id="totalPrice" value={{(($room->price * 2) + ($room->price * 2 * 0.1))}}>
                                  <input hidden type="text" name="totalPriceNoVoucher" id="totalPriceNoVoucher" value={{(($room->price * 2) + ($room->price * 2 * 0.1))}}>
                                  <div class="d-none totalPriceHidden">{{(($room->price * 2) + ($room->price * 2 * 0.1))}}</div>
+                                 <div class="d-none roomType">{{$room->room_type}}</div>
                                  <input hidden type="text" name="quantityRoomInput" id="quantityRoomInput" value="0"> 
                                  <input hidden type="text" name="voucherIdUsed" id="voucherIdUsed" value="not use voucher"> 
                                  <input hidden type="text" name="roomIdUsed" id="roomIdUsed" value="{{$room->id}}">
                                  <input hidden type="date" name="startDateHidden" id="startDateHidden"> 
                                  <input hidden type="date" name="endDateHidden" id="endDateHidden"> 
-                              <div class="w-full" style="background-color: #4C76B2; height: 40px;">&nbsp;</div>
+
+                                 <div class="w-full" style="background-color: #4C76B2; height: 40px;">&nbsp;</div>
                                  <div id="reserveWithNoRoom" style="display: block; background-color: white;" class="p-3">
-                                    <button type="button" class="btn btn-primary mb-3">I'll reserve</button>
-                                    <div class="mb-3">Confirmation is immediate</div>
-                                    <i class="fa-solid fa-credit-card"></i> &nbsp; No credit card needed
+                                 <button type="button" class="btn btn-primary mb-3">I'll reserve</button>
+                                 <div class="mb-3">Confirmation is immediate</div>
+                                 <i class="fa-solid fa-credit-card"></i> &nbsp; No credit card needed
                                  </div>
                                  <div id="reserveWithRoom" style="display: none; background-color: white;" class="p-3">
                                     <p class="titleQuantity">1 room for</p>
@@ -237,15 +239,15 @@
                                  </div>
                             </div>
                             @else
-                            <td>
-                              <div class="w-full" style="background-color: #4C76B2; height: 40px;">&nbsp;</div>
-                               <div class="d-flex justify-center text-nowrap mb-3">
-                                  <a class="btn btn-dark" href="{{url('login')}}">{{__('home.header.login')}}</a>
-                               </div>
-                               <div>
-                                  You must be logged in to make a reservation
-                               </div>
-                            </td>
+                            <div class="w-full" style="background-color: #4C76B2; height: 69px;">&nbsp;</div>
+                            <div class="p-3 mt-4">
+                                <div class="d-flex justify-content-center text-nowrap mb-3">
+                                   <a class="btn btn-dark" href="{{url('login')}}">{{__('home.header.login')}}</a>
+                                </div>
+                                <div>
+                                   You must be logged in to make a reservation
+                                </div>
+                            </div>
                         @endif
                             </form>
                    </div>

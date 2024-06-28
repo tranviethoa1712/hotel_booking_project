@@ -22,7 +22,7 @@ class AdminController extends BaseAdminController
         {
             $usertype = Auth()->user()->usertype;
             if($usertype == 'user') 
-            {
+            {   
                 $galleries = Gallery::all();
                 $rooms = Room::all();
                 return view("home.index", [

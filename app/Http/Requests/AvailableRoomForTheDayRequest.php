@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AvailableRoomForTheDayRequest extends FormRequest
 {
@@ -24,6 +25,7 @@ class AvailableRoomForTheDayRequest extends FormRequest
         return [
             "startDate" => ['required', 'date'],
             'endDate' => ['required', 'date'],
+            'room_type' => ['required', Rule::in(['regular', 'premium', 'deluxe'])],
         ];
     }
 }
