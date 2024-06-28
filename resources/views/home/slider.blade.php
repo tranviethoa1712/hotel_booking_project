@@ -56,9 +56,17 @@
                            <span class="text-white fs-4">{{__('home.slider.arrival')}}</span>
                            <input id="startDate" name="startDate" class="form-control rounded mt-3" type="date" required/>
                          </div>
-                         <div class="col-md-12 mt-3">
+                         <div class="col-md-12 mb-3">
                            <span class="text-white fs-4">{{__('home.slider.departing')}}</span>
                            <input id="endDate" name="endDate" class="form-control rounded mt-3" type="date" required/>
+                         </div>
+                         <div class="col-md-12 mb-3">
+                           <span class="text-white fs-4">Room Type</span>
+                           <select class="form-control rounded mt-3" name="room_type" value="{{ old('room_type') }}">
+                              <option value="regular" selected>Regular</option>
+                              <option value="premium">Premium</option>
+                              <option value="deluxe">Deluxe</option>
+                          </select>
                          </div>
                          <div class="col-md-12">
                             <button type="submit" class="book_btn mt-3">{{__('home.slider.submit')}}</button>

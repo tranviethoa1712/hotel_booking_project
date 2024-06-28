@@ -3,7 +3,7 @@ $(document).ready(function() {
     $("#change-search").click(function() {
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
-        var room_type = $(':hidden#roomType').val();
+        var room_type = $('.roomType').text();
 
         var url_val = 'changeSearchRoom/' + startDate + '/' + endDate + '/' + room_type;
         $.ajax({
@@ -21,10 +21,10 @@ $(document).ready(function() {
                 $('#endDateHidden').val(startDate);
                 //remove all tr tag in tbody
                 $('#tableBody').find('tr').remove();
-                if(response.length > 1) {
-                    $.each(JSON.parse(response[0]), function (key, val) {
+                if(response) {
+                    $.each(response, function (key, val) {
                     let numberOfRoomAvailable = (val.number_of_room - val.number_room_booked) + 1;
-                    changePriceForDates(startDate, endDate, val.price, numberOfRoomAvailable, val.id, val, JSON.parse(response[1]));
+                    changePriceForDates(startDate, endDate, val.price, numberOfRoomAvailable, val.id, val);
                     });
                 } else {
                     var fullRoomDiv = $('<div/>');
@@ -105,7 +105,7 @@ $(document).ready(function() {
     })
 })
 
-    function changePriceForDates(startDate, endDate, priceCurrent, numberOfRoomAvailable, id, room, coupons)
+    function changePriceForDates(startDate, endDate, priceCurrent, numberOfRoomAvailable, id, room)
     {
         // enable all voucher (refresh)
         $('.btn-use-voucher').prop("disabled", false);
@@ -132,10 +132,10 @@ $(document).ready(function() {
         $('#priceForNights').text(textCalcNight);
 
         //re-render table
-        renderFromSearchedData(room, priceCurrent, newPrice, numberOfRoomAvailable, coupons);
+        renderFromSearchedData(room, priceCurrent, newPrice, numberOfRoomAvailable);
     }
 
-    function renderFromSearchedData(room, priceCurrent, newPrice, numberOfRoomAvailable, coupons) 
+    function renderFromSearchedData(room, priceCurrent, newPrice, numberOfRoomAvailable) 
     {    
         var customTr = $("<tr/>");
         if(room) {
@@ -144,7 +144,7 @@ $(document).ready(function() {
             customTdRoomtype.css('width', '33%');
 
             let spanHeadRoomType = $("<span/>");
-            spanHeadRoomType.attr("class", 'text-capitalize font-bold underline fs-3').css('color', 'cadetblue').text(room.room_type);
+            spanHeadRoomType.attr("class", 'text-capitalize font-bold underline fs-3').css('color', 'cadetblue').text(room.room_title);
             
             let customDiv1 = $("<div/>");
             customDiv1.attr('class', 'mt-3');
@@ -209,7 +209,7 @@ $(document).ready(function() {
             let customTdPriceForNights = $("<td/>");
             let customDiv2_1 = $('<div/>');
             customDiv2_1.attr('class', 'd-none room-id-' + room.id).text(' ');
-            let customDiv2_2 = $('<div/>');
+            let customDiv2_2 = $('<div/>'); 
             customDiv2_2.attr('class', 'priceCurrentShow' + room.id).css('color', 'rgb(234, 60, 60)').text(newPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
    
             customTdPriceForNights.append(customDiv2_1.get(0).outerHTML, customDiv2_2.get(0).outerHTML);        
@@ -229,9 +229,13 @@ $(document).ready(function() {
             spanChoiceTwo.attr('color', 'green').text('– pay at the property');
             choiceTwo.append(spanChoiceTwo);
             let choiceThree = $("<p/>");
-            let calcAvailableRoom = room.number_of_room - room.number_room_booked;
+            if(typeof room.number_room_booked !== 'undefined') {
+                var calcAvailableRoom = room.number_of_room - room.number_room_booked;
+            } else {
+                var calcAvailableRoom = room.number_of_room;
+            }
             choiceThree.attr('color', 'gray').text('Only ' + calcAvailableRoom + ' rooms left on our site');
-
+            calcAvailableRoom++;
             // append
             customTdChoices.append(choiceOne.get(0).outerHTML, choiceTwo.get(0).outerHTML, choiceThree.get(0).outerHTML);
 
@@ -252,20 +256,28 @@ $(document).ready(function() {
 
             // var outletOptions = $("#quantityElement-");
             var outletOptions = $("<select/>");
-            outletOptions.attr('class', 'form-select quantityElement').attr('aria-label', 'Default select example').attr('name', 'quantityRoomElement-' + room.id).attr('id', 'quantityElement-' + room.id).css('width', '48%');
+            outletOptions.attr('class', 'form-select quantityElement').attr('aria-label', 'Default select example').attr('name', 'quantityRoomElement-' + room.id).attr('id', 'quantityElement-' + room.id).css('width', '59%');
             // generate option array
             var newOutletOptions = [];
-            for(let j = 0; j < numberOfRoomAvailable; j++) {
+            for(let j = 0; j < parseInt(calcAvailableRoom); j++) {
                 let calcP = (priceCurrent * j * NumberOfNights) + (priceCurrent * j * NumberOfNights * 0.1);
                 calcP = calcP.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
                 let array = [j, j + '   (' + calcP + ')'];
                 newOutletOptions.push(array);
             }
             // Add new options
+            let indexOption = 0;
             newOutletOptions.map((optionData) => {
-                let option = $('<option/>');
-                option.attr("value", optionData[0]).text(optionData[1]);
-                outletOptions.append(option);
+                if(indexOption == 0) {
+                    let option = $('<option/>');
+                    option.attr("value", optionData[0]).attr("disabled", "disabled").attr("selected", "selected").text(optionData[1]);
+                    outletOptions.append(option);
+                    indexOption++;
+                } else {
+                    let option = $('<option/>');
+                    option.attr("value", optionData[0]).text(optionData[1]);
+                    outletOptions.append(option);
+                }
             })
 
             customTdSelectRooms.append(priceCurrentElement.get(0).outerHTML, numberOfRoomAvailableElement.get(0).outerHTML, outletOptions.get(0).outerHTML);
