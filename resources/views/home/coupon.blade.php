@@ -17,8 +17,8 @@
                </div>
                <div style="width: 70%;" class="p-5 d-flex flex-column">
                   <div class="fs-4">{{$coupon->description}}</div>
-                  <button type="button" class="btn btn-lg btn-orange mt-auto coupon-toggle" data-id={{$coupon->id}}    
-                     @if(!$couponIdArray)
+                  <button type="button" class="btn btn-lg btn-blue mt-auto coupon-toggle" data-id={{$coupon->id}}    
+                     @if(empty($couponIdArray))
                      >Lưu voucher
                      @else
                         @foreach($couponIdArray as $couponUserId)

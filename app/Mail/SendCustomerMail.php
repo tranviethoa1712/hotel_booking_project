@@ -21,7 +21,6 @@ class SendCustomerMail extends Mailable
      */
     public function __construct($details)
     {
-        // dd($details);
         $this->details = $details;
     }
 

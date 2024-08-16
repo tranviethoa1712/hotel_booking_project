@@ -33,7 +33,7 @@ class Booking extends Model
         "room_quantity"
     ];
 
-    public function coupon()
+    public function coupon() :HasOne
     {
         return $this->hasOne(Coupon::class, "id", "coupon_id");
     }

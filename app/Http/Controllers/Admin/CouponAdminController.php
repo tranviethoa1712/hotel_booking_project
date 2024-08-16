@@ -6,7 +6,6 @@ use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
 use App\Models\Coupon;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class CouponAdminController
 {

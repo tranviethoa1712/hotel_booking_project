@@ -13,6 +13,7 @@ use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Language;
+use App\Http\Requests\BookingRequest;
 use Illuminate\Auth\Middleware\Authenticate;
 
 Route::get('/', [AdminController::class, 'home'])->middleware(Language::class);
@@ -63,7 +64,7 @@ Route::middleware([Language::class])->group(function () {
     
         route::get('linkCouponToUser/{id}', [CouponController::class, 'couponToUser'])->name('user.couponToUser');
         
-        route::get('/booking_view', [HomeController::class, 'bookinBookingUserControllerg_view'])->name('booking_view');
+        route::get('/booking_view', [BookingUserController::class, 'booking_view'])->name('booking_view');
         route::get('/book_room', [BookingUserController::class, 'book_room'])->name('user.book_room');
         route::get('/resultView', [BookingUserController::class, 'resultView'])->name('user.result_view');
         route::get('/viewBookingDetails/{id}', [BookingUserController::class, 'viewBookingDetails'])->name('user.viewBookingDetails');

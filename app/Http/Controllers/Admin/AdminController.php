@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Requests\StoreGalleryRequest;
 use App\Models\Gallery;
 use App\Models\Room;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Inertia\Inertia;
+
 
 class AdminController extends BaseAdminController
 {
