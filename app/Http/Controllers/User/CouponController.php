@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Coupon;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 

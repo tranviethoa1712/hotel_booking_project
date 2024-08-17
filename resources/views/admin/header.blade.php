@@ -135,7 +135,7 @@
           <div class="list-inline-item logout">
             <form method="POST" action="{{ route('logout') }}" x-data>
                 @csrf
-
+                @method("POST")
                 <x-dropdown-link href="{{ route('logout') }}"
                     @click.prevent="$root.submit();">
                     {{ __('Log Out') }}

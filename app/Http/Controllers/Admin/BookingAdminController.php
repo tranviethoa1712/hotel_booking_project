@@ -2,13 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BookingRequest;
 use App\Models\Booking;
-use App\Models\Room;
-use App\Services\UserService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 class BookingAdminController
 {
     /**

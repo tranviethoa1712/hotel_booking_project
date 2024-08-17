@@ -162,7 +162,7 @@
                                  <div class="d-none totalPriceHidden">{{(($room->price * 2) + ($room->price * 2 * 0.1))}}</div>
                                  <div class="d-none roomType">{{$room->room_type}}</div>
                                  <input hidden type="text" name="quantityRoomInput" id="quantityRoomInput" value="0"> 
-                                 <input hidden type="text" name="voucherIdUsed" id="voucherIdUsed" value="not use voucher"> 
+                                 <input hidden type="text" name="voucherIdUsed" id="voucherIdUsed" value="null"> 
                                  <input hidden type="text" name="roomIdUsed" id="roomIdUsed" value="{{$room->id}}">
                                  <input hidden type="date" name="startDateHidden" id="startDateHidden"> 
                                  <input hidden type="date" name="endDateHidden" id="endDateHidden"> 

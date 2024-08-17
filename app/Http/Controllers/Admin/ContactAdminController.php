@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\MailRequest;
 use App\Models\Contact;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendCustomerMail;
 class ContactAdminController
@@ -18,7 +17,7 @@ class ContactAdminController
         return view('admin.contacts', compact('contacts'));
     }
 
-    public function send_mail($id )
+    public function send_mail($id)
     {
         $data = Contact::find($id);
         return view('admin.send_mail', compact('data'));
