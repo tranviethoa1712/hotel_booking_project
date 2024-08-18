@@ -16,7 +16,7 @@
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="" id="navbarsExample04">
-                   <ul class="nav navbar-nav mr-auto">
+                   <ul class="nav navbar-nav mr-auto gap-2">
                       <li class="nav-item">
                          <a class="nav-link text-nowrap {{ Request::is('/') ? ' active' : '' }}" href="{{url('/')}}">{{ __('home.header.home') }}</a>
                       </li>
@@ -60,7 +60,7 @@
                         @endauth
                         @endif
                      @endif
-                     <li class="nav-item ml-2 text-nowrap">
+                     <li class="nav-item text-nowrap">
                         <div class="dropdown">
                            <a href="#" class="btn btn-danger dropdown-toggle text-decoration-none" data-toggle="dropdown">
                                {{ Config::get('languages')[App::getLocale()] }}
